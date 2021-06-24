@@ -1,0 +1,418 @@
+<html><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>FedCapture</title>
+    <!-- Bootstrap -->
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet" />-->
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/bootstrap_multiselect.css" rel="stylesheet" />
+    <script src="js/bootstrap_multiselect.js"></script>-->
+    <script src="fedcap_/js/angular.min.js"></script>
+    <script src="fedcap_/js/SDK.MetaData.js"></script>
+    <script language="javascript" src="fedcap_/js/angular_animate.js"></script>
+    <script language="javascript" src="fedcap_DynamicController_PWin.js"></script>
+    <script src="fedcap_BussinessRulesOnOpportunity_2.0.js"></script>
+    <script src="fedcap_CaptureCommon.js"></script>
+    <!--<script language="javascript" src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.3.js"></script>--><!--for calender-->
+    <!--<script data-require="ui-bootstrap@*" data-semver="1.3.3" src="https://cdn.rawgit.com/angular-ui/bootstrap/gh-pages/ui-bootstrap-tpls-1.3.3.js"></script>-->
+    <script src="fedcap_uib.js"></script>
+
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet"> fedcap_responsivebootstrap.min.css-->
+    <link href="fedcap_ResponsiveBootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="fedcap_font_awesome.min.css">
+    <link rel="stylesheet" href="/uclient/resources/styles/Styles.css">
+    <link rel="stylesheet" href="fedcap_ResponsiveStyle.css">
+
+    <script>
+
+        var Xrm = parent.Xrm;
+        var oppguid = Xrm.Page.data.entity.getId();
+        var OID = oppguid.substring(1, 37);
+        UserId = Xrm.Page.context.getUserId();
+        console.log("User ID:- " + UserId);
+        console.log("Opportunity ID:- " + OID);
+        var setvisible = false;
+        var seteditableforadmin = false;
+        function FormatCurrency(CurrencyField) {
+            if (CurrencyField === null) {
+                return "";
+            }
+            if (CurrencyField === '0.00') {
+                return "";
+            }
+            return "$" + CurrencyField.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+        }
+        function IsDecimalKey(evt, id) {
+            //debugger;
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46)
+                return false;
+            else {
+                var len = id.value.length;
+                var index = id.value.indexOf('.');
+                if (len === 0 && charCode === 46) {
+                    return false;
+                }
+                if (index >= 0 && charCode == 46) {
+                    return false;
+                }
+                if (index > 0) {
+                    var CharAfterdot = (len + 1) - index;
+                    if (CharAfterdot > 3) {
+                        if (id.focus = true) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    else {
+                        if (len > 0 && charCode == 46) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        function DecimalValueRangeOnKeyPress(id) {
+            var val = id.value;
+            var id = id.id;
+            if (val === '') {
+                return true;
+            }
+            var value = val.replace('$', '').replace(/,/g, '');
+            var valueInt = parseFloat(value);
+            if (valueInt >= 1000000000000.00) {
+                $("#" + id + "").css('border-color', 'red');
+                $("#" + id + "").attr('title', 'Enter a value from -1,000,000,000,000.00 through 1,000,000,000,000.00.');
+                return false;
+            }
+            else {
+                $("#" + id + "").css('border-color', '');
+                $("#" + id + "").attr('title', '');
+                return true;
+            }
+            return true;
+        }
+        function DecimalValueRange(id) {
+            var val = $("#" + id + "").val();
+            if (val === '') {
+                return true;
+            }
+            var value = val.replace('$', '').replace(/,/g, '');
+            var valueInt = parseFloat(value);
+            if (valueInt >= 1000000000000.00) {
+                $("#" + id + "").css('border-color', 'red');
+                $("#" + id + "").attr('title', 'Enter a value from -1,000,000,000,000.00 through 1,000,000,000,000.00.');
+                return false;
+            }
+            else {
+                $("#" + id + "").attr('title', '');
+                $("#" + id + "").css('border-color', '');
+                return true;
+            }
+            return true;
+        }
+        function IsNumberKey(evt, id) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            else {
+                var len = id.value.length;
+                var index = id.value.indexOf('.');
+                if (index > 0 && charCode == 46) {
+                    return false;
+                }
+                if (index > 0) {
+                    var CharAfterdot = (len + 1) - index;
+                    if (CharAfterdot > 3) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    </script>
+
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+<meta></head>
+<body class="sc hideScroller" touch-action="none" unresolved="" onload="SecurityRole(); Load();" onfocusout="parent.setEmailRange();" style="overflow-wrap: break-word;" data-new-gr-c-s-loaded="14.1012.0">
+    <div class="modal-header" style="padding-left:0px;">
+
+        <div style="width: 100%;">
+            <div style="width: 50%; height: 40px; float: left;">
+                <img class="img-responsive" style="margin-top:-0px;padding-bottom:7px" src="fedcap_govconsuite.png" alt="Chania" width="150px" height="50">
+            </div>
+            <div style="margin-left: 85%; margin-right: 0%;height: 40px;;">
+                <img class="img-responsive" style="margin-top:-19px;padding-bottom:7px" src="fedcap_growth.png" alt="Chania" width="150px" height="50">
+            </div>
+        </div>
+    </div>
+    <div id="mainContainer" class="sc" ng-app="Pwin_MyApp">
+        <form name="myForm" novalidate="" autocomplete="off">
+            <div class="sc" ng-controller="PWin_DynamicController">
+                <input name="AllWinPlanFields_id" value="{{fieldCollection}}" id="AllWinPlanFields_id" type="hidden">
+                <input name="dateformat" value="{{dateformat}}" id="dateformat" type="hidden">
+                <input name="dateseparator" value="{{dateseparator}}" id="dateseparator" type="hidden">
+                <input name="currencysymbol" value="{{currencysymbol}}" id="currencysymbol" type="hidden">
+                <input name="hdnReadOnly" value="" id="hdnReadOnly" type="hidden">
+                <input name="hdnSaveCount" value="" id="hdnSaveCount" type="hidden">
+                <!--  <a href="/webresources/fedcap_editlayout.html" class="btn btn-primary sc" id="btnEditWinPlan" style="display:none">Go To Edit Win Plan</a>-->
+                <!--<button name="submit" title="Submit" style="margin-left:35%" class="btn btn-primary sc" id="btnTopSave" value="save" ng-click="saveData()" ng-disabled="approvalStatusLock">Save</button>
+                <button name="submit" title="Submit" style="margin-right:35%" class="btn btn-primary sc" id="btnTopCancel" value="cancel" ng-click="CancelAndRefresh()" ng-disabled="approvalStatusLock">Cancel</button>-->
+                <!-- Nav tabs -->
+                <div ng-repeat="tab in tabs" ng-if="tab.fedcap_name== 'PWin'">
+                    <div ng-repeat="section in tab.sections" style="padding-top:10px">
+                        <div class="divTable sc" style="width: 100%;">
+                            <div class="divTableBody sc">
+                                <div class="sc">
+                                    <!--style="display:none"-->
+                                    <table class="table sc" border="0" cellspacing="0" cellpadding="0">
+                                        <tbody>
+                                            <tr>
+                                                <td align="right" valign="middle">
+                                                    <button name="submit" title="Submit" style="float:right" class="btn btn-primary sc" id="btnTopSave_{{tab.fedcap_apinameforcongafield}}" value="save" ng-click="saveForm(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name)" ng-disabled="approvalStatusLock">Save</button> <!--ng-disabled="!myForm.modified"-->
+                                                </td>
+                                                <td align="left" valign="middle">
+                                                    <button name="submit" title="Cancel" class="btn btn-primary sc" id="btnTopCancel_{{tab.fedcap_apinameforcongafield}}" value="Cancel" ng-click="cancelDetails(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name,tab)" ng-disabled="approvalStatusLock">Cancel</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="" ng-if="tab.fedcap_name== 'PWin' || tab.fedcap_name== 'CRS'">
+                                    <div id="tabs">
+                                        <ul class="nav nav-tabs" role="tablist" id="pl_tab_PWinContainer">
+                                            <li class="" ng-class="{'active' : pwintab.id == '0'}" role="presentation" ng-repeat="pwintab in pwintabs">
+                                                <a aria-controls="home" aria-expanded="" data-toggle="tab" data-tabname="{{pwintab.value}}" href="#phase_{{pwintab.id}}" role="tabpanel" id="PWin_{{pwintab.id}}" ng-click="LoadTabPWin(pwintab.id)">
+                                                    {{pwintab.value}}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content ng-scope" id="pl_tab_content_PWinContainer">
+                                            <div ng-repeat="pwintab in pwintabs" style="overflow:auto" class="tab-pane" ng-class="{'active' : pwintab.id == '0'}" role="tabpanel" id="phase_{{pwintab.id}}">
+                                                <div class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="text-align: -webkit-right;text-align:right">
+                                                    <div class="colLab" id="Score_{{pwintab.id}}" html-with="100px">
+                                                        <label style="background-color:cyan; font-weight:bold; color: black">{{pwintab.value}} Score = {{pwintab.score}}%</label>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div ng-repeat="question in pwintab.questions" class="divTable">
+                                                        <div class="queDiv">
+                                                            <label class="labDiv">
+                                                                <a class="bottom_tooltip" title="{{question.fedcap_helptext}}" style="text-decoration: none; color: inherit" id="{{question.fedcap_pwinquestionid}}" data-que-weighting="{{question.fedcap_weighting}}">
+                                                                    <b>{{question.fedcap_sequence}}) {{question.fedcap_name}}</b>
+                                                                    <span></span>
+                                                                </a>
+                                                            </label>
+                                                        </div>
+                                                        <font color="white"></font>
+                                                        <div ng-if="question.fedcap_questionalign == '2'" class="divTableBody">
+                                                            <!--pwintab.id == '0'-->
+                                                            <fieldset style="border: none;">
+                                                                <table class="table" border="0" cellspacing="0" cellpadding="0" style="width:auto">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td ng-repeat="answer in question.answers" title="{{answer.fedcap_helptext}}">
+                                                                                <label style="font-weight:100" ng-if="question.fedcap_answerid == answer.fedcap_pwinanswerid">
+                                                                                    <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" value="{{answer.fedcap_pwin_weighting}}" ng-checked="true">
+                                                                                    {{answer.fedcap_name}}
+                                                                                </label>
+                                                                                <label style="font-weight:100" ng-if="question.fedcap_answerid != answer.fedcap_pwinanswerid">
+                                                                                    <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" value="{{answer.fedcap_pwin_weighting}}">
+                                                                                    {{answer.fedcap_name}}
+                                                                                </label>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </fieldset>
+                                                        </div>
+                                                        <div ng-if="question.fedcap_questionalign != '2'" class="divTableBody">
+                                                            <fieldset style="border: none;">
+                                                                <table class="table" border="0" cellspacing="0" cellpadding="0" style="width:auto">
+                                                                    <tbody>
+                                                                        <tr ng-repeat="answer in question.answers">
+                                                                            <td title="{{answer.fedcap_helptext}}">
+                                                                                <label style="font-weight:100" ng-if="question.fedcap_answerid == answer.fedcap_pwinanswerid">
+                                                                                    <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" checked="checked" value="{{answer.fedcap_pwin_weighting}}">
+                                                                                    {{answer.fedcap_name}}
+                                                                                </label>
+                                                                                <label style="font-weight:100" ng-if="question.fedcap_answerid != answer.fedcap_
+                                                                                pwinanswerid">
+                                                                                    <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" value="{{answer.fedcap_pwin_weighting}}">
+                                                                                    {{answer.fedcap_name}}
+                                                                                </label>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </fieldset>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="" ng-if="tab.fedcap_name == 'PWin' || tab.fedcap_name == 'CRS' || tab.fedcap_name == 'PGo' || tab.fedcap_name == 'SGI'">
+                                    <!--style="display:none"-->
+                                    <table class="table" border="0" cellspacing="0" cellpadding="0">
+                                        <tbody>
+                                            <tr>
+                                                <td align="right" valign="middle">
+                                                    <button name="submit" title="Submit" style="float:right" class="btn btn-primary sc" id="btnBottomSave_{{tab.fedcap_apinameforcongafield}}" value="save" ng-click="saveForm(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name)" ng-disabled="approvalStatusLock">Save</button> <!--ng-disabled="!myForm.modified"-->
+                                                </td>
+                                                <td align="left" valign="middle">
+                                                    <button name="submit" title="Cancel" class="btn btn-primary sc" id="btnBottomCancel_{{tab.fedcap_apinameforcongafield}}" value="Cancel" ng-click="cancelDetails(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name,tab)" ng-disabled="approvalStatusLock">Cancel</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!--<script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap_datepicker.min.js"></script>-->
+    <script src="fedcap_jquery.min.js"></script>
+    <script src="fedcap_bootstrap.min.js"></script>
+    <link href="fedcap_bootstrap_multiselect.css" rel="stylesheet">
+    <script src="fedcap_bootstrap_multiselect.js"></script>
+    <script src="fedcap_SecurityRolesOnOpportunity_2.0.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            setTimeout(function myfunction() {
+                $('.mpl_bind').multiselect({
+                    nonSelectedText: '---',
+                    buttonWidth: 150,
+                    enableFiltering: true
+                });
+            }, 3500);
+        });
+        //$(document.body).on('mouseover', '#new_designation', function () { // for IE and Edge
+        //    alert('mouseover');
+        //    $('#new_designation').multiselect({
+        //        nonSelectedText: '---',
+        //        buttonWidth: 250,
+        //        enableFiltering: true
+        //    });
+        //});
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+
+            //$(".datePicker span.add-on").click(function () {
+
+            //    $(".dp1 input").css('border-color', '#000');
+            //});
+
+            //$('.datePicker')
+            //    .datepicker({
+            //        format: 'mm/dd/yyyy'
+            //    })
+            //    .on('changeDate', function (e) {
+            //        // Revalidate the date field
+            //        $('#eventForm').formValidation('revalidateField', 'date');
+            //    });
+
+            /*$('#eventForm').formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The name is required'
+                            }
+                        }
+                    },
+                    date: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The date is required'
+                            },
+                            date: {
+                                format: 'MM/DD/YYYY',
+                                message: 'The date is not a valid'
+                            }
+                        }
+                    }
+                }
+            });*/
+        });
+        //window.addEventListener('touchmove', function (event) {
+        //    event.preventDefault()
+        //}, false)
+        //document.querySelector('.mainContainer').addEventListener('touchmove', function (event) {
+        //    event.stopPropagation()
+        //}, false)
+    </script>
+    <style>
+        .hideScroller::-webkit-scrollbar {
+            display: none; /*Chrome*/
+        }
+
+        .hideScroller {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .mpl_bind {
+            width: 100%;
+        }
+
+        @media {
+            .GovWinFBO {
+                /*width:auto;*/
+            }
+        }
+    </style>
+
+
+
+
+</body></html>

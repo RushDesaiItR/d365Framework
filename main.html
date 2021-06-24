@@ -1,0 +1,557 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>FedCapture</title>
+    <!-- Bootstrap -->
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet" />-->
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/bootstrap_multiselect.css" rel="stylesheet" />
+    <script src="js/bootstrap_multiselect.js"></script>-->
+    <script src="fedcap_/js/angular.min.js"></script>
+    <script src="fedcap_/js/SDK.MetaData.js"></script>
+    <script language="javascript" src="fedcap_/js/angular_animate.js"></script>
+    <script language="javascript" src="fedcap_DynamicController_2.0.js"></script>
+    <script src="fedcap_BussinessRulesOnOpportunity_2.0.js"></script>
+    <script src="fedcap_CaptureCommon.js"></script>
+    <!--<script language="javascript" src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.3.js"></script>-->
+    <!--for calender-->
+    <!--<script data-require="ui-bootstrap@*" data-semver="1.3.3" src="https://cdn.rawgit.com/angular-ui/bootstrap/gh-pages/ui-bootstrap-tpls-1.3.3.js"></script>-->
+    <script src="fedcap_uib.js"></script>
+
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet"> fedcap_responsivebootstrap.min.css-->
+    <link href="fedcap_ResponsiveBootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="fedcap_font_awesome.min.css">
+    <link rel="stylesheet" href="/uclient/resources/styles/Styles.css">
+    <link rel="stylesheet" href="fedcap_ResponsiveStyle.css">
+    <!-- <script>
+           var ngApp = angular.module('MyApp', []);
+        ngApp.controller('DynamicController',
+       // ng-app="MyApp" ng-controller="DynamicController"
+            function ($scope) {
+                var questionData;
+                $scope.screenId = 0;
+                $scope.setScreen = function (i) {
+                    $scope.screenId = $scope.screenId = i;
+                }
+            })
+     </script> -->
+    <script>
+
+        var Xrm = parent.Xrm;
+        var oppguid = Xrm.Page.data.entity.getId();
+        var OID = oppguid.substring(1, 37);
+        UserId = Xrm.Page.context.getUserId();
+        console.log("User ID:- " + UserId);
+        console.log("Opportunity ID:- " + OID);
+        var setvisible = false;
+        var seteditableforadmin = false;
+        function FormatCurrency(CurrencyField) {
+            if (CurrencyField === null) {
+                return "";
+            }
+            if (CurrencyField === '0.00') {
+                return "";
+            }
+            return "$" + CurrencyField.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+        }
+        function IsDecimalKey(evt, id) {
+            //debugger;
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46)
+                return false;
+            else {
+                var len = id.value.length;
+                var index = id.value.indexOf('.');
+                if (len === 0 && charCode === 46) {
+                    return false;
+                }
+                if (index >= 0 && charCode == 46) {
+                    return false;
+                }
+                if (index > 0) {
+                    var CharAfterdot = (len + 1) - index;
+                    if (CharAfterdot > 3) {
+                        if (id.focus = true) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    else {
+                        if (len > 0 && charCode == 46) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        function DecimalValueRangeOnKeyPress(id) {
+            var val = id.value;
+            var id = id.id;
+            if (val === '') {
+                return true;
+            }
+            var value = val.replace('$', '').replace(/,/g, '');
+            var valueInt = parseFloat(value);
+            if (valueInt >= 1000000000000.00) {
+                $("#" + id + "").css('border-color', 'red');
+                $("#" + id + "").attr('title', 'Enter a value from -1,000,000,000,000.00 through 1,000,000,000,000.00.');
+                return false;
+            }
+            else {
+                $("#" + id + "").css('border-color', '');
+                $("#" + id + "").attr('title', '');
+                return true;
+            }
+            return true;
+        }
+        function DecimalValueRange(id) {
+            var val = $("#" + id + "").val();
+            if (val === '') {
+                return true;
+            }
+            var value = val.replace('$', '').replace(/,/g, '');
+            var valueInt = parseFloat(value);
+            if (valueInt >= 1000000000000.00) {
+                $("#" + id + "").css('border-color', 'red');
+                $("#" + id + "").attr('title', 'Enter a value from -1,000,000,000,000.00 through 1,000,000,000,000.00.');
+                return false;
+            }
+            else {
+                $("#" + id + "").attr('title', '');
+                $("#" + id + "").css('border-color', '');
+                return true;
+            }
+            return true;
+        }
+        function IsNumberKey(evt, id) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            else {
+                var len = id.value.length;
+                var index = id.value.indexOf('.');
+                if (index > 0 && charCode == 46) {
+                    return false;
+                }
+                if (index > 0) {
+                    var CharAfterdot = (len + 1) - index;
+                    if (CharAfterdot > 3) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    </script>
+
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: rgb(242, 242, 242);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --blue: #282461;
+            --primary-white: #ffffff;
+            --green: #59a30f;
+            --primary-purple: rgba(176, 30, 67, 255);
+            --primary-gray: #585a81;
+            --orange: #c95e13;
+            --gray: #858ca1;
+            --text: #757475;
+            --tab-border: #d8d9d9;
+        }
+
+        .gate-container {
+            padding: 40px;
+        }
+
+        .gate-row {
+            display: flex;
+            flex: 1;
+        }
+
+        .gate-menus {
+            flex: 1;
+        }
+
+        /* -----------------------Left menus----------------------------- */
+
+        .gate-menus {
+            display: block;
+        }
+
+        .gate-menu {
+            border-radius: 10px;
+            margin: 20px 0;
+            padding: 20px 40px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            background: var(--primary-white);
+            cursor: pointer;
+        }
+
+        .gate-menus-inner {
+            text-align: center;
+        }
+
+        .gate-menus-inner h4 {
+            font-size: 20px;
+        }
+
+        .gate-menus-inner h3 {
+            color: var(--primary-gray);
+        }
+
+        /* -------------------------Active Menu-------------------- */
+
+        .gate-menu-active {
+            background-color: var(--blue);
+            color: var(--primary-white);
+            position: relative;
+        }
+
+        .gate-menus-active-header {
+            color: var(--green);
+        }
+
+        .gate-menu-active::after {
+            content: "";
+            position: absolute;
+            right: -14px;
+            top: 45%;
+            align-items: center;
+            width: 0;
+            height: 0;
+            border-top: 7px solid transparent;
+            border-left: 14px solid var(--blue);
+            border-bottom: 7px solid transparent;
+            /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+        }
+
+        /*-----------Orange Menu-----------------------------------*/
+
+        .gate-menu-orange {
+            color: var(--orange);
+        }
+
+        /*-----------Green Menu-----------------------------------*/
+
+        .gate-menu-green {
+            color: var(--green);
+        }
+
+        /*-----------Purple Menu-----------------------------------*/
+
+        .gate-menu-purple {
+            color: var(--primary-purple);
+        }
+
+        /* ---------------------------------Range------------------ */
+
+        /*--------------------------------- right item -------*/
+
+        .gate-items {
+            flex: 2;
+            margin: 20px;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            background: var(--primary-white);
+            border-radius: 10px;
+            padding: 10px 30px;
+        }
+
+        .gate-item-inner {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        .gate-item {
+            width: 45%;
+            margin: 0 10px 0 0;
+            border-bottom: 1px solid rgb(155, 150, 150);
+            padding: 10px 0 10px 0;
+        }
+
+        .gate-item h6 {
+            color: var(--text);
+            font-size: 18px;
+            padding: 20px 0;
+        }
+
+        /* .form-box{
+max-width: 400px;
+background-color: rgba(255,255,255,0.1);
+margin:150px auto;
+padding:40px;
+border-radius: 8px;
+} */     .form-box{
+            margin-top:10px;
+         }
+        .form-box label input {
+            display: none;
+        }
+
+        .form-box label {
+            display: flex;
+            cursor: pointer;
+            margin-bottom: 30px;
+            padding-left: 55px;
+            position: relative;
+        }
+
+        .form-box label .circle {
+            height: 20px;
+            width: 20px;
+            border: 2px solid rgba(176, 30, 67, 255);
+            border-radius: 50%;
+            display: inline-block;
+            position: absolute;
+            left: 0;
+            top: 0px;
+            transition: border-color .5s ease;
+        }
+
+        .form-box label .circle::before {
+            content: '';
+            height: 10px;
+            width: 10px;
+            background-color: rgba(176, 30, 67, 255);
+            position: absolute;
+            left: 0;
+            top: 0;
+            border-radius: 50%;
+            box-sizing: border-box;
+            margin-left: 3px;
+            margin-top: 3px;
+            transition: transform .5s ease;
+            transform: scale(0);
+        }
+
+        .form-box label span {
+            font-size: 15px;
+            color: var(--gray);
+            display: inline-block;
+            transition: color .5s ease;
+        }
+
+        .form-box label input:checked+.circle {
+            border-color: rgba(176, 30, 67, 255);
+        }
+
+        .form-box label input:checked+.circle::before {
+            transform: scale(1);
+        }
+
+        .form-box label input:checked+.circle+span {
+            color: var(--gray);
+            ;
+        }
+
+        /* -------------------------------------progress bar -----------------*/
+
+        .container-progressbar {
+            background-color: rgb(192, 192, 192);
+            width: 80%;
+            position: relative;
+        }
+
+        .skill {
+            color: white;
+            padding: 1%;
+            text-align: right;
+            font-size: 20px;
+        }
+
+        .skill-message {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            padding: 15px 15px;
+            top: -14px;
+            border-radius: 360%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .skill-message i {
+            font-size: 10px;
+        }
+
+        /*------------------------ Button---------------- */
+
+        .btn-row {
+            display: flex;
+            align-item: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .btn {
+            outline: none;
+            border: none;
+            background: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            background: var(--primary-purple);
+            color: white;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            cursor: pointer;
+        }
+
+        /* -------------------Top Tab----------------------- */
+
+        .tab-container {
+            display: flex;
+            border: 2px solid var(--tab-border);
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .tab-container span {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .active-tab {
+            background: var(--blue);
+            color: white;
+        }
+    </style>
+    <meta>
+</head>
+
+<body 
+ touch-action="none" 
+ unresolved="" 
+ onload="SecurityRole();Load();"
+ onfocusout="parent.setEmailRange();">
+
+
+
+
+ <!-- $scope.screenId = 0; -->
+    <div class="gate-container" id="mainContainer" ng-app="MyApp" ng-controller="DynamicController">
+
+        <div class="gate-row">
+            <div class="gate-menus" id="tabs" role="tablist">
+                <div class="gate-menu" ng-repeat="pwintab in pwintabs"
+                    ng-class="{'gate-menu-active' : pwintab.id == screenId}" aria-controls="home" aria-expanded="
+                    data-toggle="tab" 
+                    data-tabname="{{pwintab.value}}"
+                    href="#phase_{{pwintab.id}}"
+                     role="tabpanel"
+                    id="PWin_{{pwintab.id}}"
+                     ng-click="LoadTabPWin(pwintab.id)">
+                    <h4>{{pwintab.value}}</h4>
+                    <div class="gate-menus-inner">
+                        <h4
+                            ng-style="pwintab.score >= 60 &amp;&amp; {'color':'#59a30f'} || pwintab.score > 0 &amp;&amp; pwintab.score < 60 &amp;&amp; {'color':'rgba(201,94,19,255)'} || pwintab.score === 0 &amp;&amp; {'color':'rgba(176,30,67,255)'}">
+                            P-WIN:{{pwintab.score}}%
+                        </h4>
+                        <br/>
+                        <h6>
+                            Question Progress {{pwintab.score}}%
+
+                        </h6>
+                        <br/>
+                        <div class="container-progressbar">
+                            <div class="skill"
+                                ng-style="pwintab.score >= 60 &amp;&amp; {'background-color':'#59a30f', 'width':pwintab.score + '%'} || pwintab.score > 0 &amp;&amp; pwintab.score < 60 &amp;&amp; {'background-color':'rgba(201,94,19,255)', 'width':pwintab.score + '%'} || pwintab.score === 0 &amp;&amp; {'background-color':'rgba(176,30,67,255)', 'width':'1%'}">
+                            </div>
+                            <div class="skill-message"
+                                ng-style="pwintab.score >= 60 &amp;&amp; {'left':pwintab.score + '%', 'background-color':'#59a30f'} || pwintab.score > 0 &amp;&amp; pwintab.score < 60 &amp;&amp; {'background-color':'rgba(201,94,19,255)', 'left':pwintab.score + '%'} || pwintab.score === 0 &amp;&amp; {'background-color':'rgba(176,30,67,255)', left:'1%'}">
+                                <i ng-if="pwintab.score === 0" class="fa fa-arrow-down" aria-hidden="true"></i>
+                                <i ng-if="pwintab.score >= 60" class="fa fa-check" aria-hidden="true"></i>
+                                <i ng-if="pwintab.score > 0 &amp;&amp; pwintab.score < 60" class="fa fa-exclamation"
+                                    aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- tab-content ng-scope  -->
+            <div class="tab-content ng-scope" id="pl_tab_content_PWinContainer">
+                <div ng-repeat="pwintab in pwintabs" style="overflow:auto" class="tab-pane" ng-class="{'active' : pwintab.id == '0'}" role="tabpanel" id="phase_{{pwintab.id}}">
+                    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="text-align: -webkit-right;text-align:right">
+                        <div class="colLab" id="Score_{{pwintab.id}}" html-with="100px">
+                            <label style="background-color:cyan; font-weight:bold; color: black">{{pwintab.value}} Score = {{pwintab.score}}%</label>
+         
+                        </div>
+                    </div>
+                    <div>
+                        <div ng-repeat="question in pwintab.questions" class="divTable">
+                            <div class="queDiv">
+                                <label class="labDiv">
+                                    <a class="bottom_tooltip" title="{{question.fedcap_helptext}}" style="text-decoration: none; color: inherit" id="{{question.fedcap_pwinquestionid}}" data-que-weighting="{{question.fedcap_weighting}}">
+                                        <b>{{question.fedcap_sequence}}) {{question.fedcap_name}}</b>
+                                        <span></span>
+                                    </a>
+                                </label>
+                            </div>
+                           
+                           
+                         
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="fedcap_jquery.min.js"></script>
+    <script src="fedcap_bootstrap.min.js"></script>
+    <link href="fedcap_bootstrap_multiselect.css" rel="stylesheet">
+    <script src="fedcap_bootstrap_multiselect.js"></script>
+    <script src="fedcap_SecurityRolesOnOpportunity_2.0.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            setTimeout(function myfunction() {
+                $('.mpl_bind').multiselect({
+                    nonSelectedText: '---',
+                    buttonWidth: 150,
+                    enableFiltering: true
+                });
+            }, 3500);
+        });
+
+    </script>
+
+
+    </script>
+
+
+
+
+
+</body>
+
+</html>

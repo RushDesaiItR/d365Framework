@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<style>
+		p {
+			font-size: 20px;
+		}
+	
+		.container-progressbar {
+			background-color: rgb(192, 192, 192);
+			width: 80%;
+			
+            position: relative;
+		}
+	
+		.skill {
+		
+			color: white;
+			padding: 1%;
+			text-align: right;
+			font-size: 20px;
+		
+           
+		}
+	    .skill-message{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+           
+            padding:20px 18px;
+            top:-12px;
+            border-radius: 360%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            color:white;
+        }
+
+	</style>
+</head>
+<body>
+	<br/><br/>
+	<div class="container-progressbar">
+		<div class="skill" style="width:60%;background-color: rgba(201,94,19,255);"></div>
+        <div class="skill-message"  style="left:61%; background-color: rgba(201,94,19,255);">
+            <i class="fa fa-exclamation" aria-hidden="true"></i>
+        </div>
+	</div>
+    <br/><br/>
+    <div class="container-progressbar">
+		<div class="skill" style="width:100%;background-color: #59a30f;"></div>
+        <div class="skill-message"  style="left:99%; background-color: #59a30f;">
+            <i class="fa fa-check" aria-hidden="true"></i>
+        </div>
+	</div>
+    <br/><br/>
+    <div class="container-progressbar">
+		<div class="skill" style="width:10%;background-color: rgba(176,30,67,255);"></div>
+        <div class="skill-message"  style="left:11%; background-color: rgba(176,30,67,255);">
+            <i class="fa fa-arrow-down" aria-hidden="true"></i>
+        </div>
+	</div>
+
+
+
+
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+        <label class="form-check-label" for="flexRadioDefault1">
+          Default radio
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+        <label class="form-check-label" for="flexRadioDefault2">
+          Default checked radio
+        </label>
+      </div>
+
+
+
+
+      
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault1">
+        <label class="form-check-label" for="flexRadioDefault1">
+          Default radio
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault2" checked>
+        <label class="form-check-label" for="flexRadioDefault2">
+          Default checked radio
+        </label>
+      </div>
+    <script>
+        function OnSave(executionContext) {
+    try {
+        //Get the form context
+        var formContext = executionContext.getFormContext();
+        //Sample code for On Save Event
+        var lookupFieldObject;
+        lookupFieldObject = Xrm.Page.getAttribute("ownerid");
+        if (lookupFieldObject.getValue() != null) {
+            var userID = lookupFieldObject.getValue()[0].id.slice(1, -1);
+            if (userID != null) {
+                if (CheckUserTeam(userID, 'Call Center') == true) {
+                    Xrm.Page.getAttribute("tra_iscreatedatcallcenter").setValue(1);
+                }
+                else {
+                    Xrm.Page.getAttribute("tra_iscreatedatcallcenter").setValue(0);
+                }
+            }
+
+        }
+    }
+    catch (e) {
+        Xrm.Utility.alertDialog(e.message);
+    }
+}
+    </script>
+</body>
+</html>

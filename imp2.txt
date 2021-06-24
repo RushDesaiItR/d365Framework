@@ -1,0 +1,304 @@
+<html><head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>FedCapture</title>
+    <!-- Bootstrap -->
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="tm_/js/angular.min.js"></script>
+    <script src="tm_/js/SDK.MetaData.js"></script>
+    <script src="tm_/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.1/angular-material.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.1/angular-material.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+    <link rel="stylesheet" href="tm_/angularjs-datetime-picker.css">
+    <script src="tm_/angularjs-datetime-picker.js"></script>
+    <script language="javascript" src="tm_/js/angular_animate.js"></script>
+    <script src="tm_uib.js"></script>
+    <script language="javascript" src="tm_DynamicController_2.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.1.2/textAngular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.2/textAngular-sanitize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+    <link rel="stylesheet" href="tm_font_awesome.min.css">
+    <link rel="stylesheet" href="tm_ResponsiveStyle.css">   
+    <style>
+        switch {
+            position: relative;
+            display: inline-block;
+            width: 20px;
+            height: 15px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+        input:focus + .slider {
+            box-shadow: 0 0 5px red;
+        }
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+        .slider.round:before {
+                border-radius: 50%;
+            }
+
+        .black {
+            font-weight: bold;
+        }
+        .gray {
+            font-weight: bold;
+            color: gray;
+        }       
+        md-switch .md-bar {
+            left: -5px;
+            width: 45px;
+            right: -5px;
+            top: 0.25px;
+            border: 1px solid #ab1239;
+            height: 24px;
+            border-radius: 15px;
+            position: absolute;
+        }
+        md-switch.md-default-theme.md-checked:not([disabled]) .md-bar, md-switch.md-checked:not([disabled]) .md-bar {
+            background-color: white;
+        }
+        md-switch.md-default-theme.md-checked:not([disabled]) .md-thumb, md-switch.md-checked:not([disabled]) .md-thumb {
+            background-color: #ab1239;
+        }
+        md-switch.md-default-theme .md-thumb, md-switch .md-thumb {
+            background-color: #ab1239;
+        }
+        md-switch.md-default-theme .md-bar, md-switch .md-bar {
+            background-color: white;
+        }       
+        input[type=range]::-ms-track {
+            width: 300px;
+            height: 5px;
+            /*remove bg colour from the track, we'll use ms-fill-lower and ms-fill-upper instead */
+            background: transparent;
+            /*leave room for the larger thumb to overflow with a transparent border */
+            border-color: transparent;
+            border-width: 6px 0;
+            /*remove default tick marks*/
+            color: transparent;
+        }
+        input[type=range]::-ms-fill-lower {
+            background: #777;
+            border-radius: 10px;
+        }
+        input[type=range]::-ms-fill-upper {
+            background: #ddd;
+            border-radius: 10px;
+        }
+        input[type=range]::-ms-thumb {
+            border: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: goldenrod;
+        }
+        input[type=range]:focus::-ms-fill-lower {
+            background: #888;
+        }
+        input[type=range]:focus::-ms-fill-upper {
+            background: #ccc;
+        }
+    </style>   
+<meta></head>
+<body style="overflow-wrap: break-word" onfocusout="parent.setEmailRange();" data-new-gr-c-s-loaded="14.1014.0" spellcheck="false">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-messages.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <div id="mainContainer" class="sc" ng-app="MyApp" style="font-family: undefined;">
+        <form name="myForm" novalidate="" autocomplete="off">
+            <div class="sc" ng-controller="DynamicController">
+                <input name="AllWinPlanFields_id" value="{{fieldCollection}}" id="AllWinPlanFields_id" type="hidden">
+                <input name="dateformat" value="{{dateformat}}" id="dateformat" type="hidden">
+                <input name="dateseparator" value="{{dateseparator}}" id="dateseparator" type="hidden">
+                <input name="currencysymbol" value="{{currencysymbol}}" id="currencysymbol" type="hidden">
+                <input name="hdnSaveCount" value="" id="hdnSaveCount" type="hidden">
+                <!-- Added : Plotting header section -->
+                <ng-container ng-if="HeaderFields &amp;&amp; HeaderFields.length > 0">
+                    <div class="row" style="width: 100%;height: auto;border-bottom: 1px solid rgb(207, 205, 204);padding-bottom: 20px">
+                        <ng-container ng-repeat="header in HeaderFields">
+                            <div ng-if="header.tm_fieldapiname!='clm_duedate'" class="{{header.tm_alignment== 'right' ? 'alignright' :''}} col-md-3 col-xs-12 marginCSS">
+                                <span class="headerTextLabel" style="color: {{header.tm_headertextcolour}};">{{header.tm_name}} </span>
+                                <span class="headerTextValue">{{HeaderFieldsValue[header.tm_fieldapiname]}}</span>
+                            </div>
+                            <!-- For Due date and calculation due days -->
+                            <div ng-if="header.tm_fieldapiname=='clm_duedate'" class="{{header.tm_alignment== 'right' ? 'alignright' :''}} col-md-3 col-xs-12 marginCSS">
+                                <span style="color: {{header.tm_headertextcolour}};" class="headerTextLabel">{{header.tm_name}} </span>
+                                <span style="color: {{header.tm_headertextcolour}};" class="headerTextValue">{{HeaderFieldsValue[header.tm_fieldapiname]}}</span>
+                                <span style="color: {{header.tm_headertextcolour}};" font-weight="" bold"="" ng-if="header.tm_fieldapiname=='clm_duedate'">{{HeaderFields.clm_duedate}}</span>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container>
+                <!-- Added : Plotting Main section -->
+                <ng-container">
+                    <div class="row" style="width: 100%;flex-wrap: wrap;">
+                        <ng-container ng-repeat="section in tabs.sections track by $index" ng-class="{'col-md-8':tabs.tm_columnsratio =='80 : 20' &amp;&amp; $index % 2 == 0 ,
+                            'col-md-6': tabs.tm_columnsratio =='50 : 50',
+                            'col-md-12': tabs.tm_columnsratio == '100',
+                            'col-md-9': tabs.tm_columnsratio == '70 : 30' &amp;&amp; $index % 2 == 0,
+                            'col-md-7': tabs.tm_columnsratio == '60 : 40' &amp;&amp; $index % 2 == 0,
+                            'col-md-4':tabs.tm_columnsratio =='80 : 20' &amp;&amp; $index % 2 != 0 ,
+                            'col-md-3': tabs.tm_columnsratio == '70 : 30' &amp;&amp; $index % 2 != 0,
+                            'col-md-5':tabs.tm_columnsratio =='60 : 40' &amp;&amp; $index % 2 != 0 ,
+                            }" class="sections">
+                            <div class="container-card" style="display: {{section.display}};" data-sectionname="{{section.tm_name}}" data-secguid="{{section.tm_customizesectionid}}" id="{{section.tm_customizesectionid}}">
+                                <div class="sc">
+                                    <section class="sectionTitle" ng-hide="section.tm_ishidesectionlabel" style="color:{{section.tm_sectionlabelcolor}}; font-size:{{section.tm_sectionlabelfontsize}};">{{section.tm_name}}</section>
+                                </div>
+                                <ng-container ng-if="section.fields &amp;&amp; section.fields.length > 0">
+                                    <div class="row">
+                                        <ng-container ng-repeat="fields in section.fields">
+                                            <div class="{{section.fields[$index].tm_colspan == '1' ? 'col-md-12' : section.fields[$index].tm_colspan == '2' ? 'col-md-6': ''}}">
+                                                <ng-container ng-if="section.fields[$index].tm_fieldapiname == 'directioncode'">
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <table style="width: 100%">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td><i style="font-size: 25px" class="fa fa-arrow-circle-o-up"></i></td>
+                                                                        <td style="font-family: SegoeUI, Segoe UI" ;"font-size="14px;&quot;" class="{{callStatus == 'OUTGOING' ? 'black' : 'gray'}}">OUTGOING</td>
+                                                                        <td><md-switch ng-click="changeFieldOrder()" title="{{callStatus}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" class="form-control sc FieldText" ng-model="callStatus" id="{{section.fields[$index].tm_fieldapiname}}" data-fieldtype="Boolean" ng-true-value="'INCOMING'" ng-false-value="'OUTGOING'" style="color: rgb(176, 31, 63);padding-right: 5px;border-width: 0px;">  </md-switch></td>
+                                                                        <td style="font-family: SegoeUI, Segoe UI" ;font-size="" 14px;"="" class="{{callStatus == 'INCOMING' ? 'black' : 'gray'}}">INCOMING</td>
+                                                                        <td><i style="font-size: 25px" class="fa fa-arrow-circle-o-down"></i></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-md-8" id="infomessage" style="margin-top: 21px; text-align: end; color:#ab1239;  font-weight: bold; visibility:hidden;">To view field order change please save record</div>
+                                                    </div>
+                                                </ng-container>
+                                                <div class="{{section.fields[$index].tm_colspan == '1' ? section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-2':'':section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-4':''}}">
+                                                    <label ng-if="section.fields[$index].tm_fieldapiname != 'directioncode'" class="FieldTitleLable" for="{{section.fields[$index].tm_fieldapiname}}">{{fields.tm_name}}</label>
+                                                </div>
+                                                <div ng-if="section.fields[$index].tm_fieldapiname != 'directioncode'" class="{{section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-8' :''}} borderfields">
+                                                    <input ng-if="section.fields[$index].tm_fieldtype == 'String'" ng-style="section.controlwidth" style="height:{{section.fields[$index].tm_height}}px" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]" title="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}">
+                                                    <select ng-if="section.fields[$index].tm_fieldtype == 'Boolean' &amp;&amp; section.fields[$index].tm_fieldapiname != 'directioncode'" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" class="form-control sc FieldText" id="{{section.fields[$index].tm_fieldapiname}}" data-fieldtype="Boolean" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                        <option value="">---</option>
+                                                        <option label="No" value="No">No</option>
+                                                        <option label="Yes" value="Yes">Yes</option>
+                                                    </select>
+                                                    <ng-container ng-if="section.fields[$index].tm_fieldtype == 'Memo'">
+                                                        <text-angular name="textBox" ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" type="text" placeholder="---" title="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}"></text-angular>
+                                                    </ng-container>
+                                                    <input ng-if="section.fields[$index].tm_fieldtype == 'Money'" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index].tm_fieldtype == 'Decimal'" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index].tm_fieldtype == 'Integer'" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index].tm_fieldtype == 'BigInt'" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                    <div class="sc" ng-if="section.fields[$index].tm_fieldtype == 'Lookup' || section.fields[$index].tm_fieldtype == 'Customer'">
+                                                        <div class="searchicon_td sc">
+                                                            <input id="{{section.fields[$index].tm_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index].tm_lookupobjecttypecode,section.fieldValue[section.fields[$index].tm_fieldapiname],section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control lookup sc FieldText" type="text" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                            <input name="{{section.fields[$index].tm_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" id="{{section.fields[$index].tm_fieldapiname}}_id" type="hidden">
+                                                            <input name="{{section.fields[$index].tm_fieldapiname}}_entityname" value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}" id="{{section.fields[$index].tm_fieldapiname}}_entityname" type="hidden">
+                                                            <i ng-if="section.fields[$index].tm_isreadonly != true" class="fa fa-search searchicon" id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index].tm_lookupobjecttypecode,section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="sc" ng-if="section.fields[$index].tm_fieldtype == 'PartyList'">
+                                                        <div class="searchicon_td sc">
+                                                            <input id="{{section.fields[$index].tm_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index].tm_lookupobjecttypecode,section.fieldValue[section.fields[$index].tm_fieldapiname],section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control lookup sc FieldText" type="text" ng-model="section.fieldValue.email_activity_parties[0][section.fields[$index].tm_formattedvalue]" title="{{section.fieldValue.email_activity_parties[0][section.fields[$index].tm_formattedvalue]}}">
+                                                            <input name="{{section.fields[$index].tm_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" id="{{section.fields[$index].tm_fieldapiname}}_id" type="hidden">
+                                                            <input name="{{section.fields[$index].tm_fieldapiname}}_entityname" value="" id="{{section.fields[$index].tm_fieldapiname}}_entityname" type="hidden">
+                                                            <input name="{{section.fields[$index].tm_fieldapiname}}_type" id="{{section.fields[$index].tm_fieldapiname}}_type" type="hidden">
+                                                            <i ng-if="section.fields[$index].tm_isreadonly != true" class="fa fa-search searchicon" id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index].tm_lookupobjecttypecode,section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index].tm_fieldtype == 'DateTime' &amp;&amp; section.tm_name != 'Appointment'">
+                                                        <div class="calendericon_td sc">
+                                                            <input ng-if="section.fields[$index].tm_isreadonly == true" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" style="line-height: 16px" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                            <input ng-if="section.fields[$index].tm_isreadonly != true" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" style="line-height: 16px" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" datepicker-options="dateOptions" is-open="section.fields[$index].tm_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" ng-click="section.fields[$index].tm_isopencalendar = !section.fields[$index].tm_isopencalendar">
+                                                            <i ng-if="section.fields[$index].tm_isreadonly != true" class="fa fa-calendar calendericon" id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}" aria-hidden="true" ng-click=""></i>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index].tm_fieldtype == 'DateTime' &amp;&amp; section.tm_name == 'Appointment'">
+                                                        <div class="calendericon_td sc">
+                                                            <input ng-if="section.fields[$index].tm_isreadonly == true" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" style="line-height: 16px" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" datetime-picker="" date-format="MM-dd-yyyy HH:mm:ss" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                            <input ng-if="section.fields[$index].tm_isreadonly != true" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" style="line-height: 16px" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" datetime-picker="" date-format="MM-dd-yyyy HH:mm:ss" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                            <i ng-if="section.fields[$index].tm_isreadonly != true" class="fa fa-calendar calendericon" id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}" aria-hidden="true" ng-click=""></i>
+                                                        </div>
+                                                    </div>
+                                                    <select ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_isdependentpicklist == false" ng-change="GetDependentPicklistOptionSetLabel(section,section.fields[$index].tm_isdependentpicklist,section.fields[$index].tm_fieldapiname)" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" class="form-control sc FieldText" id="{{section.fields[$index].tm_fieldapiname}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index].PickList" ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]">
+                                                        <option value="">---</option>
+                                                    </select>
+                                                    <select ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_isdependentpicklist == true " ng-change="GetDependentPicklistOptionSetLabel(section,section.fields[$index].tm_isdependentpicklist,section.fields[$index].tm_fieldapiname)" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" class="form-control sc FieldText" id="{{section.fields[$index].tm_fieldapiname}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" ng-options="option as option.value for option in section.fields[$index].DependentPicklist track by option.id" ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]">
+                                                        <option value=""> </option>
+                                                    </select>
+                                                    <input ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_fieldapiname == 'fedcap_pwin'" type="range" min="0" max="100" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" class="form-control sc FieldText" id="{{section.fields[$index].tm_fieldapiname}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]">
+                                                    <div ng-if="section.fields[$index].tm_fieldtype == 'MultiSelectPicklistType'" class="sc">
+                                                        <select id="{{section.fields[$index].tm_fieldapiname}}" multiple="multiple" class="mpl_bind sc" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index].PickList" ng-model="section.fields[$index].MultiPickList"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-container">
+            </div>
+        </form>
+    </div>
+    <script src="tm_jquery.min.js"></script>
+    <script src="tm_bootstrap.min.js"></script>
+    <link href="tm_bootstrap_multiselect.css" rel="stylesheet">
+    <script src="tm_bootstrap_multiselect.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function myfunction() {
+                debugger;
+                $('.mpl_bind').multiselect({
+                    nonSelectedText: '---',
+                    buttonWidth: 150,
+                    enableFiltering: true
+                });
+            }, 3500);
+        });       
+    </script>
+
+</body></html>

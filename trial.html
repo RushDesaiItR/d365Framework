@@ -1,0 +1,65 @@
+<div class="tab-content ng-scope gate-items" id="pl_tab_content_PWinContainer">
+    <div ng-repeat="pwintab in pwintabs" style="overflow:auto" class="tab-pane" ng-class="{'active' : pwintab.id == '0'}" role="tabpanel" id="phase_{{pwintab.id}}">
+        <div class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="text-align: -webkit-right;text-align:right">
+            <div class="colLab" id="Score_{{pwintab.id}}" html-with="100px">
+                <label style="background-color:cyan; font-weight:bold; color: black">{{pwintab.value}} Score = {{pwintab.score}}%</label>
+
+            </div>
+        </div>
+        <div>
+            <div ng-repeat="question in pwintab.questions" class="gate-item-inner">
+                <div class="queDiv">
+                    <label class="labDiv">
+                        <a class="bottom_tooltip" title="{{question.fedcap_helptext}}" style="text-decoration: none; color: inherit" id="{{question.fedcap_pwinquestionid}}" data-que-weighting="{{question.fedcap_weighting}}">
+                            <b>{{question.fedcap_sequence}}) {{question.fedcap_name}}</b>
+                            <span></span>
+                        </a>
+                    </label>
+                </div>
+ 
+                <div ng-if="question.fedcap_questionalign == '2'" class="divTableBody">
+                    <!--pwintab.id == '0'-->
+                    <fieldset style="border: none;">
+                        <table class="table" border="0" cellspacing="0" cellpadding="0" style="width:auto">
+                            <tbody>
+                                <tr>
+                                    <td ng-repeat="answer in question.answers" title="{{answer.fedcap_helptext}}">
+                                        <label style="font-weight:100" ng-if="question.fedcap_answerid == answer.fedcap_pwinanswerid">
+                                            <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" value="{{answer.fedcap_pwin_weighting}}" ng-checked="true">
+                                            {{answer.fedcap_name}}
+                                        </label>
+                                        <label style="font-weight:100" ng-if="question.fedcap_answerid != answer.fedcap_pwinanswerid">
+                                            <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" value="{{answer.fedcap_pwin_weighting}}">
+                                            {{answer.fedcap_name}}
+                                        </label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
+                <div ng-if="question.fedcap_questionalign != '2'" class="divTableBody">
+                   
+                        <table class="table" border="0" cellspacing="0" cellpadding="0" style="width:auto">
+                            <tbody>
+                                <tr ng-repeat="answer in question.answers">
+                                    <td title="{{answer.fedcap_helptext}}">
+                                        <label style="font-weight:100" ng-if="question.fedcap_answerid == answer.fedcap_pwinanswerid">
+                                            <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" checked="checked" value="{{answer.fedcap_pwin_weighting}}">
+                                            {{answer.fedcap_name}}
+                                        </label>
+                                        <label style="font-weight:100" ng-if="question.fedcap_answerid != answer.fedcap_pwinanswerid">
+                                            <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" value="{{answer.fedcap_pwin_weighting}}">
+                                            {{answer.fedcap_name}}
+                                        </label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                 
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

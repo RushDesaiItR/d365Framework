@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+     <style type="text/css">
+          div{
+            width: 40%;
+            margin: auto;
+          }
+          input[type=range]{
+            -webkit-appearance: none;
+            height: 10px;
+            width: 100%;
+            border-radius: 3px;
+            outline: none;
+            border: none;
+           /* background: linear-gradient(90deg, red 60%,blue 40%);*/
+          }
+          input[type=range]::-webkit-slider-thumb{
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 360px;
+            background: green;
+
+          }
+     </style>
+  </head>
+<body>
+    <div>
+       <input type="range" id="rangeSelector"/>
+       <input id="searchBar" type="text"/>
+    </div>
+    <script type="text/javascript">
+      var hpCharacters=[
+        {
+          id:1,
+          name:"rushikesh"
+        },
+        {
+          id:2,
+          name:"mahavir"
+        },
+          {
+          id:3,
+          name:"sanket"
+        },
+        {
+          id:4,
+          name:"desai"
+        }
+      ]
+                const searchBar = document.getElementById("searchBar");
+                 searchBar.addEventListener("keyup", e => {
+                const searchString = e.target.value;
+                console.log(searchString)
+                const filteredCharacters = hpCharacters.filter(character => {
+                return (
+                    character.name.includes(searchString)
+                    
+                    );
+               });
+                console.log(filteredCharacters)
+              });
+
+     
+         const filteredCharacters = hpCharacters.filter(character => {
+           return (
+               character.name.includes(searchString) ||
+               character.house.includes(searchString)
+              );
+          });
+
+
+
+
+
+
+
+
+
+       var rangeSelector = document.querySelector("#rangeSelector");
+       rangeSelector.style.background='linear-gradient(90deg, #59a30f 60%,#f6f7f7 40%)'
+       rangeSelector.oninput = function(){
+       rangeSelector.style.background='linear-gradient(90deg, #59a30f '+rangeSelector.value+'%,#f6f7f7 40%)'; 
+       }
+    </script>
+</body>
+</html>

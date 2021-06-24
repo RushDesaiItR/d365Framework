@@ -1,0 +1,2552 @@
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>FedCapture</title>
+    <!-- Bootstrap -->
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="tm_/js/angular.min.js"></script>
+    <script src="tm_/js/SDK.MetaData.js"></script>
+    <script src="tm_/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.1/angular-material.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.1/angular-material.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+    <link rel="stylesheet" href="tm_/angularjs-datetime-picker.css">
+    <script src="tm_/angularjs-datetime-picker.js"></script>
+    <script language="javascript" src="tm_/js/angular_animate.js"></script>
+    <script src="tm_uib.js"></script>
+    <script language="javascript" src="tm_DynamicController_Snapshot.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.1.2/textAngular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/textAngular/1.2.2/textAngular-sanitize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
+    <link rel="stylesheet" href="tm_font_awesome.min.css">
+    <link rel="stylesheet" href="tm_ResponsiveStyle.css">
+    <link rel="stylesheet" href="tm_DateStepper.css">
+    <script src="tm_Stepper.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        /* -----------------------------------------Range Slider----------------*/
+        input[type=range] {
+            -webkit-appearance: none;
+            height: 10px;
+            width: 100%;
+            border-radius: 3px;
+            outline: none;
+            border: none;
+            /* background: linear-gradient(90deg, red 60%,blue 40%);*/
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 360px;
+            background: #59a30f;
+
+        }
+
+        .opportunity-summary-form-group {
+            display: flex;
+            flex: 1;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .opportunity-summary-form-group-contract-type {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+           
+
+        }
+        .contract-type-active{
+   
+   color: red;
+   height: 30px;
+   
+}
+        .contract-type-scroll-view:nth-of-type(1) {
+            height: 100px;
+            overflow-y: scroll;
+            flex-grow: 1;
+            border: 1px solid #9fa5b5;
+           
+        }
+
+        .contract-type-scroll-view:nth-of-type(3) {
+            height: 100px;
+            overflow-y: scroll;
+            flex-grow: 4;
+            border: 1px solid #9fa5b5;
+        }
+
+        .contract-type-scroll-icons {
+            height: 100px;
+            flex-grow: 1;
+            position: relative;
+           
+        }
+
+        .arrow-right {
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid green;
+            margin: 0;
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+
+        .arrow-left {
+            cursor: pointer;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 10px solid #b01f3f;
+            margin: auto;
+            margin: 0;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        .contract-type-item{
+     width: 100%;
+     padding: 10px 10px;
+     cursor: pointer;
+ }
+    </style>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+</head>
+
+<body style="overflow-wrap: break-word" onfocusout="parent.setEmailRange();" data-new-gr-c-s-loaded="14.1016.0"
+    spellcheck="false">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-messages.min.js"></script>
+    <script>
+        // ['$scope', '$document', function($scope, $document)        
+        var app = angular.module("MyApp", []);
+        app.controller("DynamicController", ['$scope', function ($scope) {
+            var sectionsData = [
+                {
+                    "@odata.etag": "W/\"156221219\"",
+                    "tm_sectioncolumn@OData.Community.Display.V1.FormattedValue": "2",
+                    "tm_sectioncolumn": 2,
+                    "tm_name": "Opportunity Summary",
+                    "tm_ishidesectionlabel@OData.Community.Display.V1.FormattedValue": "No",
+                    "tm_ishidesectionlabel": false,
+                    "tm_sectionlabelfontsize": null,
+                    "tm_sectionlabelcolor": "Red",
+                    "tm_customizesectionid": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                    "tm_order@OData.Community.Display.V1.FormattedValue": "1",
+                    "tm_order": 1,
+                    "fields": [
+                        {
+                            "@odata.etag": "W/\"156221241\"",
+                            "tm_fieldtype": "Lookup",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_Opportunity",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:33 PM",
+                            "createdon": "2021-06-21T10:03:34Z",
+                            "tm_fieldapiname": "_fedcap_opportunity_value",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": null,
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:33 PM",
+                            "modifiedon": "2021-06-21T10:03:34Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,241",
+                            "versionnumber": 156221241,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Opportunity",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "fb61b8ea-77d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "1",
+                            "tm_order": 1,
+                            "tm_formattedvalue": "_fedcap_opportunity_value@OData.Community.Display.V1.FormattedValue",
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": "opportunity",
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:8"
+                        },
+
+                        {
+                            "@odata.etag": "W/\"156221263\"",
+                            "tm_fieldtype": "Picklist",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_forecastcategory",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:33 PM",
+                            "createdon": "2021-06-21T10:03:54Z",
+                            "tm_fieldapiname": "fedcap_forecastcategory",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": "Forecast Category:-  Backup, Not In Forecast, In Forecast",
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:33 PM",
+                            "modifiedon": "2021-06-21T10:03:54Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,263",
+                            "versionnumber": 156221263,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Forecast_Category",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "6a81b2f6-77d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_order": 2,
+                            "tm_formattedvalue": null,
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": null,
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:9",
+                            "PickList": [
+                                {
+                                    "id": 1,
+                                    "value": "Backup",
+                                    "$$hashKey": "object:94"
+                                },
+                                {
+                                    "id": 2,
+                                    "value": "Not In Forecast",
+                                    "$$hashKey": "object:95"
+                                },
+                                {
+                                    "id": 3,
+                                    "value": "In Forecast",
+                                    "$$hashKey": "object:96"
+                                }
+                            ]
+                        },
+                        {
+                            "@odata.etag": "W/\"156221309\"",
+                            "tm_fieldtype": "Lookup",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "AccountId",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:34 PM",
+                            "createdon": "2021-06-21T10:04:53Z",
+                            "tm_fieldapiname": "_accountid_value",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": "Unique identifier of the account with which the opportunity is associated.",
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:34 PM",
+                            "modifiedon": "2021-06-21T10:04:53Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,309",
+                            "versionnumber": 156221309,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Account",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "2102041c-78d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "3",
+                            "tm_order": 3,
+                            "tm_formattedvalue": "_accountid_value@OData.Community.Display.V1.FormattedValue",
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": "account",
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:10"
+                        },
+                        {
+                            "@odata.etag": "W/\"156221312\"",
+                            "tm_fieldtype": "Picklist",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_primesub",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:35 PM",
+                            "createdon": "2021-06-21T10:05:09Z",
+                            "tm_fieldapiname": "fedcap_primesub",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": "Select value for Prime/Sub",
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:35 PM",
+                            "modifiedon": "2021-06-21T10:05:09Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,312",
+                            "versionnumber": 156221312,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Our Role",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "e013fe27-78d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "4",
+                            "tm_order": 4,
+                            "tm_formattedvalue": null,
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": null,
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:11",
+                            "PickList": [
+                                {
+                                    "id": 1,
+                                    "value": "Prime",
+                                    "$$hashKey": "object:97"
+                                },
+                                {
+                                    "id": 2,
+                                    "value": "Sub-Contractor",
+                                    "$$hashKey": "object:98"
+                                },
+                                {
+                                    "id": 3,
+                                    "value": "Sub",
+                                    "$$hashKey": "object:99"
+                                },
+                                {
+                                    "id": 4,
+                                    "value": "Other",
+                                    "$$hashKey": "object:100"
+                                }
+                            ]
+                        },
+                        {
+                            "@odata.etag": "W/\"156221323\"",
+                            "tm_fieldtype": "Picklist",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_opportunitystatus",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:35 PM",
+                            "createdon": "2021-06-21T10:05:28Z",
+                            "tm_fieldapiname": "fedcap_opportunitystatus",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": "Please Select Opportunity Status",
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:35 PM",
+                            "modifiedon": "2021-06-21T10:05:28Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,323",
+                            "versionnumber": 156221323,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Stage",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "906d1d2e-78d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "5",
+                            "tm_order": 5,
+                            "tm_formattedvalue": null,
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": null,
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:12",
+                            "PickList": [
+                                {
+                                    "id": 1,
+                                    "value": "ID/Track",
+                                    "$$hashKey": "object:101"
+                                },
+                                {
+                                    "id": 2,
+                                    "value": "Qualification",
+                                    "$$hashKey": "object:102"
+                                },
+                                {
+                                    "id": 3,
+                                    "value": "Pre-Proposal",
+                                    "$$hashKey": "object:103"
+                                },
+                                {
+                                    "id": 4,
+                                    "value": "Proposal",
+                                    "$$hashKey": "object:104"
+                                },
+                                {
+                                    "id": 5,
+                                    "value": "Submitted",
+                                    "$$hashKey": "object:105"
+                                },
+                                {
+                                    "id": 6,
+                                    "value": "EN",
+                                    "$$hashKey": "object:106"
+                                },
+                                {
+                                    "id": 7,
+                                    "value": "FPR",
+                                    "$$hashKey": "object:107"
+                                },
+                                {
+                                    "id": 8,
+                                    "value": "In Protest",
+                                    "$$hashKey": "object:108"
+                                },
+                                {
+                                    "id": 13,
+                                    "value": "Dead",
+                                    "$$hashKey": "object:109"
+                                },
+                                {
+                                    "id": 9,
+                                    "value": "Closed/Won",
+                                    "$$hashKey": "object:110"
+                                },
+                                {
+                                    "id": 10,
+                                    "value": "Closed/Lost",
+                                    "$$hashKey": "object:111"
+                                },
+                                {
+                                    "id": 15,
+                                    "value": "Cancelled",
+                                    "$$hashKey": "object:112"
+                                }
+                            ]
+                        },
+                        {
+                            "@odata.etag": "W/\"156221335\"",
+                            "tm_fieldtype": "Decimal",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_ourworkshare",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:35 PM",
+                            "createdon": "2021-06-21T10:05:55Z",
+                            "tm_fieldapiname": "fedcap_ourworkshare",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": "Please enter Our Work share %",
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:35 PM",
+                            "modifiedon": "2021-06-21T10:05:55Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,335",
+                            "versionnumber": 156221335,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Our Workshare %",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "6d1b5c40-78d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "6",
+                            "tm_order": 6,
+                            "tm_formattedvalue": "fedcap_ourworkshare@OData.Community.Display.V1.FormattedValue",
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": null,
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:13"
+                        },
+                        {
+                            "@odata.etag": "W/\"156221342\"",
+                            "tm_fieldtype": "Money",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_weightedvalue",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:36 PM",
+                            "createdon": "2021-06-21T10:06:22Z",
+                            "tm_fieldapiname": "fedcap_weightedvalue",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": null,
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:36 PM",
+                            "modifiedon": "2021-06-21T10:06:22Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,342",
+                            "versionnumber": 156221342,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Weighted Value",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "02d5ad52-78d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "7",
+                            "tm_order": 7,
+                            "tm_formattedvalue": "fedcap_weightedvalue@OData.Community.Display.V1.FormattedValue",
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": null,
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:14"
+                        },
+                        {
+                            "@odata.etag": "W/\"156221352\"",
+                            "tm_fieldtype": "String",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_rfpsolicitationid",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:36 PM",
+                            "createdon": "2021-06-21T10:06:52Z",
+                            "tm_fieldapiname": "fedcap_rfpsolicitationid",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": "Please Enter RFP/Solicitation ID",
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:36 PM",
+                            "modifiedon": "2021-06-21T10:06:52Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,352",
+                            "versionnumber": 156221352,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "RFP/Solicitation ID",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "2410cb64-78d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "8",
+                            "tm_order": 8,
+                            "tm_formattedvalue": null,
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": null,
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:15"
+                        },
+                        {
+                            "@odata.etag": "W/\"156221366\"",
+                            "tm_fieldtype": "Decimal",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_pwinscore",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:38 PM",
+                            "createdon": "2021-06-21T10:08:31Z",
+                            "tm_fieldapiname": "fedcap_pwinscore",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": "Latest PWin Score from PWin Stage",
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:38 PM",
+                            "modifiedon": "2021-06-21T10:08:31Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,366",
+                            "versionnumber": 156221366,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "PWin Score",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "4243319b-78d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "9",
+                            "tm_order": 9,
+                            "tm_formattedvalue": "fedcap_pwinscore@OData.Community.Display.V1.FormattedValue",
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": null,
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:16"
+                        },
+                        {
+                            "@odata.etag": "W/\"156221375\"",
+                            "tm_fieldtype": "Picklist",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_typeofcompetition",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:39 PM",
+                            "createdon": "2021-06-21T10:09:04Z",
+                            "tm_fieldapiname": "fedcap_typeofcompetition",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": "Please Select Type of Competition",
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:39 PM",
+                            "modifiedon": "2021-06-21T10:09:04Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,375",
+                            "versionnumber": 156221375,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Type of Competition",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "31ff59b3-78d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "10",
+                            "tm_order": 10,
+                            "tm_formattedvalue": null,
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": null,
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:17",
+                            "PickList": [
+                                {
+                                    "id": 1,
+                                    "value": "8(a) Set-Aside",
+                                    "$$hashKey": "object:113"
+                                },
+                                {
+                                    "id": 2,
+                                    "value": "Full and Open",
+                                    "$$hashKey": "object:114"
+                                },
+                                {
+                                    "id": 3,
+                                    "value": "GSA Schedule",
+                                    "$$hashKey": "object:115"
+                                },
+                                {
+                                    "id": 4,
+                                    "value": "GWAC/MAC/MAIDIQ",
+                                    "$$hashKey": "object:116"
+                                },
+                                {
+                                    "id": 5,
+                                    "value": "Hubzone",
+                                    "$$hashKey": "object:117"
+                                },
+                                {
+                                    "id": 6,
+                                    "value": "None",
+                                    "$$hashKey": "object:118"
+                                },
+                                {
+                                    "id": 7,
+                                    "value": "Other",
+                                    "$$hashKey": "object:119"
+                                },
+                                {
+                                    "id": 8,
+                                    "value": "Probably Sole Source",
+                                    "$$hashKey": "object:120"
+                                },
+                                {
+                                    "id": 9,
+                                    "value": "Sole Source",
+                                    "$$hashKey": "object:121"
+                                },
+                                {
+                                    "id": 10,
+                                    "value": "Undetermined",
+                                    "$$hashKey": "object:122"
+                                },
+                                {
+                                    "id": 11,
+                                    "value": "SDB Set-aside",
+                                    "$$hashKey": "object:123"
+                                },
+                                {
+                                    "id": 12,
+                                    "value": "SB Set-aside",
+                                    "$$hashKey": "object:124"
+                                },
+                                {
+                                    "id": 13,
+                                    "value": "Service Disabled",
+                                    "$$hashKey": "object:125"
+                                },
+                                {
+                                    "id": 14,
+                                    "value": "Women Owned SB",
+                                    "$$hashKey": "object:126"
+                                },
+                                {
+                                    "id": 15,
+                                    "value": "Veteran Owned SB",
+                                    "$$hashKey": "object:127"
+                                }
+                            ]
+                        },
+                        {
+                            "@odata.etag": "W/\"156221380\"",
+                            "tm_fieldtype": "MultiSelectPicklistType",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_contracttype",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:39 PM",
+                            "createdon": "2021-06-21T10:09:35Z",
+                            "tm_fieldapiname": "fedcap_contracttype",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": null,
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:39 PM",
+                            "modifiedon": "2021-06-21T10:09:35Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,380",
+                            "versionnumber": 156221380,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Contract Type",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "adbd4ec5-78d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "11",
+                            "tm_order": 11,
+                            "tm_formattedvalue": null,
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": null,
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:18",
+                            "PickList": [
+                                {
+                                    "id": 918990000,
+                                    "value": "Fixed Price",
+                                    "$$hashKey": "object:128"
+                                },
+                                {
+                                    "id": 1,
+                                    "value": "Cost Plus Fixed Fee",
+                                    "$$hashKey": "object:129"
+                                },
+                                {
+                                    "id": 2,
+                                    "value": "Cost Plus Award Fee",
+                                    "$$hashKey": "object:130"
+                                },
+                                {
+                                    "id": 3,
+                                    "value": "Cost Plus Incentive Fee",
+                                    "$$hashKey": "object:131"
+                                },
+                                {
+                                    "id": 4,
+                                    "value": "Cost Reimbursable",
+                                    "$$hashKey": "object:132"
+                                },
+                                {
+                                    "id": 5,
+                                    "value": "Cost Sharing",
+                                    "$$hashKey": "object:133"
+                                },
+                                {
+                                    "id": 6,
+                                    "value": "Firm Fixed Price",
+                                    "$$hashKey": "object:134"
+                                },
+                                {
+                                    "id": 7,
+                                    "value": "Firm Fixed Price Incentive Fee",
+                                    "$$hashKey": "object:135"
+                                },
+                                {
+                                    "id": 8,
+                                    "value": "Fixed Price Level of Effort",
+                                    "$$hashKey": "object:136"
+                                },
+                                {
+                                    "id": 9,
+                                    "value": "Time and Materials",
+                                    "$$hashKey": "object:137"
+                                },
+                                {
+                                    "id": 10,
+                                    "value": "Cost Plus",
+                                    "$$hashKey": "object:138"
+                                },
+                                {
+                                    "id": 11,
+                                    "value": "Fixed Unit Price",
+                                    "$$hashKey": "object:139"
+                                },
+                                {
+                                    "id": 12,
+                                    "value": "Firmed Fixed Price",
+                                    "$$hashKey": "object:140"
+                                },
+                                {
+                                    "id": 13,
+                                    "value": "Other",
+                                    "$$hashKey": "object:141"
+                                },
+                                {
+                                    "id": 918990001,
+                                    "value": "LumpSum",
+                                    "$$hashKey": "object:142"
+                                },
+                                {
+                                    "id": 918990002,
+                                    "value": "LumbSumTurnKey",
+                                    "$$hashKey": "object:143"
+                                },
+                                {
+                                    "id": 918990003,
+                                    "value": "Target Price/ Fixed Price",
+                                    "$$hashKey": "object:144"
+                                }
+                            ]
+                        },
+
+                        {
+                            "@odata.etag": "W/\"156221385\"",
+                            "tm_fieldtype": "Picklist",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_type",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:39 PM",
+                            "createdon": "2021-06-21T10:09:56Z",
+                            "tm_fieldapiname": "fedcap_type",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": "Type",
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:39 PM",
+                            "modifiedon": "2021-06-21T10:09:56Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,385",
+                            "versionnumber": 156221385,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Type",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "d809a1d1-78d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "12",
+                            "tm_order": 12,
+                            "tm_formattedvalue": null,
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": null,
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:19",
+                            "PickList": [
+                                {
+                                    "id": 918990000,
+                                    "value": "New Business",
+                                    "$$hashKey": "object:145"
+                                },
+                                {
+                                    "id": 918990001,
+                                    "value": "Corporate Strategic",
+                                    "$$hashKey": "object:146"
+                                },
+                                {
+                                    "id": 918990002,
+                                    "value": "Business Unit Strategic",
+                                    "$$hashKey": "object:147"
+                                },
+                                {
+                                    "id": 918990003,
+                                    "value": "Transnational",
+                                    "$$hashKey": "object:148"
+                                },
+                                {
+                                    "id": 918990004,
+                                    "value": "Must Win",
+                                    "$$hashKey": "object:149"
+                                },
+                                {
+                                    "id": 918990005,
+                                    "value": "Take Away",
+                                    "$$hashKey": "object:150"
+                                }
+                            ]
+                        },
+                        {
+                            "tm_fieldtype": "Picklist",
+                            "value": 90,
+                            "tm_fieldapiname": "fedcap_pwin"
+                        },
+                        {
+                            "tm_fieldtype": "Picklist",
+                            "value": 6,
+                            "tm_fieldapiname": "fedcap_pwin"
+                        },
+                        {
+                            "@odata.etag": "W/\"156221389\"",
+                            "tm_fieldtype": "Lookup",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_parentopportunity",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:40 PM",
+                            "createdon": "2021-06-21T10:10:40Z",
+                            "tm_fieldapiname": "_fedcap_parentopportunity_value",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": "Please Enter Parent Opportunity",
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:40 PM",
+                            "modifiedon": "2021-06-21T10:10:40Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,389",
+                            "versionnumber": 156221389,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Parent Opportunity",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "84e82ceb-78d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "13",
+                            "tm_order": 13,
+                            "tm_formattedvalue": "_fedcap_parentopportunity_value@OData.Community.Display.V1.FormattedValue",
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": "opportunity",
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:20"
+                        },
+                        {
+                            "@odata.etag": "W/\"156221392\"",
+                            "tm_fieldtype": "Lookup",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_contractvehicle",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:41 PM",
+                            "createdon": "2021-06-21T10:11:33Z",
+                            "tm_fieldapiname": "_fedcap_contractvehicle_value",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": "Please select Contract vehicle",
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:41 PM",
+                            "modifiedon": "2021-06-21T10:11:33Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,392",
+                            "versionnumber": 156221392,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Contract vehicle",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "b82c5b0a-79d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "14",
+                            "tm_order": 14,
+                            "tm_formattedvalue": "_fedcap_contractvehicle_value@OData.Community.Display.V1.FormattedValue",
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": "new_contractvehicles",
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:21"
+                        }
+                        ,
+                        {
+                            "@odata.etag": "W/\"156221380\"",
+                            "tm_fieldtype": "MultiSelectPicklistType",
+                            "statecode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statecode": 0,
+                            "tm_entityname": "opportunity",
+                            "tm_viewfieldapi": "fedcap_contracttype",
+                            "statuscode@OData.Community.Display.V1.FormattedValue": "Active",
+                            "statuscode": 1,
+                            "createdon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:39 PM",
+                            "createdon": "2021-06-21T10:09:35Z",
+                            "tm_fieldapiname": "fedcap_contracttype",
+                            "tm_tabid": "tab_Snapshot",
+                            "tm_helptext": null,
+                            "tm_colspan@OData.Community.Display.V1.FormattedValue": "2",
+                            "tm_colspan": 2,
+                            "modifiedon@OData.Community.Display.V1.FormattedValue": "6/21/2021 3:39 PM",
+                            "modifiedon": "2021-06-21T10:09:35Z",
+                            "tm_isopencalendar@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isopencalendar": false,
+                            "versionnumber@OData.Community.Display.V1.FormattedValue": "156,221,380",
+                            "versionnumber": 156221380,
+                            "tm_isheaderfield@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isheaderfield": false,
+                            "tm_alignment": null,
+                            "tm_isdependentpicklist@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isdependentpicklist": false,
+                            "_tm_section_value@OData.Community.Display.V1.FormattedValue": "Opportunity Summary",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "tm_Section",
+                            "_tm_section_value@Microsoft.Dynamics.CRM.lookuplogicalname": "tm_customizesection",
+                            "_tm_section_value": "b9b250cb-77d2-eb11-bacc-000d3a3b908f",
+                            "_modifiedby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_modifiedby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_name": "Contract Type",
+                            "tm_isreadonly@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isreadonly": false,
+                            "_createdby_value@OData.Community.Display.V1.FormattedValue": "Nilesh Gundecha-NSquare",
+                            "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": "systemuser",
+                            "_createdby_value": "13602f8e-d5b6-eb11-8236-000d3a595777",
+                            "tm_ishidelabel@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_ishidelabel": false,
+                            "tm_customizefieldid": "adbd4ec5-78d2-eb11-bacc-000d3a3b908f",
+                            "tm_isrequired@OData.Community.Display.V1.FormattedValue": "No",
+                            "tm_isrequired": false,
+                            "_organizationid_value@OData.Community.Display.V1.FormattedValue": "fedcap",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": "organizationid",
+                            "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": "organization",
+                            "_organizationid_value": "1af407b0-ddf2-4764-92ea-4b5975c8d546",
+                            "tm_order@OData.Community.Display.V1.FormattedValue": "11",
+                            "tm_order": 11,
+                            "tm_formattedvalue": null,
+                            "tm_recordtypeid": null,
+                            "tm_fieldvaluealignment": null,
+                            "tm_parententity": null,
+                            "overriddencreatedon": null,
+                            "importsequencenumber": null,
+                            "_modifiedonbehalfby_value": null,
+                            "tm_height": null,
+                            "tm_sourcetype": null,
+                            "utcconversiontimezonecode": null,
+                            "_createdonbehalfby_value": null,
+                            "tm_headertextcolour": null,
+                            "tm_parentpicklist": null,
+                            "tm_lookupobjecttypecode": null,
+                            "timezoneruleversionnumber": null,
+                            "$$hashKey": "object:23",
+                            "PickList": [
+                                {
+                                    "id": 918990000,
+                                    "value": "Fixed Price",
+                                    "$$hashKey": "object:151"
+                                },
+                                {
+                                    "id": 1,
+                                    "value": "Cost Plus Fixed Fee",
+                                    "$$hashKey": "object:152"
+                                },
+                                {
+                                    "id": 2,
+                                    "value": "Cost Plus Award Fee",
+                                    "$$hashKey": "object:153"
+                                },
+                                {
+                                    "id": 3,
+                                    "value": "Cost Plus Incentive Fee",
+                                    "$$hashKey": "object:154"
+                                },
+                                {
+                                    "id": 4,
+                                    "value": "Cost Reimbursable",
+                                    "$$hashKey": "object:155"
+                                },
+                                {
+                                    "id": 5,
+                                    "value": "Cost Sharing",
+                                    "$$hashKey": "object:156"
+                                },
+                                {
+                                    "id": 6,
+                                    "value": "Firm Fixed Price",
+                                    "$$hashKey": "object:157"
+                                },
+                                {
+                                    "id": 7,
+                                    "value": "Firm Fixed Price Incentive Fee",
+                                    "$$hashKey": "object:158"
+                                },
+                                {
+                                    "id": 8,
+                                    "value": "Fixed Price Level of Effort",
+                                    "$$hashKey": "object:159"
+                                },
+                                {
+                                    "id": 9,
+                                    "value": "Time and Materials",
+                                    "$$hashKey": "object:160"
+                                },
+                                {
+                                    "id": 10,
+                                    "value": "Cost Plus",
+                                    "$$hashKey": "object:161"
+                                },
+                                {
+                                    "id": 11,
+                                    "value": "Fixed Unit Price",
+                                    "$$hashKey": "object:162"
+                                },
+                                {
+                                    "id": 12,
+                                    "value": "Firmed Fixed Price",
+                                    "$$hashKey": "object:163"
+                                },
+                                {
+                                    "id": 13,
+                                    "value": "Other",
+                                    "$$hashKey": "object:164"
+                                },
+                                {
+                                    "id": 918990001,
+                                    "value": "LumpSum",
+                                    "$$hashKey": "object:165"
+                                },
+                                {
+                                    "id": 918990002,
+                                    "value": "LumbSumTurnKey",
+                                    "$$hashKey": "object:166"
+                                },
+                                {
+                                    "id": 918990003,
+                                    "value": "Target Price/ Fixed Price",
+                                    "$$hashKey": "object:167"
+                                }
+                            ]
+                        },
+
+                    ]
+                },
+
+
+            ]
+            $scope.sections = sectionsData
+            $scope.setPickListItems = []
+            $scope.selectedPickItemActive = []
+            $scope.selectedPickItemInActive = []
+            $scope.selectedPickList = []
+            for (var i = 0; i < $scope.sections.length; i++) {
+                for (var k = 0; k < $scope.sections[i].fields.length; k++) {
+                    if ($scope.sections[i].fields[k].tm_fieldtype == 'Picklist' && $scope.sections[i].fields[k].tm_fieldapiname == 'fedcap_pwin') {
+                        setRange($scope.sections[i].fields[k], k)
+
+                    }
+                    if ($scope.sections[i].fields[k].tm_fieldtype == 'MultiSelectPicklistType') {
+                        // MultiPickListSet($scope.sections[i].fields[k], i, k)
+                        $scope.selectedPickItemActive[k] = $scope.sections[i].fields[k].PickList.length + 1;
+                        $scope.setPickListItems[k] = $scope.sections[i].fields[k].PickList
+                        $scope.selectedPickItemInActive[k] = $scope.sections[i].fields[k].PickList.length + 1;
+                        $scope.selectedPickList[k] = Array()
+                    }
+                }
+            }
+            $scope.addPickListItem = function (fieldId) {
+
+                var exists = false;
+
+                $scope.selectedPickList[fieldId].map(item => {
+                    if (item.id == $scope.selectedItemActive[fieldId]) {
+                        exists = true;
+                    }
+                })
+
+
+                if (!exists) {
+
+                    var item = $scope.setPickListItems[fieldId].filter(item =>
+                        item.id == $scope.selectedItemActive
+                    )
+                    $scope.selectedPickList[fieldId].push(...item)
+
+                }
+
+            }
+            $scope.itemActive = function (id) {
+                $scope.selectedItemActive = id;
+
+            }
+            $scope.itemInActive = function (id) {
+                $scope.selectedPickItemInActive = id;
+            }
+            $scope.removePickListItem = function (fieldId) {
+                console.log(fieldId, $scope.selectedPickItemInActive)
+                var items = [];
+                $scope.selectedPickList[fieldId] = $scope.selectedPickList[fieldId].filter(item =>
+                    item.id != $scope.selectedPickItemInActive)
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // function MultiPickListSet(MultiPickListArg, section, field) {
+
+            //     $scope.selectedPickItemActive = MultiPickListArg.PickList.length + 1;
+            //     $scope.selectedPickItemInActive = MultiPickListArg.PickList.length + 1;
+            //     $scope.addPickListItem = function () {
+            //         var exists = false;
+            //         $scope.selectedPickList.map(item => {
+            //             if (item.id == $scope.selectedItemActive) {
+            //                 exists = true;
+            //             }
+            //         })
+            //         if (!exists) {
+            //             var item = MultiPickListArg.PickList.filter(item =>
+            //                 item.id == $scope.selectedItemActive)
+            //             $scope.selectedPickList.push(...item)
+            //         }
+
+            //     }
+            //     $scope.selectedPickList = []
+            //     $scope.itemActive = function (id) {
+            //         $scope.selectedItemActive = id;
+            //     }
+
+            //     $scope.itemInActive = function (id) {
+            //         $scope.selectedPickItemInActive = id;
+            //     }
+            //     $scope.removePickListItem = function () {
+            //         var items = [];
+            //         $scope.selectedPickList = $scope.selectedPickList.filter(item =>
+            //             item.id != $scope.selectedPickItemInActive)
+            //     }
+            // }
+
+
+            function setRange(i, k) {
+                angular.element(document).ready(function () {
+                    var rangeSelector = document.querySelector("#rangeSelector_" + k);
+                    document.querySelector("#rangeSelector_value_" + k).innerHTML = rangeSelector.value + "%"
+                    rangeSelector.step = 10;
+                    rangeSelector.style.background = 'linear-gradient(90deg, #59a30f ' + rangeSelector.value + '%,#f6f7f7 0%)'
+                    rangeSelector.oninput = function () {
+                        rangeSelector.style.background = 'linear-gradient(90deg, #59a30f ' + rangeSelector.value + '%,#f6f7f7 0%)';
+                        document.querySelector("#rangeSelector_value_" + k).innerHTML = rangeSelector.value + "%"
+                    }
+
+                });
+            }
+
+        }]);
+
+
+
+
+    </script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <div id="mainContainer" class="sc" ng-app="MyApp" style="font-family: undefined;">
+        <form name="myForm" novalidate="" autocomplete="off">
+            <div class="sc" ng-controller="DynamicController">
+
+
+                <!-- Added : Plotting Main section -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- ---------------colum 1 ---------------------------->
+                        <div ng-class="{
+                          'col-md-8':tabs.tm_columnsratio == '80 : 20' ,
+                          'col-md-6':tabs.tm_columnsratio == '50 : 50',
+                          'col-md-12':tabs.tm_columnsratio == '100',
+                          'col-md-9':tabs.tm_columnsratio == '70 : 30',
+                          'col-md-7':tabs.tm_columnsratio == '60 : 40',
+                        }">
+                            <ng-container ng-repeat="section in sections track by $index">
+                                <div ng-if="$index % 2 == 0" class="container-card"
+                                    style="display: {{section.display}};" data-sectionname="{{section.tm_name}}"
+                                    data-secguid="{{section.tm_customizesectionid}}"
+                                    id="{{section.tm_customizesectionid}}">
+                                    <div class="sc">
+                                        <section class="sectionTitle" ng-hide="section.tm_ishidesectionlabel"
+                                            style="color:{{section.tm_sectionlabelcolor}}; font-size:{{section.tm_sectionlabelfontsize}};">
+                                            {{section.tm_name}}</section>
+                                    </div>
+                                    <ng-container ng-if="section.fields &amp;&amp; section.fields.length > 0">
+                                        <div class="row">
+                                            <ng-container ng-repeat="fields in section.fields">
+                                                <div
+                                                    class="{{section.fields[$index].tm_colspan == '1' ? 'col-md-12' : section.fields[$index].tm_colspan == '2' ? 'col-md-6': ''}}">
+                                                    <ng-container
+                                                        ng-if="section.fields[$index].tm_fieldapiname == 'directioncode'">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <table style="width: 100%">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td><i style="font-size: 25px"
+                                                                                    class="fa fa-arrow-circle-o-up"></i>
+                                                                            </td>
+                                                                            <td style="font-family: SegoeUI, Segoe UI"
+                                                                                ;"font-size="14px;&quot;"
+                                                                                class="{{callStatus == 'OUTGOING' ? 'black' : 'gray'}}">
+                                                                                OUTGOING</td>
+                                                                            <td>
+                                                                                <md-switch ng-click="changeFieldOrder()"
+                                                                                    title="{{callStatus}}"
+                                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                                    class="form-control sc FieldText"
+                                                                                    ng-model="callStatus"
+                                                                                    id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                                    data-fieldtype="Boolean"
+                                                                                    ng-true-value="'INCOMING'"
+                                                                                    ng-false-value="'OUTGOING'"
+                                                                                    style="color: rgb(176, 31, 63);padding-right: 5px;border-width: 0px;">
+                                                                                </md-switch>
+                                                                            </td>
+                                                                            <td style="font-family:SegoeUI, Segoe UI"
+                                                                                ;font-size="" 14px;"=""
+                                                                                class="{{callStatus == 'INCOMING' ? 'black' : 'gray'}}">
+                                                                                INCOMING</td>
+                                                                            <td><i style="font-size: 25px"
+                                                                                    class="fa fa-arrow-circle-o-down"></i>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="col-md-8" id="infomessage"
+                                                                style="margin-top: 21px; text-align: end; color:#ab1239;  font-weight: bold; visibility:hidden;">
+                                                                To view field order change please save record</div>
+                                                        </div>
+                                                    </ng-container>
+                                                    <div
+                                                        class="{{section.fields[$index].tm_colspan == '1' ? section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-2':'':section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-4':''}}">
+                                                        <label
+                                                            ng-if="section.fields[$index].tm_fieldapiname != 'directioncode'"
+                                                            class="FieldTitleLable"
+                                                            for="{{section.fields[$index].tm_fieldapiname}}">{{fields.tm_name}}</label>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index].tm_fieldapiname != 'directioncode'"
+                                                        class="{{section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-8' :''}} borderfields">
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'String'"
+                                                            ng-style="section.controlwidth"
+                                                            style="height:{{section.fields[$index].tm_height}}px"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            class="form-control sc FieldText" type="text"
+                                                            placeholder="---"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]"
+                                                            title="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}">
+                                                        <select
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'Boolean' &amp;&amp; section.fields[$index].tm_fieldapiname != 'directioncode'"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            class="form-control sc FieldText"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-fieldtype="Boolean"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                            <option value="">---</option>
+                                                            <option label="No" value="No">No</option>
+                                                            <option label="Yes" value="Yes">Yes</option>
+                                                        </select>
+                                                        <ng-container
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'Memo'">
+                                                            <text-angular name="textBox"
+                                                                ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]"
+                                                                id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                data-label="{{section.fields[$index].tm_name}}"
+                                                                ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                type="text" placeholder="---"
+                                                                title="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}">
+                                                            </text-angular>
+                                                        </ng-container>
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'Money'"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            class="form-control sc FieldText" type="text"
+                                                            placeholder="---"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]"
+                                                            onkeypress="return IsDecimalKey(event, this)"
+                                                            title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'Decimal'"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            class="form-control sc FieldText" type="text"
+                                                            placeholder="---"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]"
+                                                            onkeypress="return IsDecimalKey(event, this)"
+                                                            title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'Integer'"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            class="form-control sc FieldText" type="text"
+                                                            placeholder="---"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]"
+                                                            onkeypress="return IsNumberKey(event, this)"
+                                                            title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'BigInt'"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            class="form-control sc FieldText" type="text"
+                                                            placeholder="---"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]"
+                                                            onkeypress="return IsNumberKey(event, this)"
+                                                            title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                        <div class="sc"
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'Lookup' || section.fields[$index].tm_fieldtype == 'Customer'">
+                                                            <div class="searchicon_td sc">
+                                                                <input id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                    placeholder="---"
+                                                                    ng-dblclick="OpenLookupRecord(section.fields[$index].tm_lookupobjecttypecode,section.fieldValue[section.fields[$index].tm_fieldapiname],section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"
+                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    class="form-control lookup sc FieldText" type="text"
+                                                                    ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]"
+                                                                    title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                                <input
+                                                                    name="{{section.fields[$index].tm_fieldapiname}}_id"
+                                                                    value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}_id"
+                                                                    type="hidden">
+                                                                <input
+                                                                    name="{{section.fields[$index].tm_fieldapiname}}_entityname"
+                                                                    value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}_entityname"
+                                                                    type="hidden">
+                                                                <i ng-if="section.fields[$index].tm_isreadonly != true"
+                                                                    class="fa fa-search searchicon"
+                                                                    id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}"
+                                                                    aria-hidden="true"
+                                                                    ng-click="OpenLookup(section.fields[$index].tm_lookupobjecttypecode,section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="sc"
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'PartyList'">
+                                                            <div class="searchicon_td sc">
+                                                                <input id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                    placeholder="---"
+                                                                    ng-dblclick="OpenLookupRecord(section.fields[$index].tm_lookupobjecttypecode,section.fieldValue[section.fields[$index].tm_fieldapiname],section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"
+                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    class="form-control lookup sc FieldText" type="text"
+                                                                    ng-model="section.fieldValue.email_activity_parties[0][section.fields[$index].tm_formattedvalue]"
+                                                                    title="{{section.fieldValue.email_activity_parties[0][section.fields[$index].tm_formattedvalue]}}">
+                                                                <input
+                                                                    name="{{section.fields[$index].tm_fieldapiname}}_id"
+                                                                    value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}_id"
+                                                                    type="hidden">
+                                                                <input
+                                                                    name="{{section.fields[$index].tm_fieldapiname}}_entityname"
+                                                                    value=""
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}_entityname"
+                                                                    type="hidden">
+                                                                <input
+                                                                    name="{{section.fields[$index].tm_fieldapiname}}_type"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}_type"
+                                                                    type="hidden">
+                                                                <i ng-if="section.fields[$index].tm_isreadonly != true"
+                                                                    class="fa fa-search searchicon"
+                                                                    id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}"
+                                                                    aria-hidden="true"
+                                                                    ng-click="OpenLookup(section.fields[$index].tm_lookupobjecttypecode,section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'DateTime' &amp;&amp; section.tm_name != 'Appointment'">
+                                                            <div class="calendericon_td sc">
+                                                                <input
+                                                                    ng-if="section.fields[$index].tm_isreadonly == true"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                    style="line-height: 16px"
+                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    class="form-control sc FieldText" type="text"
+                                                                    datepicker-options="dateOptions"
+                                                                    uib-datepicker-popup="{{dateformat}}"
+                                                                    placeholder="---"
+                                                                    ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                                <input
+                                                                    ng-if="section.fields[$index].tm_isreadonly != true"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                    style="line-height: 16px"
+                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    class="form-control sc FieldText" type="text"
+                                                                    datepicker-options="dateOptions"
+                                                                    is-open="section.fields[$index].tm_isopencalendar"
+                                                                    uib-datepicker-popup="{{dateformat}}"
+                                                                    placeholder="---"
+                                                                    ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]"
+                                                                    ng-click="section.fields[$index].tm_isopencalendar = !section.fields[$index].tm_isopencalendar">
+                                                                <i ng-if="section.fields[$index].tm_isreadonly != true"
+                                                                    class="fa fa-calendar calendericon"
+                                                                    id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}"
+                                                                    aria-hidden="true" ng-click=""></i>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'DateTime' &amp;&amp; section.tm_name == 'Appointment'">
+                                                            <div class="calendericon_td sc">
+                                                                <input
+                                                                    ng-if="section.fields[$index].tm_isreadonly == true"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                    style="line-height: 16px"
+                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    class="form-control sc FieldText" type="text"
+                                                                    datetime-picker="" date-format="MM-dd-yyyy HH:mm:ss"
+                                                                    ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                                <input
+                                                                    ng-if="section.fields[$index].tm_isreadonly != true"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                    style="line-height: 16px"
+                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    class="form-control sc FieldText" type="text"
+                                                                    datetime-picker="" date-format="MM-dd-yyyy HH:mm:ss"
+                                                                    ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                                <i ng-if="section.fields[$index].tm_isreadonly != true"
+                                                                    class="fa fa-calendar calendericon"
+                                                                    id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}"
+                                                                    aria-hidden="true" ng-click=""></i>
+                                                            </div>
+                                                        </div>
+                                                        <select
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_isdependentpicklist == false"
+                                                            ng-change="GetDependentPicklistOptionSetLabel(section,section.fields[$index].tm_isdependentpicklist,section.fields[$index].tm_fieldapiname)"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            class="form-control sc FieldText"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            ng-options="option.id as option.value for option in section.fields[$index].PickList"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]">
+                                                            <option value="">---</option>
+                                                        </select>
+                                                        <select
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_isdependentpicklist == true "
+                                                            ng-change="GetDependentPicklistOptionSetLabel(section,section.fields[$index].tm_isdependentpicklist,section.fields[$index].tm_fieldapiname)"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            class="form-control sc FieldText"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            ng-options="option as option.value for option in section.fields[$index].DependentPicklist track by option.id"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]">
+                                                            <option value=""> </option>
+                                                        </select>
+                                                        <div style="display: flex;width: 100%;">
+                                                            <input style="width: 80%;"
+                                                                ng-if="section.fields[$index].tm_fieldtype == 'Picklist' && section.fields[$index].tm_fieldapiname == 'fedcap_pwin'"
+                                                                type="range" min="0" max="100"
+                                                                id="rangeSelector_{{$index}}"
+                                                                data-label="{{section.fields[$index].tm_name}}"
+                                                                ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                data-fieldtype="{{section.fields[$index].tm_fieldtype}}">
+                                                            <!-- ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]" -->
+                                                            <h4 style="width: 20%;" id="rangeSelector_value_{{$index}}">
+                                                            </h4>
+                                                        </div>
+                                                        <div ng-if="section.fields[$index].tm_fieldtype == 'MultiSelectPicklistType'"
+                                                           class="opportunity-summary-form-group" >
+                                                           <div class="opportunity-summary-form-group-contract-type">
+                                                            <div class="contract-type-scroll-view"
+                                                            style="display: flex;flex-direction: column;">
+                                                            <span
+                                                                ng-class="{'contract-type-active':selectedItemActive == {{ option.id}}}"
+                                                                ng-repeat="option in section.fields[$index].PickList"
+                                                                ng-click="itemActive(option.id)"
+                                                                class="contract-type-item">
+                                                                {{ option.value }}
+                                                            </span>
+                                                        </div>
+                                                        <div class="contract-type-scroll-icons">
+                                                            <div class="arrow-right"
+                                                                ng-click="addPickListItem($index)">
+                                                            </div>
+                                                            <div class="arrow-left"
+                                                                ng-click="removePickListItem($index)">
+                                                            </div>
+                                                        </div>
+                                                        <div class="contract-type-scroll-view"
+                                                            style="display: flex;flex-direction: column;">
+                                                            <span ng-repeat="option in selectedPickList[$index]"
+                                                                ng-click="itemInActive(option.id)"
+                                                                ng-class="{'contract-type-active':selectedPickItemInActive == {{option.id}}}"
+                                                                class="contract-type-item">
+                                                                {{ option.value }}
+                                                            </span>
+                                                        </div>
+                                                           </div>
+                                                        </div>
+                                                        <!-- <div ng-if="section.fields[$index].tm_fieldtype == 'MultiSelectPicklistType'"
+                                                            class="sc">
+                                                            <select
+                                                                id="{{section.fields[$index].tm_fieldapiname}} multiple="
+                                                                multiple" class="mpl_bind sc"
+                                                                data-label="{{section.fields[$index].tm_name}}"
+                                                                ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                ng-options="option.id as option.value for option in section.fields[$index].PickList"
+                                                                ng-model="section.fields[$index].MultiPickList"></select>
+                                                        </div> -->
+                                                    </div>
+
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </div>
+
+
+                        <!-- ---------------colum 1 End ---------------------------->
+                        <!-- ---------------colum 2 ---------------------------->
+                        <div class="container-column-right" ng-class="{
+                          'col-md-6':tabs.tm_columnsratio == '50 : 50',
+                          'col-md-4':tabs.tm_columnsratio == '80 : 20',
+                          'col-md-3':tabs.tm_columnsratio == '70 : 30,
+                          'col-md-5':tabs.tm_columnsratio == '60 : 40',
+                          }">
+                            <ng-container ng-repeat="section in tabs.sections track by $index">
+                                <div ng-if="$index % 2 != 0" class="container-card"
+                                    style="display: {{section.display}};" data-sectionname="{{section.tm_name}}"
+                                    data-secguid="{{section.tm_customizesectionid}}"
+                                    id="{{section.tm_customizesectionid}}">
+                                    <div class="sc">
+                                        <section class="sectionTitle" ng-hide="section.tm_ishidesectionlabel"
+                                            style="color:{{section.tm_sectionlabelcolor}}; font-size:{{section.tm_sectionlabelfontsize}};">
+                                            {{section.tm_name}}</section>
+                                    </div>
+                                    <ng-container ng-if="section.fields &amp;&amp; section.fields.length > 0">
+                                        <div class="row">
+                                            <ng-container ng-repeat="fields in section.fields">
+                                                <div
+                                                    class="{{section.fields[$index].tm_colspan == '1' ? 'col-md-12' : section.fields[$index].tm_colspan == '2' ? 'col-md-6': ''}}">
+                                                    <ng-container
+                                                        ng-if="section.fields[$index].tm_fieldapiname == 'directioncode'">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <table style="width: 100%">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td><i style="font-size: 25px"
+                                                                                    class="fa fa-arrow-circle-o-up"></i>
+                                                                            </td>
+                                                                            <td style="font-family: SegoeUI, Segoe UI"
+                                                                                ;"font-size="14px;&quot;"
+                                                                                class="{{callStatus == 'OUTGOING' ? 'black' : 'gray'}}">
+                                                                                OUTGOING</td>
+                                                                            <td>
+                                                                                <md-switch ng-click="changeFieldOrder()"
+                                                                                    title="{{callStatus}}"
+                                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                                    class="form-control sc FieldText"
+                                                                                    ng-model="callStatus"
+                                                                                    id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                                    data-fieldtype="Boolean"
+                                                                                    ng-true-value="'INCOMING'"
+                                                                                    ng-false-value="'OUTGOING'"
+                                                                                    style="color: rgb(176, 31, 63);padding-right: 5px;border-width: 0px;">
+                                                                                </md-switch>
+                                                                            </td>
+                                                                            <td style="font-family: SegoeUI, Segoe UI"
+                                                                                ;font-size="" 14px;"=""
+                                                                                class="{{callStatus == 'INCOMING' ? 'black' : 'gray'}}">
+                                                                                INCOMING</td>
+                                                                            <td><i style="font-size: 25px"
+                                                                                    class="fa fa-arrow-circle-o-down"></i>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="col-md-8" id="infomessage"
+                                                                style="margin-top: 21px; text-align: end; color:#ab1239;  font-weight: bold; visibility:hidden;">
+                                                                To view field order change please save record</div>
+                                                        </div>
+                                                    </ng-container>
+                                                    <div
+                                                        class="{{section.fields[$index].tm_colspan == '1' ? section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-2':'':section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-4':''}}">
+                                                        <label
+                                                            ng-if="section.fields[$index].tm_fieldapiname != 'directioncode'"
+                                                            class="FieldTitleLable"
+                                                            for="{{section.fields[$index].tm_fieldapiname}}">{{fields.tm_name}}</label>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index].tm_fieldapiname != 'directioncode'"
+                                                        class="{{section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-8' :''}} borderfields">
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'String'"
+                                                            ng-style="section.controlwidth"
+                                                            style="height:{{section.fields[$index].tm_height}}px"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            class="form-control sc FieldText" type="text"
+                                                            placeholder="---"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]"
+                                                            title="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}">
+                                                        <select
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'Boolean' &amp;&amp; section.fields[$index].tm_fieldapiname != 'directioncode'"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            class="form-control sc FieldText"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-fieldtype="Boolean"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                            <option value="">---</option>
+                                                            <option label="No" value="No">No</option>
+                                                            <option label="Yes" value="Yes">Yes</option>
+                                                        </select>
+                                                        <ng-container
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'Memo'">
+                                                            <text-angular name="textBox"
+                                                                ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]"
+                                                                id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                data-label="{{section.fields[$index].tm_name}}"
+                                                                ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                type="text" placeholder="---"
+                                                                title="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}">
+                                                            </text-angular>
+                                                        </ng-container>
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'Money'"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            class="form-control sc FieldText" type="text"
+                                                            placeholder="---"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]"
+                                                            onkeypress="return IsDecimalKey(event, this)"
+                                                            title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'Decimal'"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            class="form-control sc FieldText" type="text"
+                                                            placeholder="---"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]"
+                                                            onkeypress="return IsDecimalKey(event, this)"
+                                                            title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'Integer'"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            class="form-control sc FieldText" type="text"
+                                                            placeholder="---"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]"
+                                                            onkeypress="return IsNumberKey(event, this)"
+                                                            title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'BigInt'"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            class="form-control sc FieldText" type="text"
+                                                            placeholder="---"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]"
+                                                            onkeypress="return IsNumberKey(event, this)"
+                                                            title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                        <div class="sc"
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'Lookup' || section.fields[$index].tm_fieldtype == 'Customer'">
+                                                            <div class="searchicon_td sc">
+                                                                <input id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                    placeholder="---"
+                                                                    ng-dblclick="OpenLookupRecord(section.fields[$index].tm_lookupobjecttypecode,section.fieldValue[section.fields[$index].tm_fieldapiname],section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"
+                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    class="form-control lookup sc FieldText" type="text"
+                                                                    ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]"
+                                                                    title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                                <input
+                                                                    name="{{section.fields[$index].tm_fieldapiname}}_id"
+                                                                    value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}_id"
+                                                                    type="hidden">
+                                                                <input
+                                                                    name="{{section.fields[$index].tm_fieldapiname}}_entityname"
+                                                                    value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}_entityname"
+                                                                    type="hidden">
+                                                                <i ng-if="section.fields[$index].tm_isreadonly != true"
+                                                                    class="fa fa-search searchicon"
+                                                                    id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}"
+                                                                    aria-hidden="true"
+                                                                    ng-click="OpenLookup(section.fields[$index].tm_lookupobjecttypecode,section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="sc"
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'PartyList'">
+                                                            <div class="searchicon_td sc">
+                                                                <input id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                    placeholder="---"
+                                                                    ng-dblclick="OpenLookupRecord(section.fields[$index].tm_lookupobjecttypecode,section.fieldValue[section.fields[$index].tm_fieldapiname],section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"
+                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    class="form-control lookup sc FieldText" type="text"
+                                                                    ng-model="section.fieldValue.email_activity_parties[0][section.fields[$index].tm_formattedvalue]"
+                                                                    title="{{section.fieldValue.email_activity_parties[0][section.fields[$index].tm_formattedvalue]}}">
+                                                                <input
+                                                                    name="{{section.fields[$index].tm_fieldapiname}}_id"
+                                                                    value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}_id"
+                                                                    type="hidden">
+                                                                <input
+                                                                    name="{{section.fields[$index].tm_fieldapiname}}_entityname"
+                                                                    value=""
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}_entityname"
+                                                                    type="hidden">
+                                                                <input
+                                                                    name="{{section.fields[$index].tm_fieldapiname}}_type"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}_type"
+                                                                    type="hidden">
+                                                                <i ng-if="section.fields[$index].tm_isreadonly != true"
+                                                                    class="fa fa-search searchicon"
+                                                                    id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}"
+                                                                    aria-hidden="true"
+                                                                    ng-click="OpenLookup(section.fields[$index].tm_lookupobjecttypecode,section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'DateTime' &amp;&amp; section.tm_name != 'Appointment'">
+                                                            <div class="calendericon_td sc">
+                                                                <input
+                                                                    ng-if="section.fields[$index].tm_isreadonly == true"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                    style="line-height: 16px"
+                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    class="form-control sc FieldText" type="text"
+                                                                    datepicker-options="dateOptions"
+                                                                    uib-datepicker-popup="{{dateformat}}"
+                                                                    placeholder="---"
+                                                                    ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                                <input
+                                                                    ng-if="section.fields[$index].tm_isreadonly != true"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                    style="line-height: 16px"
+                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    class="form-control sc FieldText" type="text"
+                                                                    datepicker-options="dateOptions"
+                                                                    is-open="section.fields[$index].tm_isopencalendar"
+                                                                    uib-datepicker-popup="{{dateformat}}"
+                                                                    placeholder="---"
+                                                                    ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]"
+                                                                    ng-click="section.fields[$index].tm_isopencalendar = !section.fields[$index].tm_isopencalendar">
+                                                                <i ng-if="section.fields[$index].tm_isreadonly != true"
+                                                                    class="fa fa-calendar calendericon"
+                                                                    id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}"
+                                                                    aria-hidden="true" ng-click=""></i>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'DateTime' &amp;&amp; section.tm_name == 'Appointment'">
+                                                            <div class="calendericon_td sc">
+                                                                <input
+                                                                    ng-if="section.fields[$index].tm_isreadonly == true"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                    style="line-height: 16px"
+                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    class="form-control sc FieldText" type="text"
+                                                                    datetime-picker="" date-format="MM-dd-yyyy HH:mm:ss"
+                                                                    ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                                <input
+                                                                    ng-if="section.fields[$index].tm_isreadonly != true"
+                                                                    id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                    data-label="{{section.fields[$index].tm_name}}"
+                                                                    style="line-height: 16px"
+                                                                    ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                    data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                    data-webapi="{{section.fields[$index].tm_viewfieldapi}}"
+                                                                    data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                    class="form-control sc FieldText" type="text"
+                                                                    datetime-picker="" date-format="MM-dd-yyyy HH:mm:ss"
+                                                                    ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                                <i ng-if="section.fields[$index].tm_isreadonly != true"
+                                                                    class="fa fa-calendar calendericon"
+                                                                    id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}"
+                                                                    aria-hidden="true" ng-click=""></i>
+                                                            </div>
+                                                        </div>
+                                                        <select
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_isdependentpicklist == false"
+                                                            ng-change="GetDependentPicklistOptionSetLabel(section,section.fields[$index].tm_isdependentpicklist,section.fields[$index].tm_fieldapiname)"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            class="form-control sc FieldText"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            ng-options="option.id as option.value for option in section.fields[$index].PickList"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]">
+                                                            <option value="">---</option>
+                                                        </select>
+                                                        <select
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_isdependentpicklist == true "
+                                                            ng-change="GetDependentPicklistOptionSetLabel(section,section.fields[$index].tm_isdependentpicklist,section.fields[$index].tm_fieldapiname)"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            class="form-control sc FieldText"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            ng-options="option as option.value for option in section.fields[$index].DependentPicklist track by option.id"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]">
+                                                            <option value=""> </option>
+                                                        </select>
+                                                        <!-- <input
+                                                            ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_fieldapiname == 'fedcap_pwin'"
+                                                            type="range" min="0" max="100"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}"
+                                                            data-label="{{section.fields[$index].tm_name}}"
+                                                            ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                            data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                            class="form-control sc FieldText"
+                                                            id="{{section.fields[$index].tm_fieldapiname}}"
+                                                            data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                            ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]"> -->
+                                                            <div ng-if="section.fields[$index].tm_fieldtype == 'MultiSelectPicklistType'"
+                                                            class="opportunity-summary-form-group" >
+                                                            <div class="opportunity-summary-form-group-contract-type">
+                                                             <div class="contract-type-scroll-view"
+                                                             style="display: flex;flex-direction: column;">
+                                                             <span
+                                                                 ng-repeat="option in section.fields[$index].PickList"
+                                                                 ng-click="itemActive(option.id)"
+                                                                 class="contract-type-item">
+                                                                 {{ option.value }}
+                                                             </span>
+                                                         </div>
+                                                         <div class="contract-type-scroll-icons">
+                                                             <div class="arrow-right"
+                                                                 ng-click="addPickListItem($index)">
+                                                             </div>
+                                                             <div class="arrow-left"
+                                                                 ng-click="removePickListItem($index)">
+                                                             </div>
+                                                         </div>
+                                                         <div class="contract-type-scroll-view"
+                                                             style="display: flex;flex-direction: column;">
+                                                             <span ng-repeat="option in selectedPickList[$index]"
+                                                                 ng-click="itemInActive(option.id)"
+                                                                 class="contract-type-item">
+                                                                 {{ option.value }}
+                                                             </span>
+                                                         </div>
+                                                            </div>
+                                                         </div>
+                                                        <div ng-if="section.fields[$index].tm_fieldtype == 'MultiSelectPicklistType'"
+                                                            class="sc">
+                                                            <select id="{{section.fields[$index].tm_fieldapiname}}"
+                                                                multiple="multiple" class="mpl_bind sc"
+                                                                data-label="{{section.fields[$index].tm_name}}"
+                                                                ng-readonly="{{section.fields[$index].tm_isreadonly}}"
+                                                                data-isrequired="{{section.fields[$index].tm_isrequired}}"
+                                                                data-fieldtype="{{section.fields[$index].tm_fieldtype}}"
+                                                                ng-options="option.id as option.value for option in section.fields[$index].PickList"
+                                                                ng-model="section.fields[$index].MultiPickList"></select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <!-- ---------------colum 2 ---------------------------->
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <script src="tm_jquery.min.js"></script>
+    <script src="tm_bootstrap.min.js"></script>
+    <link href="tm_bootstrap_multiselect.css" rel="stylesheet">
+    <script src="tm_bootstrap_multiselect.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setTimeout(function myfunction() {
+
+                $('.mpl_bind').multiselect({
+                    nonSelectedText: '---',
+                    buttonWidth: 150,
+                    enableFiltering: true
+                });
+            }, 3500);
+        });
+    </script>
+
+
+</body>
+
+</html>

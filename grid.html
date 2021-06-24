@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<meta charset="utf-8">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+.card{
+  width: 100%;
+  box-shadow: 2px 2px 9px gray;
+  margin: 10px;
+}
+@media only screen and (min-width: 600px) {
+ 
+ 
+}
+@media only screen and (min-width: 768px) {
+ 
+ 
+}
+
+</style>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+<div class="container">
+
+<div style="width: 100%;" class="row">
+  <!-- ---------------colum 1 ---------------------------->
+    <div
+    ng-class="{
+    'col-md-8':tm_columnsratio == '80 : 20' ,
+    'col-md-6': tm_columnsratio =='50 : 50',
+    'col-md-12': tm_columnsratio == '100',
+    'col-md-9': tm_columnsratio == '70 : 30',
+    'col-md-7': tm_columnsratio == '60 : 40',
+  }" 
+    class="sections"
+    >
+    <div class="card" style="height: 100px;"  ng-repeat="section in sections track by $index" ng-if=" $index % 2 == 0">
+      <h5>4</h5>
+    </div>
+  </div>
+
+
+ <!-- ---------------colum 1 End ---------------------------->
+
+
+
+  <!-- ---------------colum 2 ---------------------------->
+  <div
+    ng-class="{
+    'col-md-6': tm_columnsratio =='50 : 50',  
+    'col-md-4':tm_columnsratio =='80 : 20' ,
+    'col-md-3': tm_columnsratio == '70 : 30',
+    'col-md-5':tm_columnsratio =='60 : 40' ,
+    }" 
+    class="sections"
+    >
+    <div class="card" style="height: 60px;"  ng-repeat="section in sections track by $index" ng-style="{'height:100px':index==3}" ng-if=" $index % 2 != 0">
+      <h5>4</h5>
+    </div>
+  </div>
+   <!-- ---------------colum 2 ---------------------------->
+</div>
+
+</div>
+<script>
+
+  var app = angular.module("myApp", []);
+  app.controller("myCtrl", function($scope) {
+    $scope.tm_columnsratio = '50 : 50';
+    $scope.sections = [
+      {
+        "id":"1",
+
+      },
+      {
+        "id":"1",
+        
+      }
+      ,  {
+        "id":"1",
+        
+      },
+      {
+        "id":"1",
+        
+      },
+      {
+        "id":"1",
+
+      },
+      {
+        "id":"1",
+        
+      }
+      ,  {
+        "id":"1",
+        
+      },
+      {
+        "id":"1",
+        
+      }
+    ]
+  });
+  </script>
+</body>
+</html>

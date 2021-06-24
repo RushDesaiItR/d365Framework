@@ -1,0 +1,103 @@
+
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script type="text/javascript">
+     var app = angular.module('ngchangeApp', []);
+
+    app.controller('ngchangeCtrl', function ($scope) {
+    $scope.optionList = [
+    {
+       "id": 1,
+       "name": "First",
+       "value": 1,
+    }, 
+     {
+         "id": 2,
+         "name": "Second",
+         "value": 2,
+     }, 
+   ];
+     $scope.options = [
+    {
+       "id": 1,
+       "name": "First",
+        "value": 1,
+        "rel":1
+    }, 
+     {
+         "id": 2,
+         "name": "Second",
+         "value": 2,
+         "rel":1
+     }, 
+     {
+         "id": 3,
+         "name": "third",
+         "value": 3,
+         "rel":1
+     }, 
+      {
+       "id": 4,
+       "name": "Fourth",
+        "value": 4,
+         "rel":2
+   
+    }, 
+     {
+         "id": 5,
+         "name": "Five",
+         "value": 5,
+         "rel":2
+     }, 
+     {
+         "id": 6,
+         "name": "Six",
+         "value": 6,
+         "rel":2
+     }, 
+  ];
+   $scope.results=[];
+   $scope.onChangeOption = function () {
+        
+            // if($scope.userselected.value == 1){
+            //      $scope.options.forEach((item)=>{
+            //         if(item.rel == 1){
+            //              $scope.results.push(item);
+            //         }
+            //     })  
+            // } 
+            // else{
+            //       $scope.results=[]
+            //      $scope.options.forEach((item)=>{
+            //         if(item.rel == 2){
+                       
+            //              $scope.results.push(item);
+            //         }
+            //     })  
+            // }
+            $scope.results = $scope.options.filter(item => item.rel == $scope.userselected.value)
+            console.log($scope.results)
+         
+      }
+    
+});
+</script>       
+
+  
+</head>
+
+<body >
+   
+   <div ng-app="ngchangeApp" ng-controller="ngchangeCtrl">
+   <select  ng-options="user.name for user in optionList" ng-change="onChangeOption()" ng-model="userselected">
+        <option value="">--Select--</option>
+    </select>
+     <select ng-if="results.length > 0">
+       <option ng-repeat="option in results" value="{{option.value}}">{{option.name}}</option>
+   </select> 
+
+</div>
+</body>
+
+</html>

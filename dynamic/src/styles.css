@@ -1,0 +1,200 @@
+/* You can add global styles to this file, and also import other style files */
+body{
+ margin:0;
+ padding: 0;
+ background:rgb(242, 242, 242);
+}
+:root{
+    --blue:#282461;
+    --primary-white:#ffffff;
+    --green:#59a30f;
+    --primary-purple:rgba(176,30,67,255);
+    --primary-gray:#585a81;
+    --orange:#c95e13;
+    --gray:#858ca1;
+}
+.gate-container{
+    padding: 40px;
+}
+.gate-row{
+    display:flex;
+    flex: 1;
+}
+.gate-menus{
+  flex: 1;
+}
+
+/* -----------------------Left menus----------------------------- */
+.gate-menus{
+    display: block;
+}
+.gate-menu{
+    border-radius: 10px;
+    margin:20px 0;
+    padding:20px 40px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background:var(--primary-white);
+}
+.gate-menus-inner{
+    text-align: center;
+}
+
+.gate-menus-inner h3{
+    color: var(--primary-gray);
+}
+
+/* -------------------------Active Menu-------------------- */
+.gate-menu-active{
+    background-color: var(--blue);
+    color: var(--primary-white);
+    position: relative;
+}
+.gate-menus-active-header{
+    color: var(--green);
+}
+
+.gate-menu-active::after{
+    content:"";
+    position:absolute;
+    right: -14px;
+    top:45%;
+    align-items: center;
+    width: 0;
+	height: 0;
+	border-top: 7px solid transparent;
+	border-left: 14px solid var(--blue);
+	border-bottom: 7px solid transparent;
+    /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+}
+
+
+
+
+
+/*-----------Orange Menu-----------------------------------*/
+.gate-menu-orange{
+   color: var(--orange);
+}
+
+/*-----------Green Menu-----------------------------------*/
+.gate-menu-green{
+    color: var(--green);
+ }
+
+ /*-----------Purple Menu-----------------------------------*/
+.gate-menu-purple{
+    color: var(--primary-purple);
+ }
+/* ---------------------------------Range------------------ */
+
+/*--------------------------------- right item -------*/
+.gate-items{
+    flex:2; 
+   margin:20px;
+   display: flex;
+   flex-direction: row;
+   align-items: baseline;
+   flex-wrap: wrap; 
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+   background:var(--primary-white);
+   border-radius: 10px;
+   padding:10px 30px;
+   
+}
+.gate-item{
+  width:45%;
+  flex-grow: 2;
+}
+.gate-item-checkebox{
+    display:flex;
+    flex-direction:column;
+}
+.container{
+    float: left;
+    margin: 10px;
+}
+.right{
+    float: left;
+    margin: 10px;
+	color: var(--gray);
+	font-size: 20px;
+    font-weight:bold;
+}
+.radio {
+    position: relative;
+}
+.radio label {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: white;
+    border-radius: 50px;
+    border: 2px solid var(--primary-purple);
+}
+.radio label:after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    border: 6px solid var(--primary-purple);
+    border-radius: 50px;
+    opacity: 0;
+    }
+.radio label:hover::after {
+    opacity: 0.3;
+    }
+.radio input[type=radio] {
+    visibility: hidden;
+}
+.radio input[type=radio]:checked + label:after {
+     opacity: 1;
+    } 
+
+/* -------------------------------------progress bar -----------------*/
+.container-progressbar {
+    background-color: rgb(192, 192, 192);
+    width: 80%;
+    
+    position: relative;
+}
+
+.skill {
+
+    color: white;
+    padding: 1%;
+    text-align: right;
+    font-size: 20px;
+
+   
+}
+.skill-message{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    padding:12px 9px;
+    top:-10px;
+    border-radius: 360%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    color:white;
+}
+.skill-message i{
+    font-size: 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+    

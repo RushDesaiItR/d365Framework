@@ -1,0 +1,265 @@
+<html>
+   <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <link rel="stylesheet" type="text/css" href="./radial.css">
+   </head>
+   
+   <body ng-app="App" ng-controller="RadialControls">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-sm col-md-12 col-lg-6" >
+               <h6 class="title">
+                  Partners By Role And Workshare
+                  <i class="arrowdown" aria-hidden="true"></i>
+               </h6>
+               <div class="radial-knob">
+                  <div class="radio-conainer">
+                  <label >
+                     <input type="radio" 
+                      checked="true"
+                      name="partner">
+                     <div class="circle"></div>
+                     <span>ans</span>
+                  </label>
+                    <label >
+                     <input type="radio" 
+                      name="partner">
+                     <div class="circle"></div>
+                     <span>ans</span>
+                  </label>
+               </div>
+                  <svg viewBox="0 0 36 36" class="circular-chart">
+                     <path ng-repeat="path in partnersKnob" class="that-circle" stroke="{{path.color}}"
+                        stroke-dasharray="{{path.dasharray}}" d="M18 2.0845
+                        a 15.9155 15.9155 0 0 1 0 31.831
+                        a 15.9155 15.9155 0 0 1 0 -31.831" />
+                     
+                     <text x="18" y="20.35" class="percentage">Total</text>
+                     <text x="13" y="25" class="percentage_done">Count</text>
+                  </svg>
+          
+
+
+                  <div class="radial-knob-items">
+                     <div class="radial-knob-item" ng-repeat="pickdrop in partnersKnob">
+                        <div style="background-color:{{pickdrop.color}}"></div>
+                        <h6>{{pickdrop.name}}</h6>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="col-sm col-md-12 col-lg-6">
+               <h6 class="title">
+                  Competitor By Strenth & Weekness
+                  <i class="arrowdown" aria-hidden="true"></i>
+               </h6>
+               <div class="radial-knob">
+                  <div class="radio-conainer">
+                  <label >
+                     <input type="radio" 
+                      checked="true"
+                      name="competitor">
+                     <div class="circle"></div>
+                     <span>ans</span>
+                  </label>
+                    <label >
+                     <input type="radio" 
+                      name="competitor">
+                     <div class="circle"></div>
+                     <span>ans</span>
+                  </label>
+               </div>
+                  <svg viewBox="0 0 36 36" class="circular-chart">
+                     <path ng-repeat="path in competitorsKnob" class="that-circle" stroke="{{path.color}}"
+                        stroke-dasharray="{{path.dasharray}}" d="M18 2.0845
+                        a 15.9155 15.9155 0 0 1 0 31.831
+                        a 15.9155 15.9155 0 0 1 0 -31.831" />
+                     <text x="18" y="20.35" class="percentage">Total</text>
+                     <text x="13" y="25" class="percentage_done">Count</text>
+                  </svg>
+                  <div class="radial-knob-items">
+                     <div class="radial-knob-item" ng-repeat="pickdrop in competitorsKnob">
+                        <div style="background-color:{{pickdrop.color}}"></div>
+                        <h6>{{pickdrop.name}}</h6>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <br /><br />
+         <div class="row-list">
+            <div class="partners-list">
+               <h6 class="title">
+               Partners List
+               <i class="arrowdown" aria-hidden="true"></i>
+               </h1>
+               <table id="list">
+                  <tr>
+                     <th>
+                        Partner
+                        <i class="fa fa-long-arrow-up active-arrow" aria-hidden="true"></i>
+                        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                     </th>
+                     <th>
+                        Oppourtinity Name
+                        <i class="fa fa-long-arrow-up active-arrow" aria-hidden="true"></i>
+                        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                     </th>
+                     <th>
+                        Partner Work Share
+                        <i class="fa fa-long-arrow-up active-arrow" aria-hidden="true"></i>
+                        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                     </th>
+                     <th>
+                        Nda Recived
+                        <i class="fa fa-long-arrow-up active-arrow" aria-hidden="true"></i>
+                        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                     </th>
+                  </tr>
+                  <tr ng-repeat="partner in partners">
+                     <td>{{partner.sno}}</td>
+                     <td><a href="">{{partner.name}}</a></td>
+                     <td>{{partner.country}}</td>
+                     <td>{{partner.grandslam}}</td>
+                     <td>{{partner.active}}</td>
+                  </tr>
+               </table>
+            </div>
+            <div class="partners-list">
+               <h6 class="title">
+                  Competitors List
+                  <i class="arrowdown" aria-hidden="true"></i>
+               </h6>
+               <table id="list">
+                  <tr>
+                     <th>
+                        Competitor
+                        <i class="fa fa-long-arrow-up active-arrow" aria-hidden="true"></i>
+                        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                     </th>
+                     <th>
+                        Oppourtinity Name
+                        <i class="fa fa-long-arrow-up active-arrow" aria-hidden="true"></i>
+                        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                     </th>
+                     <th>
+                        Assesment
+                        <i class="fa fa-long-arrow-up active-arrow" aria-hidden="true"></i>
+                        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                     </th>
+                     <th>
+                        Record
+                        <i class="fa fa-long-arrow-up active-arrow" aria-hidden="true"></i>
+                        <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+                     </th>
+                  </tr>
+                  <tr ng-repeat="partner in partners">
+                     <td>{{partner.sno}}</td>
+                     <td><a href="">{{partner.name}}</a></td>
+                     <td>{{partner.country}}</td>
+                     <td>{{partner.grandslam}}</td>
+                     <td>{{partner.active}}</td>
+                  </tr>
+               </table>
+            </div>
+         </div>
+      </div>
+      </div>
+      </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+      <script type="text/javascript">
+         var App = angular.module("App", []);
+         App.controller("RadialControls",
+           function ($scope) {
+             $scope.partnersKnob = [
+               {
+                 id: 1,
+                 name: "Global Alliance",
+                 color: "#1f294c",
+                 dasharray: "100 50"
+               },
+               {
+                 id: 2,
+                 name: "Incument Subcontractor",
+                 color: "#4476b2",
+                 dasharray: "50 75",
+               },
+               {
+                 id: 3,
+                 name: "Sub Contractor",
+                 color: "#61a9ff",
+                 dasharray: "25 100"
+               }
+             ];
+             $scope.competitorsKnob = [
+               {
+                 id: 1,
+                 name: "Global Alliance",
+                 color: "#ec90a4",
+                 dasharray: "100 50"
+               },
+               {
+                 id: 2,
+                 name: "Incument Subcontractor",
+                 color: "#b01f3f",
+                 dasharray: "50 75",
+               },
+               {
+                 id: 3,
+                 name: "Sub Contractor",
+                 color: "#d44d6b",
+                 dasharray: "25 100"
+               }
+             ];
+             $scope.partners = [
+               {
+                 sno: 1,
+                 name: 'Roger Federer',
+                 country: 'Switzerland',
+                 grandslams: 20,
+                 active: "Yes",
+               }, {
+                 sno: 2,
+                 name: 'Rafael Nadal',
+                 country: 'Spain',
+                 grandslams: 18,
+                 active: "Yes",
+               }, {
+                 sno: 3,
+                 name: 'Novak Djokovic',
+                 country: 'Serbia',
+                 grandslams: 16,
+                 active: "Yes",
+               }, {
+                 sno: 4,
+                 name: 'Pete Samprass',
+                 country: 'USA',
+                 grandslams: 14,
+                 active: "No",
+               }, {
+                 sno: 5,
+                 name: 'Roy Emerson',
+                 country: 'Australia',
+                 grandslams: 12,
+                 active: "No",
+               }, {
+                 sno: 6,
+                 name: 'Roy Emerson',
+                 country: 'Australia',
+                 grandslams: 12,
+                 active: "No",
+               }
+         
+             ];
+         
+           })
+         
+         
+         
+         
+      </script>
+   </body>
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="./slider.css">
+</head>
+
+<body ng-app="MyApp" ng-controller="MyController">
+  <div class="container-fluid">
+    <div class="opportunity-row">
+      <div class="opportunity-summary">
+        <h6 class="title">
+          Opprtunity Summary
+          <i class="fa fa-arrow-down" aria-hidden="true"></i>
+        </h6>
+        <div class="box-shadow opportunity-summary-row">
+          <div>
+            <label>Opportunity Name</label>
+            <div class="opportunity-summary-form-group">
+              <input type="text" class="weighted" value="value" name="">
+              <i class="fa fa-pencil active" aria-hidden="true"></i>
+            </div>
+            <label>Account Name</label>
+            <div class="opportunity-summary-form-group">
+              <a href="kfljgklf">Link</a>
+
+              <i class="fa fa-search active" aria-hidden="true"></i>
+            </div>
+            <label>State</label>
+            <div class="opportunity-summary-form-group">
+              <input type="text" value="value" name="">
+            </div>
+            <label>Weighted Value</label>
+            <div class="opportunity-summary-form-group">
+              <input type="text" class="weighted-green" value="value" name="">
+              <i class="fa fa-pencil active" aria-hidden="true"></i>
+            </div>
+            <label>PWin</label>
+            <div class="opportunity-summary-form-group">
+              <div class="sliderContainer">
+                <input id="rangeSelector" min="0" value="6" max="100" type="range" name="">
+              </div>
+              <i class="fa fa-pencil active" aria-hidden="true"></i>
+            </div>
+            <label>Contract Type</label>
+            <div class="opportunity-summary-form-group">
+              <div class="opportunity-summary-form-group-contract-type">
+                <div class="contract-type-scroll-view" style="display: flex;flex-direction: column;">
+                  <span class="contract-type-item"
+                    ng-class="{'contract-type-active':selectedItemActive == {{item.id}}}"
+                    ng-click="itemActive(item.id)" ng-repeat="item in pickListItem">
+                    {{item.value}}
+                  </span>
+                </div>
+                <div class="contract-type-scroll-icons">
+                  <div class="arrow-right" ng-click="addPickListItem()"></div>
+                  <div class="arrow-left" ng-click="removePickListItem()"></div>
+                </div>
+                <div class="contract-type-scroll-view" style="display: flex;flex-direction: column;">
+                  <span class="contract-type-item"
+                    ng-class="{'contract-type-active':selectedPickItemInActive == {{item.id}}}"
+                    ng-click="itemInActive(item.id)"
+                     ng-repeat="item in selectedPickList">
+                    {{item.value}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <label>Opportunity Owner</label>
+            <div class="opportunity-summary-form-group">
+              <input type="text" value="value" name="">
+              <i class="fa fa-lock active" aria-hidden="true"></i>
+            </div>
+            <label>Opportunity Record Type</label>
+            <div class="opportunity-summary-form-group">
+              <input type="text" value="value" name="">
+            </div>
+            <label>Program Manager</label>
+            <div class="opportunity-summary-form-group">
+             
+               <div class="dropdown">
+                <input type="text" on-change="searchBox()" placeholder="Search" ng-model="searchText" name="">
+
+                <div class="dropdown-content">
+                  <a href="#" ng-repeat="item in searchedList">h</a>
+                  kjhg
+                </div>
+              </div>
+              <i class="fa fa-search active" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div style="margin-left: 10px;">
+            <label>Opportunity Name</label>
+            <div class="opportunity-summary-form-group">
+              <div class="dropdown">
+                <span>Drop Down</span>
+
+                <div class="dropdown-content">
+                  <a href="#">Link 1</a>
+                  <a href="#">Link 2</a>
+                  <a href="#">Link 3</a>
+                  <a href="#">Link 1</a>
+                  <a href="#">Link 2</a>
+                  <a href="#">Link 3</a>
+                  <a href="#">Link 1</a>
+                  <a href="#">Link 2</a>
+                  <a href="#">Link 3</a>
+                </div>
+              </div>
+              <i class="fa fa-search active" aria-hidden="true"></i>
+            </div>
+
+            <label>Account Name</label>
+            <div class="opportunity-summary-form-group">
+              <input type="text" value="value" name="">
+              <i class="fa fa-search active" aria-hidden="true"></i>
+            </div>
+            <label>State</label>
+            <div class="opportunity-summary-form-group">
+              <input type="text" value="value" name="">
+            </div>
+            <label>Weighted Value</label>
+            <div class="opportunity-summary-form-group">
+              <input type="text" value="value" name="">
+              <i class="fa fa-pencil active" aria-hidden="true"></i>
+            </div>
+            <label>PWin</label>
+            <div class="opportunity-summary-form-group">
+              <input type="text" value="value" name="">
+              <i class="fa fa-pencil active" aria-hidden="true"></i>
+            </div>
+            <label>Contract Type</label>
+            <div class="opportunity-summary-form-group">
+
+            </div>
+            <label>Opportunity Owner</label>
+            <div class="opportunity-summary-form-group">
+              <input type="text" value="value" name="">
+              <i class="fa fa-lock active" aria-hidden="true"></i>
+            </div>
+            <!--  <label>Opportunity Record Type</label>
+            <div class="opportunity-summary-form-group">
+              <input type="text" value="value" name="">
+            </div> -->
+            <label>Program Manager</label>
+            <div class="opportunity-summary-form-group">
+              <!-- <div ng-repeat="range in rangeSelectors" class="sliderContainer">
+                <input name="{{range.name}}" id="{{range.id}}" min="0" value="{{range.value}}" max="100" type="range" >
+              </div> -->
+              <i class="fa fa-search active" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="opportunity-health">
+        <h6 class="title">
+          Opprtunity Health
+          <i class="fa fa-arrow-down" aria-hidden="true"></i>
+        </h6>
+        <div class="box-shadow">
+          <label>
+            Program Manager
+            <i class="fa fa-exclamation-circle active" style="font-size:15px" aria-hidden="true"></i>
+          </label>
+          <div class="opportunity-summary-form-group">
+            <input type="text" value="value" name="">
+            <div class="down-arrow"></div>
+          </div>
+          <label>
+            Program Manager
+            <i class="fa fa-exclamation-circle active" style="font-size:15px" aria-hidden="true"></i>
+          </label>
+          <div class="opportunity-summary-form-group">
+            <input type="text" value="value" name="">
+            <i class="fa fa-pencil active" style="font-size:15px" aria-hidden="true"></i>
+          </div>
+          <label>
+            Program Manager
+            <i class="fa fa-exclamation-circle active" style="font-size:15px" aria-hidden="true">
+
+            </i>
+          </label>
+          <div class="opportunity-summary-form-group">
+            <input type="text" value="value" name="">
+            <i class="fa fa-pencil active" aria-hidden="true"></i>
+          </div>
+          <label>
+            Program Manager
+            <i class="fa fa-exclamation-circle active" style="font-size:15px" aria-hidden="true"></i>
+          </label>
+          <div class="opportunity-summary-form-group">
+            <input type="text" value="value" name="">
+            <i class="fa fa-pencil active" style="font-size:15px" aria-hidden="true"></i>
+          </div>
+          <label>
+            Program Manager
+            <i class="fa fa-exclamation-circle active" style="font-size:15px" aria-hidden="true"></i>
+          </label>
+          <div class="opportunity-summary-form-group">
+            <input type="text" value="value" name="">
+            <i class="fa fa-pencil active" style="font-size:15px" aria-hidden="true"></i>
+          </div>
+          <div class="opportunity-summary-showmore active">
+            More Details <div class="down-arrow"></div>
+          </div>
+        </div>
+        <h6 class="title" style="margin:28px 0;">
+          Opprtunity Summary
+          <i class="fa fa-arrow-down" aria-hidden="true"></i>
+        </h6>
+        <div class="box-shadow">
+          <label>
+            Program Manager
+            <i class="fa fa-exclamation-circle active" style="font-size:15px" aria-hidden="true"></i>
+          </label>
+          <div class="opportunity-summary-form-group">
+            <input type="text" value="value" name="">
+            <i class="fa fa-pencil active" style="font-size:15px" aria-hidden="true"></i>
+          </div>
+          <label>
+            Program Manager
+            <i class="fa fa-exclamation-circle active" style="font-size:15px" aria-hidden="true"></i>
+          </label>
+          <div class="opportunity-summary-form-group">
+            <input type="text" value="value" name="">
+            <i class="fa fa-pencil active" style="font-size:15px" aria-hidden="true"></i>
+          </div>
+          <label>
+            Program Manager
+            <i class="fa fa-exclamation-circle active" style="font-size:15px" aria-hidden="true">
+
+            </i>
+          </label>
+          <div class="opportunity-summary-form-group">
+            <input type="text" value="value" name="">
+            <i class="fa fa-pencil active" aria-hidden="true"></i>
+          </div>
+          <label>
+            Program Manager
+            <i class="fa fa-exclamation-circle active" style="font-size:15px" aria-hidden="true"></i>
+          </label>
+          <div class="opportunity-summary-form-group">
+            <input type="text" value="value" name="">
+            <i class="fa fa-pencil active" style="font-size:15px" aria-hidden="true"></i>
+          </div>
+          <div class="opportunity-summary-showmore active">
+            More Details <div class="down-arrow"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br><br><br>
+  <a href="#" ng-repeat="item in searchedList">{{item}}</a>
+  
+  here
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script type="text/javascript">
+    var rangeSelector = document.querySelector("#rangeSelector");
+    rangeSelector.style.background = 'linear-gradient(90deg, #59a30f '+ rangeSelector.value +'%,#f6f7f7 0%)'
+    rangeSelector.oninput = function () {
+    rangeSelector.style.background = 'linear-gradient(90deg, #59a30f ' + rangeSelector.value + '%,#f6f7f7 0%)';
+    }
+  </script>
+  <script type="text/javascript">
+    var app = angular.module("MyApp", []);
+    app.controller("MyController", function ($scope) {
+       $scope.searchedList = []
+       $scope.searchText;
+      var hpCharacters = [
+        {
+          id: 1,
+          name: "rushikesh"
+        },
+        {
+          id: 2,
+          name: "mahavir"
+        },
+        {
+          id: 3,
+          name: "sanket"
+        },
+        {
+          id: 4,
+          name: "desai"
+        }
+      ]
+      $scope.searchBox = function() {
+            $scope.searchedList = hpCharacters.filter(character => {
+           return (
+             character.name.toLowerCase().includes($scope.searchText.toLowerCase())
+           );
+         });
+            console.log($scope.searchedList)
+      } 
+      // const searchBar = document.getElementById("searchBar");
+      // searchBar.addEventListener("keyup", e => {
+      //   const searchString = e.target.value;
+       
+      //    $scope.searchedList = hpCharacters.filter(character => {
+      //     return (
+      //       character.name.toLowerCase().includes(searchString.toLowerCase())
+      //     );
+      //   });
+        
+      //   console.log($scope.searchedList)
+      // });
+
+      // console.log($scope.searchedList)
+      // const filteredCharacters = hpCharacters.filter(character => {
+      //   return (
+      //     character.name.includes(searchString) ||
+      //     character.house.includes(searchString)
+      //   );
+      // });
+
+
+      $scope.rangeSelectors = [
+        {
+          "id": 1,
+          "name": "a",
+          "value": 60
+        },
+        {
+          "id": 2,
+          "name": "b",
+          "value": 60
+        }
+      ]
+      $scope.pickListItem = [
+        {
+          "id": 1,
+          "name": "a",
+          "value": "a"
+        },
+        {
+          "id": 2,
+          "name": "a",
+          "value": "b"
+        },
+        {
+          "id": 3,
+          "name": "a",
+          "value": "c"
+        },
+        {
+          "id": 4,
+          "name": "a",
+          "value": "d"
+        },
+        {
+          "id": 5,
+          "name": "a",
+          "value": "e"
+        },
+        {
+          "id": 6,
+          "name": "a",
+          "value": "f"
+        },
+        {
+          "id": 7,
+          "name": "a",
+          "value": "g"
+        },
+        {
+          "id": 8,
+          "name": "a",
+          "value": "h"
+        },
+        {
+          "id": 9,
+          "name": "a",
+          "value": "i"
+        },
+        {
+          "id": 10,
+          "name": "a",
+          "value": "j"
+        },
+        {
+          "id": 11,
+          "name": "a",
+          "value": "k"
+        }
+      ]
+      $scope.selectedPickList = []
+      $scope.selectedPickItemActive = $scope.pickListItem.length + 1;
+      $scope.itemActive = function (id) {
+        $scope.selectedItemActive = id;
+
+      }
+      $scope.addPickListItem = function () {
+        var exists = false;
+        $scope.selectedPickList.map(item => {
+          if (item.id == $scope.selectedItemActive) {
+            exists = true;
+          }
+        })
+        if (!exists) {
+          var item = $scope.pickListItem.filter(item =>
+            item.id == $scope.selectedItemActive)
+          $scope.selectedPickList.push(...item)
+        }
+
+      }
+
+      $scope.selectedPickItemInActive = $scope.pickListItem.length + 1;
+      $scope.itemInActive = function (id) {
+        $scope.selectedPickItemInActive = id;
+
+      }
+      $scope.removePickListItem = function () {
+        var items = [];
+        $scope.selectedPickList = $scope.selectedPickList.filter(item =>
+          item.id != $scope.selectedPickItemInActive)
+        // $scope.selectedPickList = []
+        //  $scope.selectedPickList.push(items)
+        // console.log($scope.selectedPickList)
+      }
+    })
+  </script>
+</body>
+
+</html>

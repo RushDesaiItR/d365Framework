@@ -1,0 +1,262 @@
+
+* {
+  box-sizing: border-box;
+}
+:root {
+      --blue: #282461;
+      --primary-white: #ffffff;
+      --green: #59a30f;
+      --primary-purple: rgba(176, 30, 67, 255);
+      --primary-gray: #585a81;
+      --orange: #c95e13;
+      --gray: #858ca1;
+      --text: #757475;
+      --tab-border: #d8d9d9;
+      --blue-first: "#2596be";
+      --blue-second: "rgb(37, 150, 190)";
+    }
+
+    body {
+      background: #f6f7f7;
+      padding: 20px;
+      margin: 0;
+      box-shadow: border-box;
+    }
+
+    .circular-chart {
+      margin: 5% auto;
+      /* max-width: 80%;
+       max-height: 240px;*/
+      max-width: 60%;
+      max-height: 200px;
+      margin-bottom: 15%;
+    }
+
+    .that-circle {
+      fill: none;
+      stroke-width: 4;
+      /* stroke-linecap: round;*/
+      animation: progress 1s ease-out forwards;
+      box-shadow: 0 8px 25px 0 #e5e5e5;
+    }
+
+    @keyframes progress {
+      0% {
+        stroke-dasharray: 0 100;
+      }
+    }
+
+    .percentage {
+      fill: #1f294c;
+      font-size: 0.375em;
+      text-anchor: middle;
+      font-family: AvenirNext;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 10;
+      letter-spacing: normal;
+    }
+
+    .percentage_done {
+      fill: #1f294c;
+      font-size: 0.2em;
+      font-family: AvenirNext;
+      font-weight: 500;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: 0.1px;
+    }
+
+    .radial-knob {
+      background: white;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    .radial-knob-items {
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .radial-knob-item {
+      display: flex;
+      align-items: center;
+      margin: 0 0 0 13px;
+    }
+
+    .radial-knob-item div {
+      width: 20px;
+      height: 20px;
+      background-color: red;
+    }
+
+    .radial-knob-item h6 {
+      margin: 0px 0 0 3px;
+      font-size: 14px;
+    }
+
+    .row-list {
+      display: flex;
+      justify-content: space-between;
+      padding: 0px;
+    }
+
+    .partners-list:nth-child(2) {
+      margin: 0 0 0 20px;
+    }
+
+    .partners-list {
+      overflow-x: scroll;
+    }
+
+    .title {
+      color: var(--primary-purple);
+      font-size: 20px;
+      margin: 10px 0;
+      align-items: center;
+      display: flex;
+    }
+
+    #list {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 1000px;
+    }
+
+    #list td,
+    #list th {
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      padding: 12px;
+
+    }
+
+    #list tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    #list tr:hover {
+      background-color: #ddd;
+    }
+     #list a{
+      color:blue;
+      font-weight: bold;
+      text-decoration: underline;
+     }
+    #list th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      background-color: #f6f7f7;
+      color: black;
+      border-top: 3px solid black;
+      border-bottom: 1px solid black;
+    }
+
+    .active-arrow {
+      color: var(--primary-purple);
+    }
+    @media(max-width: 768px) {
+         .row-list {
+            display: block;
+            justify-content: space-between;
+           
+        }  
+        body{
+          padding: 0;
+          margin: 0;
+        }
+         .radial-knob-item h6 {
+              font-size: 8px;
+          }
+    }
+    @media(max-width: 500px){
+         .row-list {
+            display: block;
+            justify-content: space-between;
+           
+        }  
+        body{
+          padding: 0;
+          margin: 0;
+        } 
+         .radial-knob-item h6 {
+              font-size: 8px;
+          }
+    }
+
+     @media(max-width: 1024px){
+       .row-list {
+         display: block;
+            justify-content: space-between;
+           
+        }  
+
+     }
+
+   /*  --------------------------Down Arrow*---------------*/
+   .arrowdown{
+  border: solid var(--primary-purple);
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  /*-webkit-transform: rotate(45deg);*/
+  margin-left: 15px;
+   }
+/*  -------------------------------  Radio Buttons --------------*/
+.radio-conainer {
+  display: flex;
+  float: right;
+}    
+.radio-conainer input{
+   display: none;
+}
+.radio-conainer label{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin:0 15px;
+  position: relative;
+ /* padding-left: 55px;*/
+}
+.radio-conainer span{
+  color: var(--text);
+  display: inline-block;
+  font-size: 17px;
+  margin: 0 10px;
+  
+}
+.radio-conainer label .circle{
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  border: 1px solid var(--green);
+  border-radius: 50%;
+  position: absolute;
+  left: -14px;
+  transition: border-color .5s ease;
+}
+
+/*.radio-conainer input:checked + .circle{
+   border: 3px solid var(--purple);
+} */
+.radio-conainer label .circle::before{
+  content: '';
+  position: absolute;
+   top: 3px;
+   border-radius: 50%;
+   left: 3px;
+   width: 8px;
+   height: 8px;
+   background: var(--green);
+   transition: transform .5s ease;
+   transform: scale(0);
+}
+.radio-conainer input:checked + .circle::before{
+   transform: scale(1);
+}

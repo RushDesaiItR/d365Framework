@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="spotlightquestions.css">
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+	<h3 class="active">Spot Light Questions</h3>
+	<form ng-submit="submit()" class="spot-light-column">
+		<div class="spot-light-row">
+			<div class="spot-column">
+				
+              <div class="spot-light-form-group"  ng-repeat="question in Questions track by $index" 
+                   ng-if="question.id < 7">
+					<h3>{{question.question}}</h3>
+					<div class="radio-conainer">
+						<label ng-repeat="answer in question.answers" ng-if="answer.ans1=='yellow'">
+							<input type="radio" checked="true"
+               ng-value="{{answer.ans1}}" 
+               ng-model="radiobtn[$index]" name="{{question.id}}">
+							<div class="circle"></div>
+							<span>{{answer.ans1}}</span>
+						</label>
+						 <label ng-repeat="answer in question.answers"  ng-if="answer.ans2=='green'">
+							<input type="radio" ng-model="radiobtn[$index]" ng-value="{{answer.ans2}}" 
+              name="{{question.id}}">
+							<div class="circle"></div>
+							<span>{{answer.ans2}}</span>
+						</label>
+						<label ng-repeat="answer in question.answers" ng-model="result[question.id]" ng-if="answer.ans3=='red'"> 
+							<input type="radio" ng-model="radiobtn[$index]"
+               ng-value="{{answer.ans3}}"
+              name="{{question.id}}">
+							<div class="circle"></div>
+							<span>{{answer.ans3}}</span>
+						</label> 
+					</div>
+				</div>
+			</div>
+			<div class="spot-column">
+				
+              <div class="spot-light-form-group" ng-repeat="question in Questions track by $index" 
+                   ng-if="question.id > 6">
+					<h3>{{question.question}}</h3>
+					<div class="radio-conainer">
+						<label ng-repeat="answer in question.answers" ng-if="answer.ans1=='yellow'">
+							<input type="radio" checked="true" ng-model="radiobtn[$index]" ng-value="{{answer.ans1}}" name="{{question.id}}">
+							<div class="circle"></div>
+							<span>{{answer.ans1}}</span>
+						</label>
+						 <label ng-repeat="answer in question.answers" ng-if="answer.ans2=='green'">
+							<input type="radio" ng-model="radiobtn[$index]" ng-value="{{answer.ans2}}" name="{{question.id}}">
+							<div class="circle"></div>
+							<span>{{answer.ans2}}</span>
+						</label>
+						<label ng-repeat="answer in question.answers" ng-if="answer.ans3=='red'">
+							<input type="radio" ng-model="radiobtn[$index]" ng-value="{{answer.ans3}}" name="{{question.id}}">
+							<div class="circle"></div>
+							<span>{{answer.ans3}}</span>
+						</label> 
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="spot-light-color-info">
+      <input type="submit" name="" ng-click="submit(radiobtn)">
+			<div>
+				<h4 style="color:#ffc820">Yellow</h4>
+				<h6>Program Understanding</h6>
+				<h6>Cost Strategy</h6>
+				<h6>Shaping</h6>
+				<h6>Customer Relationship</h6>
+			</div>
+			<div>
+				<h4 style="color:#59a30f">Green</h4>
+				<h6>Customer Hot Button</h6>
+				<h6>Managament / Staffing Strategy</h6>
+				<h6>Transition Strategy</h6>
+				<h6>line</h6>
+			</div>
+			<div>
+				<h4 style="color:#bd1e2d">Red</h4>
+				<h6>Discriminators/ Differentiators</h6>
+				<h6>Past Performance</h6>
+				<h6>Technical Solution</h6>
+				<h6>Cl/PTW</h6>
+				<h6>Capture/ Proposal Resources </h6>
+			</div>
+		</div>
+	</form>
+	<!--  <div class="radio-conainer">
+   	  <label>
+   	  	  <input type="radio" name="q1">
+   	  	  <div class="circle"></div>
+   	  	  <span>Question 1</span>
+   	  </label>
+   	   <label>
+   	  	  <input type="radio" name="q1">
+   	  	  <div class="circle"></div>
+   	  	  <span>Question 2</span>
+   	  </label>
+   	   <label>
+   	  	  <input type="radio" name="q1">
+   	  	  <div class="circle"></div>
+   	  	  <span>Question 3</span>
+   	  </label>
+   </div> -->
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+   <script>
+var app = angular.module("myApp", []);
+app.controller("myCtrl", function($scope) {
+  $scope.Questions = [
+    {
+      "id":1,
+     "question":"Program Understanding",
+      "answers":[
+                {
+                	"ans1":"yellow"
+                },
+                {
+                	 "ans2":"green",
+                },
+                
+                {
+                	 "ans3":"red"
+                }
+      ],
+    },
+    {
+      "id":2,
+     "question":"Past Performance",
+      "answers":[
+                {
+                	"ans1":"yellow"
+                },
+                {
+                	 "ans2":"green",
+                },
+                
+                {
+                	 "ans3":"red"
+                }
+      ],
+    },
+     {
+      "id":3,
+     "question":"Customer Hot Button",
+      "answers":[
+                {
+                	"ans1":"yellow"
+                },
+                {
+                	 "ans2":"green",
+                },
+                
+                {
+                	 "ans3":"red"
+                }
+      ],
+    },
+    {
+      "id":4,
+     "question":"Shaping",
+     "answers":[
+                {
+                	"ans1":"yellow"
+                },
+                {
+                	 "ans2":"green",
+                },
+                
+                {
+                	 "ans3":"red"
+                }
+      ],
+    },
+     {
+      "id":5,
+     "question":"Customer Relationship",
+     "answers":[
+                {
+                	"ans1":"yellow"
+                },
+                {
+                	 "ans2":"green",
+                },
+                
+                {
+                	 "ans3":"red"
+                }
+      ],
+    },
+    {
+      "id":6,
+     "question":"Cl/PTW",
+     "answers":[
+                {
+                	"ans1":"yellow"
+                },
+                {
+                	 "ans2":"green",
+                },
+                
+                {
+                	 "ans3":"red"
+                }
+      ],
+    },
+     {
+      "id":7,
+     "question":"Discriminators/ Differentiators",
+     "answers":[
+                {
+                	"ans1":"yellow"
+                },
+                {
+                	 "ans2":"green",
+                },
+                
+                {
+                	 "ans3":"red"
+                }
+      ],
+    },
+    {
+      "id":8,
+     "question":"Cost Strategy",
+     "answers":[
+                {
+                	"ans1":"yellow"
+                },
+                {
+                	 "ans2":"green",
+                },
+                
+                {
+                	 "ans3":"red"
+                }
+      ],
+    },
+     {
+      "id":9,
+     "question":"Technical Solution",
+    "answers":[
+                {
+                	"ans1":"yellow"
+                },
+                {
+                	 "ans2":"green",
+                },
+                
+                {
+                	 "ans3":"red"
+                }
+      ],
+    },
+    {
+      "id":10,
+     "question":"Red Management/ Staffing",
+     "answers":[
+                {
+                	"ans1":"yellow"
+                },
+                {
+                	 "ans2":"green",
+                },
+                
+                {
+                	 "ans3":"red"
+                }
+      ],
+    },
+     {
+      "id":11,
+     "question":"Transition Strategy",
+     "answers":[
+                {
+                	"ans1":"yellow"
+                },
+                {
+                	 "ans2":"green",
+                },
+                
+                {
+                	 "ans3":"red"
+                }
+      ],
+    },
+    {
+      "id":12,
+     "question":"Capture/ Proposal Resources",
+     "answers":[
+                {
+                	"ans1":"yellow"
+                },
+                {
+                	 "ans2":"green",
+                },
+                
+                {
+                	 "ans3":"red"
+                }
+      ],
+    }
+   ];
+   
+    $scope.radiobtn=''
+    $scope.submit = function(radiobtn) {
+    //here $scope.user will have all the 3 properties
+    //alert(JSON.stringify($scope.user));
+    console.log("called..............", radiobtn)
+  }
+    $scope.QuestionsPlot = $scope.Questions.length / 2; 
+});
+
+</script>
+</body>
+
+</html>

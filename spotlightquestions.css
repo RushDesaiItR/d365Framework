@@ -1,0 +1,282 @@
+
+* {
+  box-sizing: border-box;
+}
+:root {
+         --yellow: #ffc820;
+         --green: #59a30f;
+         --purple: #bd1e2d;
+         --text: #878da2;
+    }
+
+    body {
+      background: #f6f7f7;
+      padding: 20px;
+      margin: 0;
+      box-shadow: border-box;
+      box-sizing: border-box;
+    }
+/*------------------------------------grid code --------------- */  
+.spot-light-column{
+  padding: 20px;
+  background: white;
+  border-radius: 7px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+}
+.spot-light-row{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 0;
+  justify-content: space-between;
+  flex: 1;
+}
+.spot-light-row:nth-child(1){
+  /*height: 2px;
+  width: 100%;*/
+  border-bottom:2px solid #898fa3;
+}
+.spot-column{
+  display: flex;
+  width: 48%;
+  flex-direction: column;
+}
+.spot-light-form-group{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #eeeeee;
+}
+.spot-light-form-group:nth-last-child(1){
+  border-bottom: 1px solid white;
+}
+.spot-light-form-group h3{
+   color: #5e5d5e;
+   margin: 0 50px 0 0;
+   font-size: 19px;
+   line-height: 15px;
+}
+.spot-light-color-info{
+  display: flex;
+ }
+ .spot-light-color-info div:nth-child(2){
+  margin: 0 60px;
+ }
+.spot-light-color-info h4{
+   font-size: 18px;
+   padding: 15px 0;
+  border-bottom: 1px solid #eeeeee;
+}
+.spot-light-color-info h6{
+  color: #81889d;
+   font-size: 15px;
+  line-height: 0;
+}
+/*----------------------Radio Button code -------------------------------- */  
+.active{
+  color: var(--purple);
+}
+.radio-conainer {
+  display: flex;
+}    
+.radio-conainer input{
+   display: none;
+}
+.radio-conainer label{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin:0 15px;
+  position: relative;
+ /* padding-left: 55px;*/
+}
+.radio-conainer span{
+  color: var(--text);
+  display: inline-block;
+  font-size: 17px;
+  margin: 0 10px;
+  
+}
+.radio-conainer label .circle{
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border: 3px solid var(--yellow);
+  border-radius: 50%;
+  position: absolute;
+  left: -14px;
+  transition: border-color .5s ease;
+}
+.radio-conainer label:nth-child(2) .circle{
+   border: 3px solid var(--green);
+}
+.radio-conainer label:nth-child(3) .circle{
+   border: 3px solid var(--purple);
+}
+/*.radio-conainer input:checked + .circle{
+   border: 3px solid var(--purple);
+} */
+.radio-conainer label .circle::before{
+  content: '';
+  position: absolute;
+   top: 3px;
+   border-radius: 50%;
+   left: 3px;
+   width: 8px;
+   height: 8px;
+   background: var(--yellow);
+   transition: transform .5s ease;
+   transform: scale(0);
+}
+.radio-conainer label:nth-child(2) .circle::before{
+   background: var(--green);
+}
+.radio-conainer label:nth-child(3) .circle::before{
+   background: var(--purple);
+}
+.radio-conainer input:checked + .circle::before{
+   transform: scale(1);
+}
+/*-----------------------*/
+  @media(max-width: 1024px) {
+       .spot-light-row{
+         flex-direction: column;
+         align-items: flex-start;
+         width: 100%;
+       }
+       .spot-light-form-group{
+         flex-direction: column;
+         align-items: flex-start;
+       }
+       .spot-light-form-group h3{
+        font-size: 30px;
+        margin: 0;
+       }
+       .spot-light-column{
+        padding: 10px;
+       }
+       .radio-conainer{
+        display: block;
+        padding: 10px 0;
+       }
+       .radio-conainer label{
+        margin: 7px 15px;
+       }
+       .spot-light-color-info{
+          display: block;
+       }
+       .spot-light-color-info div:nth-child(2){
+          margin: 0;
+       }
+       .spot-light-color-info h4{
+          padding: 5px 0;
+          font-size: 30px;
+       }
+       .spot-light-color-info h6{
+          font-size: 25px;
+       }
+       .spot-column{
+        width: 100%;
+       }
+       .radio-conainer span{
+        font-size: 30px;
+        margin: 0 28px;
+       }
+       .radio-conainer label .circle{
+         width: 35px;
+         height: 35px;
+       }
+       .radio-conainer label .circle::before {
+         width: 20px;
+         height: 20px;
+         left: 5px;
+         top: 5px;
+       }
+       .active{
+        font-size: 35px;
+       }
+    }
+    @media(max-width: 796px) {
+       .spot-light-row{
+         flex-direction: column;
+         align-items: flex-start;
+         width: 100%;
+       }
+       .spot-light-form-group{
+         flex-direction: column;
+         align-items: flex-start;
+       }
+       .spot-light-form-group h3{
+        font-size: 15px;
+        margin: 0;
+       }
+       .spot-light-column{
+        padding: 10px;
+       }
+       .radio-conainer{
+        display: block;
+       }
+       .radio-conainer label{
+        margin: 7px 15px;
+       }
+       .spot-light-color-info{
+          display: block;
+       }
+       .spot-light-color-info div:nth-child(2){
+          margin: 0;
+       }
+       .spot-light-color-info h4{
+          padding: 5px 0;
+          font-size: 15px;
+       }
+       .spot-light-color-info h6{
+          font-size: 12px;
+       }
+       .spot-column{
+        width: 100%;
+       }
+    }
+    @media(max-width: 500px){
+       .spot-light-row{
+         flex-direction: column;
+         align-items: flex-start;
+         width: 100%;
+       }
+       .spot-light-form-group{
+         flex-direction: column;
+         align-items: flex-start;
+       }
+       .spot-light-form-group h3{
+        font-size: 15px;
+        margin: 0;
+       }
+       .spot-light-column{
+        padding: 10px;
+       }
+       .radio-conainer{
+        display: block;
+       }
+       .radio-conainer label{
+        margin: 7px 15px;
+       }
+       .spot-light-color-info{
+          display: block;
+       }
+       .spot-light-color-info div:nth-child(2){
+          margin: 0;
+       }
+       .spot-light-color-info h4{
+          padding: 5px 0;
+          font-size: 15px;
+       }
+       .spot-light-color-info h6{
+          font-size: 12px;
+       }
+       .spot-column{
+        width: 100%;
+       }
+    }

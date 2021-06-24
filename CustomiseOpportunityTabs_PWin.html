@@ -1,0 +1,1072 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>FedCapture</title>
+    <!-- Bootstrap -->
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet" />-->
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet" />
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <link href="css/bootstrap_multiselect.css" rel="stylesheet" />
+    <script src="js/bootstrap_multiselect.js"></script>-->
+    <script src="fedcap_/js/angular.min.js"></script>
+    <script src="fedcap_/js/SDK.MetaData.js"></script>
+    <script language="javascript" src="fedcap_/js/angular_animate.js"></script>
+    <script language="javascript" src="fedcap_DynamicController_2.0.js"></script>
+    <script src="fedcap_BussinessRulesOnOpportunity_2.0.js"></script>
+    <script src="fedcap_CaptureCommon.js"></script>
+    <!--<script language="javascript" src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.14.3.js"></script>--><!--for calender-->
+    <!--<script data-require="ui-bootstrap@*" data-semver="1.3.3" src="https://cdn.rawgit.com/angular-ui/bootstrap/gh-pages/ui-bootstrap-tpls-1.3.3.js"></script>-->
+    <script src="fedcap_uib.js"></script>
+
+    <!--<link href="css/bootstrap.min.css" rel="stylesheet"> fedcap_responsivebootstrap.min.css-->
+    <link href="fedcap_ResponsiveBootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="fedcap_font_awesome.min.css">
+    <link rel="stylesheet" href="/uclient/resources/styles/Styles.css">
+    <link rel="stylesheet" href="fedcap_ResponsiveStyle.css">
+
+    <script>
+
+        var Xrm = parent.Xrm;
+        var oppguid = Xrm.Page.data.entity.getId();
+        var OID = oppguid.substring(1, 37);
+        UserId = Xrm.Page.context.getUserId();
+        console.log("User ID:- " + UserId);
+        console.log("Opportunity ID:- " + OID);
+        var setvisible = false;
+        var seteditableforadmin = false;
+        function FormatCurrency(CurrencyField) {
+            if (CurrencyField === null) {
+                return "";
+            }
+            if (CurrencyField === '0.00') {
+                return "";
+            }
+            return "$" + CurrencyField.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+        }
+        function IsDecimalKey(evt, id) {
+            //debugger;
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46)
+                return false;
+            else {
+                var len = id.value.length;
+                var index = id.value.indexOf('.');
+                if (len === 0 && charCode === 46) {
+                    return false;
+                }
+                if (index >= 0 && charCode == 46) {
+                    return false;
+                }
+                if (index > 0) {
+                    var CharAfterdot = (len + 1) - index;
+                    if (CharAfterdot > 3) {
+                        if (id.focus = true) {
+                            return true;
+                        }
+                        return false;
+                    }
+                    else {
+                        if (len > 0 && charCode == 46) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        function DecimalValueRangeOnKeyPress(id) {
+            var val = id.value;
+            var id = id.id;
+            if (val === '') {
+                return true;
+            }
+            var value = val.replace('$', '').replace(/,/g, '');
+            var valueInt = parseFloat(value);
+            if (valueInt >= 1000000000000.00) {
+                $("#" + id + "").css('border-color', 'red');
+                $("#" + id + "").attr('title', 'Enter a value from -1,000,000,000,000.00 through 1,000,000,000,000.00.');
+                return false;
+            }
+            else {
+                $("#" + id + "").css('border-color', '');
+                $("#" + id + "").attr('title', '');
+                return true;
+            }
+            return true;
+        }
+        function DecimalValueRange(id) {
+            var val = $("#" + id + "").val();
+            if (val === '') {
+                return true;
+            }
+            var value = val.replace('$', '').replace(/,/g, '');
+            var valueInt = parseFloat(value);
+            if (valueInt >= 1000000000000.00) {
+                $("#" + id + "").css('border-color', 'red');
+                $("#" + id + "").attr('title', 'Enter a value from -1,000,000,000,000.00 through 1,000,000,000,000.00.');
+                return false;
+            }
+            else {
+                $("#" + id + "").attr('title', '');
+                $("#" + id + "").css('border-color', '');
+                return true;
+            }
+            return true;
+        }
+        function IsNumberKey(evt, id) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            else {
+                var len = id.value.length;
+                var index = id.value.indexOf('.');
+                if (index > 0 && charCode == 46) {
+                    return false;
+                }
+                if (index > 0) {
+                    var CharAfterdot = (len + 1) - index;
+                    if (CharAfterdot > 3) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    </script>
+
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+</head>
+<body class="sc" touch-action="none" unresolved="" onload="SecurityRole(); Load();" onfocusout="parent.setEmailRange();" style="overflow-wrap: break-word;">
+    <div class="modal-header" style="padding-left:0px;">
+
+        <div style="width: 100%;">
+            <div style="width: 50%; height: 40px; float: left;">
+                <img class="img-responsive" style="margin-top:-0px;padding-bottom:7px" src="fedcap_govconsuite.png" alt="Chania" width="150px" height="50">
+            </div>
+            <div style="margin-left: 85%; margin-right: 0%;height: 40px;;">
+                <img class="img-responsive" style="margin-top:-19px;padding-bottom:7px" src="fedcap_growth.png" alt="Chania" width="150px" height="50">
+            </div>
+        </div>
+    </div>
+    <div id="mainContainer" class="sc" ng-app="MyApp">
+        <form name="myForm" novalidate="" autocomplete="off">
+            <div class="sc" ng-controller="DynamicController">
+                <input name="AllWinPlanFields_id" value="{{fieldCollection}}" id="AllWinPlanFields_id" type="hidden">
+                <input name="dateformat" value="{{dateformat}}" id="dateformat" type="hidden">
+                <input name="dateseparator" value="{{dateseparator}}" id="dateseparator" type="hidden">
+                <input name="currencysymbol" value="{{currencysymbol}}" id="currencysymbol" type="hidden">
+                <input name="hdnReadOnly" value="" id="hdnReadOnly" type="hidden">
+                <input name="hdnSaveCount" value="" id="hdnSaveCount" type="hidden">
+                <a href="/webresources/fedcap_editlayout.html" class="btn btn-primary sc" id="btnEditWinPlan" style="display:none">Go To Edit Win Plan</a>
+                <!--<button name="submit" title="Submit" style="margin-left:35%" class="btn btn-primary sc" id="btnTopSave" value="save" ng-click="saveData()" ng-disabled="approvalStatusLock">Save</button>
+                <button name="submit" title="Submit" style="margin-right:35%" class="btn btn-primary sc" id="btnTopCancel" value="cancel" ng-click="CancelAndRefresh()" ng-disabled="approvalStatusLock">Cancel</button>-->
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" ng-repeat="tab in tabs" class="{{tab.fedcap_backgroundcoloractive}}">
+                        <a aria-controls="home" data-toggle="tab" data-tabname="{{tab.fedcap_name}}" data-congaapiname="{{tab.fedcap_apinameforcongafield}}" data-tabstatus="{{tab.fedcap_apinameforcongafield}}" data-taborder="{{tab.fedcap_order}}" href="#tab_{{tab.fedcap_customizetabid}}" role="tab" id="{{tab.fedcap_customizetabid}}" ng-click="LinkChanged(tab.fedcap_height);LoadTabData(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name,tab)">
+                            {{tab.fedcap_name}}
+                        </a>
+                    </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content sc">
+                    <div ng-repeat="tab in tabs" class="tab-pane {{tab.fedcap_backgroundcoloractive}}" data-congaapiname="{{tab.fedcap_apinameforcongafield}}" data-tabname="{{tab.fedcap_name}}" data-tabheight="{{tab.fedcap_height}}" data-taborder="{{tab.fedcap_order}}" data-tabstatus="{{tab.fedcap_apinameforcongafield}}" data-tabguid="{{tab.fedcap_customizetabid}}" role="tabpanel" id="tab_{{tab.fedcap_customizetabid}}">
+                        <div class="sc" ng-if="tab.fedcap_name == 'PWin' || tab.fedcap_name == 'CRS' || tab.fedcap_name == 'PGo' || tab.fedcap_name == 'SGI'">
+                            <!--style="display:none"-->
+                            <table class="table sc" border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                    <tr>
+                                        <td align="right" valign="middle">
+                                            <button name="submit" title="Submit" style="float:right" class="btn btn-primary sc" id="btnTopSave_{{tab.fedcap_apinameforcongafield}}" value="save" ng-click="saveForm(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name)" ng-disabled="approvalStatusLock">Save</button> <!--ng-disabled="!myForm.modified"-->
+                                        </td>
+                                        <td align="left" valign="middle">
+                                            <button name="submit" title="Cancel" class="btn btn-primary sc" id="btnTopCancel_{{tab.fedcap_apinameforcongafield}}" value="Cancel" ng-click="cancelDetails(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name,tab)" ng-disabled="approvalStatusLock">Cancel</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-repeat="section in tab.sections" style="padding-top:10px">
+                            <div class="divTable sc" style="width: 100%;" ng-if="section.fedcap_displayborder == 0">
+                                <div class="divTableBody sc" style="display: {{section.display}}; padding-top:{{section.fedcap_paddingtop}}" data-sectionname="{{section.fedcap_name}}" data-secguid="{{section.fedcap_customizesectionid}}" id="{{section.fedcap_customizesectionid}}">
+                                    <div class="sc">
+                                        <h4 ng-hide="section.fedcap_ishidesectionlabel" style="padding:0 0 10px 0;">{{section.fedcap_name}}</h4> <!--border-bottom:1px solid #ccc; padding:0 0 10px 0; font-weight:600-->
+                                        <div ng-if="section.fedcap_iscomponentpage">
+                                        </div>
+                                    </div>
+                                    <div class="divTableRow sc" ng-repeat="field in section.fields" ng-if="$index % section.fedcap_sectioncolumn == 0">
+                                        <!-- 1st col-->
+                                        <div class="divTableCell sc">
+                                            <div class="horline sc">
+                                                <div class="col-md-6 col-xs-12 sc" title="{{section.fields[$index].fedcap_helptext}}" ng-hide="section.fields[$index].fedcap_ishidelabel">
+                                                    <div ng-if="section.fields[$index].fedcap_fieldtype != 'header'" class="sc">
+                                                        <div ng-if="section.fields[$index].fedcap_fieldtype != 'spacer'">
+                                                            <p class="form-control-static sc">
+                                                                <i ng-if="section.fields[$index].fedcap_sourcetype == '1' || section.fields[$index].fedcap_isreadonly == true" class="fa fa-lock" aria-hidden="true"></i>
+                                                                <i ng-if="section.fields[$index].fedcap_name == 'Opportunity Health Rating'" class="fa fa-lock" aria-hidden="true"></i>
+                                                                {{section.fields[$index].fedcap_name}}
+                                                                <span class="star pull-right" title="Required" ng-if="section.fields[$index].fedcap_isrequired ===true">*</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index].fedcap_name}}</b>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-xs-12 sc" ng-if="section.fields[$index].fedcap_name != null">
+                                                    <div ng-if="section.fields[$index].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index].fedcap_fieldapiname}}</b>
+                                                    </div>
+                                                    <img ng-if="section.fields[$index].fedcap_name == 'Opportunity Health Rating'" class="" id="img_calculated_{{section.fields[$index].fedcap_fieldapiname}}" src="{{section.fieldvalue[section.fields[$index].fedcap_fieldapiname]}}">
+                                                    <input type="text" class="form-control sc" ng-if="section.fields[$index].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index].fedcap_name != 'Opportunity Health Rating'&amp;&amp; section.fields[$index].fedcap_height < 50" style="height:{{section.fields[$index].fedcap_height}}px" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index].fedcap_fieldapiname]}}">
+                                                    <textarea ng-if="section.fields[$index].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index].fedcap_height > 50" ng-style="section.controlwidth" style="height:{{section.fields[$index].fedcap_height}}px" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index].fedcap_fieldapiname]}}"></textarea>
+                                                    <input class="sc" ng-if="section.fields[$index].fedcap_fieldtype == 'Boolean'" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" type="checkbox" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_fieldapiname]" ng-checked="section.fieldValue[section.fields[$index].fedcap_fieldapiname]">
+                                                    <textarea ng-if="section.fields[$index].fedcap_fieldtype == 'Memo'" style="height:{{section.fields[$index].fedcap_height}}px" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index].fedcap_fieldtype == 'Money'" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index].fedcap_fieldtype == 'Decimal'" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index].fedcap_fieldtype == 'Integer'" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index].fedcap_fieldtype == 'BigInt'" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index].fedcap_formattedvalue]}}">
+                                                    <div ng-if="section.fields[$index].fedcap_fieldtype == 'DateTime'">
+                                                        <!--<input id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-style="section.controlwidth" style="line-height:16px" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}"
+                                                        data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control custom-form-control"
+                                                        type="date" placeholder="mm/dd/yyyy"
+                                                        ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]">-->
+                                                        <input ng-if="section.fields[$index].fedcap_isreadonly == true" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" style="line-height:16px" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control sc" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]">
+                                                        <!--placeholder="{{dateformat}}"-->
+                                                        <input ng-if="section.fields[$index].fedcap_isreadonly != true" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" style="line-height:16px" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control sc" type="text" datepicker-options="dateOptions" is-open="section.fields[$index].fedcap_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" ng-click="section.fields[$index].fedcap_isopencalendar = !section.fields[$index].fedcap_isopencalendar">
+                                                        <!--<input ng-if="section.fields[$index].fedcap_isreadonly != true" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" style="line-height:16px" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}"
+                                                               data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control datepicker sc"
+                                                               type="text" datepicker-options="startDateOptions"  ng-focus="startOpened = true" is-open="section.fields[$index].fedcap_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---"
+                                                               ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" ng-click="section.fields[$index].fedcap_isopencalendar = !section.fields[$index].fedcap_isopencalendar">-->
+                                                        <!--<i class="glyphicon glyphicon-calendar" id="Cal_{{section.fields[$index].fedcap_name}}" style="width:50px" ng-click="showcalendar($event,tab.fedcap_customizetabid,section.fedcap_customizesectionid,section.fields[$index].fedcap_customizefieldid,section.fields[$index].fedcap_fieldapiname)"></i>-->
+                                                    </div>
+                                                    <select ng-if="section.fields[$index].fedcap_fieldtype == 'Picklist'" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" class="form-control sc" id="{{section.fields[$index].fedcap_fieldapiname}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index].PickList" ng-model="section.fieldValue[section.fields[$index].fedcap_fieldapiname]">
+                                                        <option value="">---</option>
+                                                    </select>
+                                                    <div ng-if="section.fields[$index].fedcap_fieldtype == 'MultiSelectPicklistType'" class="sc">
+                                                        <select id="{{section.fields[$index].fedcap_fieldapiname}}" multiple="multiple" class="mpl_bind sc" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index].PickList" ng-model="section.fields[$index].MultiPickList"></select>
+                                                    </div>
+                                                    <div class="sc" ng-if="section.fields[$index].fedcap_fieldtype == 'Lookup' || section.fields[$index].fedcap_fieldtype == 'Customer'">
+                                                        <div class="searchicon_td sc">
+                                                            <input id="{{section.fields[$index].fedcap_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index].fedcap_lookupobjecttypecode,section.fieldValue[section.fields[$index].fedcap_fieldapiname])" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control lookup sc" type="text" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" title="{{section.fieldValue[section.fields[$index].fedcap_formattedvalue]}}">
+                                                            <input name="{{section.fields[$index].fedcap_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index].fedcap_fieldapiname]}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" id="{{section.fields[$index].fedcap_fieldapiname}}_id" type="hidden">
+                                                            <!--<img class="lookupImg" id="img_lookup_search_{{section.fields[$index].fedcap_fieldapiname}}" src="/_imgs/search_normal.gif" ng-click="OpenLookup(section.fields[$index].fedcap_lookupobjecttypecode,section.fields[$index].fedcap_fieldapiname)">-->
+                                                            <i ng-if="section.fields[$index].fedcap_isreadonly != true" class="fa fa-search searchicon" id="img_lookup_search_{{section.fields[$index].fedcap_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index].fedcap_lookupobjecttypecode,section.fields[$index].fedcap_fieldapiname)"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 2nd col-->
+                                        <div class="divTableCell sc" ng-if="section.fedcap_sectioncolumn == 2 || section.fedcap_sectioncolumn == 3 || section.fedcap_sectioncolumn == 4 || section.fedcap_sectioncolumn == 5" title="{{section.fields[$index + 1].fedcap_helptext}}">
+                                            <div class="horline sc">
+                                                <div class="col-md-6 col-xs-12 sc" title="{{section.fields[$index + 1].fedcap_helptext}}" ng-hide="section.fields[$index + 1].fedcap_ishidelabel">
+                                                    <!--<p class="form-control-static" ng-if="section.fields[$index + 1].fedcap_fieldtype != 'spacer'">
+                                                        <i ng-if="section.fields[$index + 1].fedcap_sourcetype == '1' || section.fields[$index + 1].fedcap_isreadonly == true" class="fa fa-lock" aria-hidden="true"></i>
+                                                        <i ng-if="section.fields[$index + 1].fedcap_name == 'Opportunity Health Rating'" class="fa fa-lock" aria-hidden="true"></i>
+
+                                                        {{section.fields[$index + 1].fedcap_name}}
+                                                        <span class="star pull-right" title="Required" ng-if="section.fields[$index + 1].fedcap_isrequired ===true">*</span>
+                                                    </p>-->
+                                                    <!--<p class="form-control-static" ng-if="section.fields[$index + 1].fedcap_fieldtype == 'header'">
+                                                        <h2 style="padding-left: 5px;">{{section.fields[$index + 1].fedcap_name}}</h2>
+                                                    </p>-->
+                                                    <div class="sc" ng-if="section.fields[$index + 1].fedcap_fieldtype != 'header'">
+                                                        <div ng-if="section.fields[$index + 1].fedcap_fieldtype != 'spacer'">
+                                                            <p class="form-control-static sc">
+                                                                <i ng-if="section.fields[$index + 1].fedcap_sourcetype == '1' || section.fields[$index + 1].fedcap_isreadonly == true" class="fa fa-lock" aria-hidden="true"></i>
+                                                                {{section.fields[$index + 1].fedcap_name}}
+                                                                <span class="star pull-right" title="Required" ng-if="section.fields[$index + 1].fedcap_isrequired ===true">*</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="sc" ng-if="section.fields[$index + 1].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index + 1].fedcap_name}}</b>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-xs-12 sc" ng-if="section.fields[$index + 1].fedcap_name != null">
+                                                    <div ng-if="section.fields[$index + 1].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index + 1].fedcap_fieldapiname}}</b>
+                                                    </div>
+                                                    <img ng-if="section.fields[$index + 1].fedcap_name == 'Opportunity Health Rating'" class="" id="img_calculated_{{section.fields[$index + 1].fedcap_fieldapiname}}" src="{{section.fieldvalue[section.fields[$index + 1].fedcap_fieldapiname]}}">
+                                                    <input type="text" class="form-control sc" ng-if="section.fields[$index + 1].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 1].fedcap_name != 'Opportunity Health Rating'&amp;&amp; section.fields[$index + 1].fedcap_height < 50" style="height:{{section.fields[$index + 1].fedcap_height}}px" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]}}">
+                                                    <textarea ng-if="section.fields[$index + 1].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 1].fedcap_height > 50" ng-style="section.controlwidth" style="height:{{section.fields[$index + 1].fedcap_height}}px" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]}}"></textarea>
+                                                    <input class="sc" ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Boolean'" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" type="checkbox" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]" ng-checked="section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]">
+                                                    <textarea ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Memo'" style="height:{{section.fields[$index + 1].fedcap_height}}px" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Money'" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Decimal'" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Integer'" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 1].fedcap_fieldtype == 'BigInt'" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]}}">
+                                                    <div ng-if="section.fields[$index + 1].fedcap_fieldtype == 'DateTime'">
+                                                        <input ng-if="section.fields[$index + 1].fedcap_isreadonly == true" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" style="line-height:16px" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control sc" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]">
+
+                                                        <input ng-if="section.fields[$index + 1].fedcap_isreadonly != true" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control sc" type="text" datepicker-options="dateOptions" is-open="section.fields[$index + 1].fedcap_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]" ng-click="section.fields[$index + 1].fedcap_isopencalendar = !section.fields[$index + 1].fedcap_isopencalendar">
+
+                                                    </div>
+                                                    <select ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Picklist'" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" class="form-control sc" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 1].PickList" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]">
+                                                        <option value="">---</option>
+                                                    </select>
+                                                    <div class="sc" ng-if="section.fields[$index + 1].fedcap_fieldtype == 'MultiSelectPicklistType'">
+                                                        <select id="{{section.fields[$index + 1].fedcap_fieldapiname}}" multiple="multiple" class="mpl_bind sc" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 1].PickList" ng-model="section.fields[$index + 1].MultiPickList"></select>
+                                                    </div>
+                                                    <div class="sc" ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Lookup' || section.fields[$index + 1].fedcap_fieldtype == 'Customer'">
+                                                        <div class="searchicon_td sc">
+                                                            <input id="{{section.fields[$index + 1].fedcap_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index + 1].fedcap_lookupobjecttypecode,section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname])" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control lookup sc" type="text" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]" title="{{section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]}}">
+                                                            <input name="{{section.fields[$index + 1].fedcap_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" id="{{section.fields[$index + 1].fedcap_fieldapiname}}_id" type="hidden">
+                                                            <!--<img class="lookupImg" id="img_lookup_search_{{section.fields[$index + 1].fedcap_fieldapiname}}" src="/_imgs/search_normal.gif" ng-click="OpenLookup(section.fields[$index + 1].fedcap_lookupobjecttypecode,section.fields[$index + 1].fedcap_fieldapiname)">-->
+                                                            <i ng-if="section.fields[$index + 1].fedcap_isreadonly != true" class="fa fa-search searchicon sc" id="img_lookup_search_{{section.fields[$index + 1].fedcap_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index + 1].fedcap_lookupobjecttypecode,section.fields[$index + 1].fedcap_fieldapiname)"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 3rd col-->
+                                        <div class="divTableCell sc" ng-if="section.fedcap_sectioncolumn == 3 || section.fedcap_sectioncolumn == 4 || section.fedcap_sectioncolumn == 5" title="{{section.fields[$index + 2].fedcap_helptext}}">
+                                            <div class="horline sc">
+                                                <div class="col-md-6 col-xs-12 sc" title="{{section.fields[$index + 2].fedcap_helptext}}" ng-hide="section.fields[$index + 2].fedcap_ishidelabel">
+                                                    <div ng-if="section.fields[$index + 2].fedcap_fieldtype != 'header'">
+                                                        <div ng-if="section.fields[$index + 2].fedcap_fieldtype != 'spacer'">
+                                                            <p class="form-control-static sc">
+                                                                <i ng-if="section.fields[$index + 2].fedcap_sourcetype == '1' || section.fields[$index + 2].fedcap_isreadonly == true" class="fa fa-lock" aria-hidden="true"></i>
+                                                                {{section.fields[$index + 2].fedcap_name}}
+                                                                <span class="star pull-right" title="Required" ng-if="section.fields[$index + 2].fedcap_isrequired ===true">*</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index + 2].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index + 2].fedcap_name}}</b>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-xs-12 sc" ng-if="section.fields[$index + 2].fedcap_name != null">
+                                                    <div ng-if="section.fields[$index + 2].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index + 2].fedcap_fieldapiname}}</b>
+                                                    </div>
+                                                    <img ng-if="section.fields[$index + 2].fedcap_name == 'Opportunity Health Rating'" class="" id="img_calculated_{{section.fields[$index + 2].fedcap_fieldapiname}}" src="{{section.fieldvalue[section.fields[$index + 2].fedcap_fieldapiname]}}">
+                                                    <input type="text" class="form-control sc" ng-if="section.fields[$index + 2].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 2].fedcap_name != 'Opportunity Health Rating'&amp;&amp; section.fields[$index + 2].fedcap_height < 50" style="height:{{section.fields[$index + 2].fedcap_height}}px" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]}}">
+                                                    <textarea ng-if="section.fields[$index + 2].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 2].fedcap_height > 50" ng-style="section.controlwidth" style="height:{{section.fields[$index + 2].fedcap_height}}px" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]}}"></textarea>
+                                                    <input class="sc" ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Boolean'" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" type="checkbox" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]" ng-checked="section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]">
+                                                    <textarea ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Memo'" style="height:{{section.fields[$index + 2].fedcap_height}}px" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Money'" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Decimal'" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Integer'" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 2].fedcap_fieldtype == 'BigInt'" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]}}">
+                                                    <div ng-if="section.fields[$index + 2].fedcap_fieldtype == 'DateTime'" class="sc">
+                                                        <input ng-if="section.fields[$index + 2].fedcap_isreadonly == true" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" style="line-height:16px" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control sc" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]">
+
+                                                        <input ng-if="section.fields[$index + 2].fedcap_isreadonly != true" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control sc" type="text" datepicker-options="dateOptions" is-open="section.fields[$index + 2].fedcap_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]" ng-click="section.fields[$index + 2].fedcap_isopencalendar = !section.fields[$index + 2].fedcap_isopencalendar">
+
+                                                    </div>
+                                                    <select ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Picklist'" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" class="form-control sc" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 2].PickList" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]">
+                                                        <option value="">---</option>
+                                                    </select>
+                                                    <div ng-if="section.fields[$index + 2].fedcap_fieldtype == 'MultiSelectPicklistType'" class="sc">
+                                                        <select id="{{section.fields[$index + 2].fedcap_fieldapiname}}" multiple="multiple" class="mpl_bind sc" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 2].PickList" ng-model="section.fields[$index + 2].MultiPickList"></select>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Lookup' || section.fields[$index + 2].fedcap_fieldtype == 'Customer'" class="sc">
+                                                        <div class="searchicon_td sc">
+                                                            <input id="{{section.fields[$index + 2].fedcap_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index + 2].fedcap_lookupobjecttypecode,section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname])" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control lookup sc" type="text" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]" title="{{section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]}}">
+                                                            <input name="{{section.fields[$index + 2].fedcap_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" id="{{section.fields[$index + 2].fedcap_fieldapiname}}_id" type="hidden">
+                                                            <!--<img class="lookupImg" id="img_lookup_search_{{section.fields[$index + 2].fedcap_fieldapiname}}" src="/_imgs/search_normal.gif" ng-click="OpenLookup(section.fields[$index + 2].fedcap_lookupobjecttypecode,section.fields[$index + 2].fedcap_fieldapiname)">-->
+                                                            <i ng-if="section.fields[$index + 2].fedcap_isreadonly != true" class="fa fa-search searchicon sc" id="img_lookup_search_{{section.fields[$index + 2].fedcap_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index + 2].fedcap_lookupobjecttypecode,section.fields[$index + 2].fedcap_fieldapiname)"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 4th col-->
+                                        <div class="divTableCell sc" ng-if="section.fedcap_sectioncolumn == 4 || section.fedcap_sectioncolumn == 5" title="{{section.fields[$index + 3].fedcap_helptext}}">
+                                            <div class="horline sc">
+                                                <div class="col-md-6 col-xs-12 sc" title="{{section.fields[$index + 3].fedcap_helptext}}" ng-hide="section.fields[$index + 3].fedcap_ishidelabel">
+                                                    <div ng-if="section.fields[$index + 3].fedcap_fieldtype != 'header'">
+                                                        <div ng-if="section.fields[$index + 3].fedcap_fieldtype != 'spacer'">
+                                                            <p class="form-control-static sc">
+                                                                <i ng-if="section.fields[$index + 3].fedcap_sourcetype == '1' || section.fields[$index + 3].fedcap_isreadonly == true" class="fa fa-lock" aria-hidden="true"></i>
+                                                                {{section.fields[$index + 3].fedcap_name}}
+                                                                <span class="star pull-right" title="Required" ng-if="section.fields[$index + 3].fedcap_isrequired ===true">*</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index + 3].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index + 3].fedcap_name}}</b>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-xs-12 sc" ng-if="section.fields[$index + 3].fedcap_name != null">
+                                                    <div ng-if="section.fields[$index + 3].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index + 3].fedcap_fieldapiname}}</b>
+                                                    </div>
+                                                    <img ng-if="section.fields[$index + 3].fedcap_name == 'Opportunity Health Rating'" class="" id="img_calculated_{{section.fields[$index + 3].fedcap_fieldapiname}}" src="{{section.fieldvalue[section.fields[$index + 3].fedcap_fieldapiname]}}">
+                                                    <input type="text" class="form-control sc" ng-if="section.fields[$index + 3].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 3].fedcap_name != 'Opportunity Health Rating'&amp;&amp; section.fields[$index + 3].fedcap_height < 50" style="height:{{section.fields[$index + 3].fedcap_height}}px" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]}}">
+                                                    <textarea ng-if="section.fields[$index + 3].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 3].fedcap_height > 50" ng-style="section.controlwidth" style="height:{{section.fields[$index + 3].fedcap_height}}px" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]}}"></textarea>
+                                                    <input class="sc" ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Boolean'" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" type="checkbox" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]" ng-checked="section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]">
+                                                    <textarea ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Memo'" style="height:{{section.fields[$index + 3].fedcap_height}}px" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Money'" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Decimal'" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Integer'" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 3].fedcap_fieldtype == 'BigInt'" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]}}">
+                                                    <div ng-if="section.fields[$index + 3].fedcap_fieldtype == 'DateTime'">
+                                                        <input ng-if="section.fields[$index + 3].fedcap_isreadonly == true" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" style="line-height:16px" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control sc" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]">
+
+                                                        <input ng-if="section.fields[$index + 3].fedcap_isreadonly != true" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control sc" type="text" datepicker-options="dateOptions" is-open="section.fields[$index + 3].fedcap_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]" ng-click="section.fields[$index + 3].fedcap_isopencalendar = !section.fields[$index + 3].fedcap_isopencalendar">
+
+                                                    </div>
+                                                    <select ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Picklist'" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" class="form-control sc" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 3].PickList" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]">
+                                                        <option value="">---</option>
+                                                    </select>
+                                                    <div class="sc" ng-if="section.fields[$index + 3].fedcap_fieldtype == 'MultiSelectPicklistType'">
+                                                        <select id="{{section.fields[$index + 3].fedcap_fieldapiname}}" multiple="multiple" class="mpl_bind sc" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 3].PickList" ng-model="section.fields[$index + 3].MultiPickList"></select>
+                                                    </div>
+                                                    <div class="sc" ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Lookup' || section.fields[$index + 3].fedcap_fieldtype == 'Customer'">
+                                                        <div class="searchicon_td sc">
+                                                            <input id="{{section.fields[$index + 3].fedcap_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index + 3].fedcap_lookupobjecttypecode,section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname])" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control lookup sc" type="text" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]" title="{{section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]}}">
+                                                            <input name="{{section.fields[$index + 3].fedcap_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" id="{{section.fields[$index + 3].fedcap_fieldapiname}}_id" type="hidden">
+                                                            <!--<img class="lookupImg" id="img_lookup_search_{{section.fields[$index + 3].fedcap_fieldapiname}}" src="/_imgs/search_normal.gif" ng-click="OpenLookup(section.fields[$index + 3].fedcap_lookupobjecttypecode,section.fields[$index + 3].fedcap_fieldapiname)">-->
+                                                            <i ng-if="section.fields[$index + 3].fedcap_isreadonly != true" class="fa fa-search searchicon sc" id="img_lookup_search_{{section.fields[$index + 3].fedcap_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index + 3].fedcap_lookupobjecttypecode,section.fields[$index + 3].fedcap_fieldapiname)"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- 5th col-->
+                                        <div class="divTableCell sc" ng-if="section.fedcap_sectioncolumn == 5" title="{{section.fields[$index + 4].fedcap_helptext}}">
+                                            <div class="horline sc">
+                                                <div class="col-md-6 col-xs-12 sc" title="{{section.fields[$index + 4].fedcap_helptext}}" ng-hide="section.fields[$index + 4].fedcap_ishidelabel">
+                                                    <div ng-if="section.fields[$index + 4].fedcap_fieldtype != 'header'">
+                                                        <div ng-if="section.fields[$index + 4].fedcap_fieldtype != 'spacer'">
+                                                            <p class="form-control-static">
+                                                                <i ng-if="section.fields[$index + 4].fedcap_sourcetype == '1' || section.fields[$index + 4].fedcap_isreadonly == true" class="fa fa-lock" aria-hidden="true"></i>
+                                                                {{section.fields[$index + 4].fedcap_name}}
+                                                                <span class="star pull-right" title="Required" ng-if="section.fields[$index + 4].fedcap_isrequired ===true">*</span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index + 4].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index + 4].fedcap_name}}</b>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-xs-12 sc" ng-if="section.fields[$index + 4].fedcap_name != null">
+                                                    <div ng-if="section.fields[$index + 4].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index + 4].fedcap_fieldapiname}}</b>
+                                                    </div>
+                                                    <img ng-if="section.fields[$index + 4].fedcap_name == 'Opportunity Health Rating'" class="" id="img_calculated_{{section.fields[$index + 4].fedcap_fieldapiname}}" src="{{section.fieldvalue[section.fields[$index + 4].fedcap_fieldapiname]}}">
+                                                    <input type="text" class="form-control sc" ng-if="section.fields[$index + 4].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 4].fedcap_name != 'Opportunity Health Rating'&amp;&amp; section.fields[$index + 4].fedcap_height < 50" style="height:{{section.fields[$index + 4].fedcap_height}}px" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]}}">
+                                                    <textarea ng-if="section.fields[$index + 4].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 4].fedcap_height > 50" ng-style="section.controlwidth" style="height:{{section.fields[$index + 4].fedcap_height}}px" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Boolean'" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" type="checkbox" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]" ng-checked="section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]">
+                                                    <textarea ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Memo'" style="height:{{section.fields[$index + 4].fedcap_height}}px" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Money'" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Decimal'" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Integer'" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 4].fedcap_fieldtype == 'BigInt'" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control sc" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]}}">
+                                                    <div ng-if="section.fields[$index + 4].fedcap_fieldtype == 'DateTime'">
+                                                        <input ng-if="section.fields[$index + 4].fedcap_isreadonly == true" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" style="line-height:16px" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control sc" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]">
+
+                                                        <input ng-if="section.fields[$index + 4].fedcap_isreadonly != true" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control sc" type="text" datepicker-options="dateOptions" is-open="section.fields[$index + 4].fedcap_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]" ng-click="section.fields[$index + 4].fedcap_isopencalendar = !section.fields[$index + 4].fedcap_isopencalendar">
+
+                                                    </div>
+                                                    <select ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Picklist'" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" class="form-control sc" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 4].PickList" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]">
+                                                        <option value="">---</option>
+                                                    </select>
+                                                    <div ng-if="section.fields[$index + 4].fedcap_fieldtype == 'MultiSelectPicklistType'">
+                                                        <select id="{{section.fields[$index + 4].fedcap_fieldapiname}}" multiple="multiple" class="mpl_bind sc" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 4].PickList" ng-model="section.fields[$index + 4].MultiPickList"></select>
+                                                    </div>
+                                                    <div class="sc" ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Lookup' || section.fields[$index + 4].fedcap_fieldtype == 'Customer'">
+                                                        <div class="searchicon_td sc">
+                                                            <input id="{{section.fields[$index + 4].fedcap_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index + 4].fedcap_lookupobjecttypecode,section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname])" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control lookup sc" type="text" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]" title="{{section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]}}">
+                                                            <input name="{{section.fields[$index + 4].fedcap_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" id="{{section.fields[$index + 4].fedcap_fieldapiname}}_id" type="hidden">
+                                                            <!--<img class="lookupImg" id="img_lookup_search_{{section.fields[$index + 4].fedcap_fieldapiname}}" src="/_imgs/search_normal.gif" ng-click="OpenLookup(section.fields[$index + 4].fedcap_lookupobjecttypecode,section.fields[$index + 4].fedcap_fieldapiname)">-->
+                                                            <i ng-if="section.fields[$index + 4].fedcap_isreadonly != true" class="fa fa-search searchicon sc" id="img_lookup_search_{{section.fields[$index + 4].fedcap_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index + 4].fedcap_lookupobjecttypecode,section.fields[$index + 4].fedcap_fieldapiname)"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div ng-if="tab.fedcap_name == 'Intelligence'">
+                                        <!--
+                                        <iframe id="GovWinFBO" style="width:1460px; height:{{section.fedcap_pagecomponentheight}}px; border:none" src="{{section.fedcap_pagecomponentname}}"></iframe>-->
+                                        <!-- GovWin FBO -->
+                                        <iframe id="GovWinFBO" style="width:100%; height:1500px; border:none" src="fedcap_GovWinFBO.html"></iframe>
+                                        <script src="fedcap_GovWinFBO.js" type="text/javascript"></script>
+                                        <script>
+                                            //getFBO();
+                                            //getdetails();
+                                            //getopportunity();
+                                        </script>
+                                    </div>
+                                    <div ng-if="tab.fedcap_name == 'GOVWIN' || tab.fedcap_name == 'GovWin'">
+                                        <!--width:1460px;-->
+                                        <iframe id="idGovWin" style="width:100%; height:1400px; border:none" src="fedcap_GovWin.html"></iframe>
+                                        <!--<script src="GovWinFBO.js" type="text/javascript"></script>-->
+
+                                    </div>
+                                    <div ng-if="tab.fedcap_name == 'FBO'">
+                                        <!--width:1460px;-->
+                                        <iframe id="idFBO" style="width:100%; height:1400px; border:none" src="fedcap_FBO.html"></iframe>
+                                    </div>
+                                    <div ng-if="tab.fedcap_name == 'B &amp; P'">
+                                        <iframe id="idBNP" style="width:100%;height:1400px; border:none" src="/webresources/fedcap_B_and_P.html"></iframe>
+
+                                    </div>
+                                    <div class="" ng-if="tab.fedcap_name== 'PGo' || tab.fedcap_name== 'SGI'">
+                                        <div class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="text-align: -webkit-right;text-align:right">
+                                            <div class="colLab" id="Score_PGo" html-with="100px">
+                                                <label style="background-color:cyan; font-weight:bold; color: black">PGo Score = {{section.pgoquestions.score}}%</label>
+                                            </div>
+                                        </div>
+                                        <div class="tab-content" id="pl_tab_content_PGoContainer">
+                                            <div class="tablewrap">
+                                                <div ng-repeat="pgoque in section.pgoquestions">
+                                                    <div class="queDiv">
+                                                        <label class="labDiv">
+                                                            <a class="bottom_tooltip" style="text-decoration: none; color: inherit" id="{{pgoque.fedcap_pgoquestionid}}" data-que-weighting="{{pgoque.fedcap_weighting}}">
+                                                                <b>{{pgoque.fedcap_name}}</b>
+                                                                <span></span>
+                                                            </a>
+                                                        </label>
+                                                    </div>
+
+                                                    <font color="white"></font>
+                                                    <div>
+                                                        <fieldset style="border: none;">
+                                                            <table class="table" border="0" cellspacing="0" cellpadding="0">
+                                                                <tbody>
+                                                                    <tr ng-repeat="pgoanswer in pgoque.pgoanswers">
+                                                                        <td>
+                                                                            <label style="font-weight:100" ng-if="pgoque.fedcap_answerid == pgoanswer.fedcap_pgoanswerid">
+                                                                                <input name="ans_{{pgoque.fedcap_pgoquestionid}}" id="{{pgoanswer.fedcap_pgoanswerid}}" value="{{pgoanswer.fedcap_weighting}}" type="radio" checked="checked">
+                                                                                {{pgoanswer.fedcap_name}}
+                                                                            </label>
+                                                                            <label style="font-weight:100" ng-if="pgoque.fedcap_answerid != pgoanswer.fedcap_pgoanswerid">
+                                                                                <input name="ans_{{pgoque.fedcap_pgoquestionid}}" id="{{pgoanswer.fedcap_pgoanswerid}}" value="{{pgoanswer.fedcap_weighting}}" type="radio">
+                                                                                {{pgoanswer.fedcap_name}}
+                                                                            </label>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="" ng-if="tab.fedcap_name== 'PWin' || tab.fedcap_name== 'CRS'">
+                                        <div id="tabs">
+                                            <ul class="nav nav-tabs" role="tablist" id="pl_tab_PWinContainer">
+                                                <li class="" ng-class="{'active' : pwintab.id == '0'}" role="presentation" ng-repeat="pwintab in pwintabs">
+                                                    <a aria-controls="home" aria-expanded="" data-toggle="tab" data-tabname="{{pwintab.value}}" href="#phase_{{pwintab.id}}" role="tabpanel" id="PWin_{{pwintab.id}}" ng-click="LoadTabPWin(pwintab.id)">
+                                                        {{pwintab.value}}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content ng-scope" id="pl_tab_content_PWinContainer">
+                                                <div ng-repeat="pwintab in pwintabs" style="overflow:auto" class="tab-pane" ng-class="{'active' : pwintab.id == '0'}" role="tabpanel" id="phase_{{pwintab.id}}">
+                                                    <div class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="text-align: -webkit-right;text-align:right">
+                                                        <div class="colLab" id="Score_{{pwintab.id}}" html-with="100px">
+                                                            <label style="background-color:cyan; font-weight:bold; color: black">{{pwintab.value}} Score = {{pwintab.score}}%</label>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div ng-repeat="question in pwintab.questions" class="divTable">
+                                                            <div class="queDiv">
+                                                                <label class="labDiv">
+                                                                    <a class="bottom_tooltip" title="{{question.fedcap_helptext}}" style="text-decoration: none; color: inherit" id="{{question.fedcap_pwinquestionid}}" data-que-weighting="{{question.fedcap_weighting}}">
+                                                                        <b>{{question.fedcap_sequence}}) {{question.fedcap_name}}</b>
+                                                                        <span></span>
+                                                                    </a>
+                                                                </label>
+                                                            </div>
+                                                            <font color="white"></font>
+                                                            <!--<div>
+                                                                <fieldset style="border: none;">
+                                                                    <table class="table" border="0" cellspacing="0" cellpadding="0">
+                                                                        <tbody>
+                                                                            <tr ng-repeat="answer in question.answers">
+                                                                                <td>
+                                                                                    <label style="font-weight:100" ng-if="question.fedcap_answerid == answer.fedcap_pwinanswerid">
+                                                                                        <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" checked="checked" value="{{answer.fedcap_pwin_weighting}}">
+                                                                                        {{answer.fedcap_name}}
+                                                                                    </label>
+                                                                                    <label style="font-weight:100" ng-if="question.fedcap_answerid != answer.fedcap_pwinanswerid">
+                                                                                        <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" value="{{answer.fedcap_pwin_weighting}}">
+                                                                                        {{answer.fedcap_name}}
+                                                                                    </label>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </fieldset>
+                                                            </div>-->
+                                                            <div ng-if="question.fedcap_questionalign == '2'" class="divTableBody">
+                                                                <!--pwintab.id == '0'-->
+                                                                <fieldset style="border: none;">
+                                                                    <table class="table" border="0" cellspacing="0" cellpadding="0" style="width:auto">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td ng-repeat="answer in question.answers" title="{{answer.fedcap_helptext}}">
+                                                                                    <label style="font-weight:100" ng-if="question.fedcap_answerid == answer.fedcap_pwinanswerid">
+                                                                                        <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" value="{{answer.fedcap_pwin_weighting}}" ng-checked="true">
+                                                                                        {{answer.fedcap_name}}
+                                                                                    </label>
+                                                                                    <label style="font-weight:100" ng-if="question.fedcap_answerid != answer.fedcap_pwinanswerid">
+                                                                                        <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" value="{{answer.fedcap_pwin_weighting}}">
+                                                                                        {{answer.fedcap_name}}
+                                                                                    </label>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </fieldset>
+                                                            </div>
+                                                            <div ng-if="question.fedcap_questionalign != '2'" class="divTableBody">
+                                                                <fieldset style="border: none;">
+                                                                    <table class="table" border="0" cellspacing="0" cellpadding="0" style="width:auto">
+                                                                        <tbody>
+                                                                            <tr ng-repeat="answer in question.answers">
+                                                                                <td title="{{answer.fedcap_helptext}}">
+                                                                                    <label style="font-weight:100" ng-if="question.fedcap_answerid == answer.fedcap_pwinanswerid">
+                                                                                        <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" checked="checked" value="{{answer.fedcap_pwin_weighting}}">
+                                                                                        {{answer.fedcap_name}}
+                                                                                    </label>
+                                                                                    <label style="font-weight:100" ng-if="question.fedcap_answerid != answer.fedcap_pwinanswerid">
+                                                                                        <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" value="{{answer.fedcap_pwin_weighting}}">
+                                                                                        {{answer.fedcap_name}}
+                                                                                    </label>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </fieldset>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- DivTable.com -->
+                            </div>
+                            <div style="width: 100%;" ng-if="section.fedcap_displayborder == 1" class="table-responsive">
+                                <table style="width:100%" border="{{section.fedcap_displayborder}}" cellspacing="0" cellpadding="0" class="table table-bordered">
+                                    <tbody style="padding-top:20px">
+                                        <tr ng-repeat="field in section.fields" ng-if="$index % section.fedcap_sectioncolumn == 0">
+                                            <!-- 1st col-->
+                                            <td align="left" title="{{section.fields[$index].fedcap_helptext}}" ng-hide="section.fields[$index].fedcap_ishidelabel">
+                                                <div ng-if="section.fields[$index].fedcap_fieldtype != 'header'">
+                                                    <div ng-if="section.fields[$index].fedcap_fieldtype != 'spacer'">
+                                                        <p class="form-control-static">
+                                                            <i ng-if="section.fields[$index].fedcap_sourcetype == '1' || section.fields[$index].fedcap_isreadonly == true" class="fa fa-lock" aria-hidden="true"></i>
+                                                            {{section.fields[$index].fedcap_name}}
+                                                            <span class="star pull-right" title="Required" ng-if="section.fields[$index].fedcap_isrequired ===true">*</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="section.fields[$index].fedcap_fieldtype == 'header'">
+                                                    <b style="padding-left: 5px;">{{section.fields[$index].fedcap_name}}</b>
+                                                </div>
+                                            </td>
+                                            <td align="left" valign="middle">
+                                                <div ng-if="section.fields[$index].fedcap_name != null">
+                                                    <div ng-if="section.fields[$index].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index].fedcap_fieldapiname}}</b>
+                                                    </div>
+                                                    <img ng-if="section.fields[$index].fedcap_name == 'Opportunity Health Rating'" class="" id="img_calculated_{{section.fields[$index].fedcap_fieldapiname}}" src="{{section.fieldvalue[section.fields[$index].fedcap_fieldapiname]}}">
+                                                    <input type="text" class="form-control" ng-if="section.fields[$index].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index].fedcap_name != 'Opportunity Health Rating'&amp;&amp; section.fields[$index].fedcap_height < 50" style="height:{{section.fields[$index].fedcap_height}}px" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index].fedcap_fieldapiname]}}">
+                                                    <textarea ng-if="section.fields[$index].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index].fedcap_height > 50" ng-style="section.controlwidth" style="height:{{section.fields[$index].fedcap_height}}px" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index].fedcap_fieldtype == 'Boolean'" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" type="checkbox" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_fieldapiname]" ng-checked="section.fieldValue[section.fields[$index].fedcap_fieldapiname]">
+                                                    <textarea ng-if="section.fields[$index].fedcap_fieldtype == 'Memo'" style="height:{{section.fields[$index].fedcap_height}}px" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index].fedcap_fieldtype == 'Money'" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index].fedcap_fieldtype == 'Decimal'" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index].fedcap_fieldtype == 'Integer'" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index].fedcap_fieldtype == 'BigInt'" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index].fedcap_formattedvalue]}}">
+                                                    <div ng-if="section.fields[$index].fedcap_fieldtype == 'DateTime'">
+                                                        <input ng-if="section.fields[$index].fedcap_isreadonly == true" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" style="line-height:16px" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]">
+
+                                                        <input ng-if="section.fields[$index].fedcap_isreadonly != true" id="{{section.fields[$index].fedcap_fieldapiname}}" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control" type="text" datepicker-options="dateOptions" is-open="section.fields[$index].fedcap_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" ng-click="section.fields[$index].fedcap_isopencalendar = !section.fields[$index].fedcap_isopencalendar">
+
+                                                    </div>
+                                                    <select ng-if="section.fields[$index].fedcap_fieldtype == 'Picklist'" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" class="form-control" id="{{section.fields[$index].fedcap_fieldapiname}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index].PickList" ng-model="section.fieldValue[section.fields[$index].fedcap_fieldapiname]">
+                                                        <option value="">---</option>
+                                                    </select>
+                                                    <div ng-if="section.fields[$index].fedcap_fieldtype == 'MultiSelectPicklistType'">
+                                                        <select id="{{section.fields[$index].fedcap_fieldapiname}}" multiple="multiple" class="mpl_bind" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index].PickList" ng-model="section.fields[$index].MultiPickList"></select>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index].fedcap_fieldtype == 'Lookup' || section.fields[$index].fedcap_fieldtype == 'Customer'">
+                                                        <div class="searchicon_td">
+                                                            <input id="{{section.fields[$index].fedcap_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index].fedcap_lookupobjecttypecode,section.fieldValue[section.fields[$index].fedcap_fieldapiname])" data-label="{{section.fields[$index].fedcap_name}}" ng-readonly="{{section.fields[$index].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index].fedcap_isrequired}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" class="form-control lookup" type="text" ng-model="section.fieldValue[section.fields[$index].fedcap_formattedvalue]" title="{{section.fieldValue[section.fields[$index].fedcap_formattedvalue]}}">
+                                                            <input name="{{section.fields[$index].fedcap_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index].fedcap_fieldapiname]}}" data-webapi="{{section.fields[$index].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index].fedcap_fieldtype}}" id="{{section.fields[$index].fedcap_fieldapiname}}_id" type="hidden">
+                                                            <!--<img class="lookupImg" id="img_lookup_search_{{section.fields[$index].fedcap_fieldapiname}}" src="/_imgs/search_normal.gif" ng-click="OpenLookup(section.fields[$index].fedcap_lookupobjecttypecode,section.fields[$index].fedcap_fieldapiname)">-->
+                                                            <i ng-if="section.fields[$index].fedcap_isreadonly != true" class="fa fa-search searchicon" id="img_lookup_search_{{section.fields[$index].fedcap_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index].fedcap_lookupobjecttypecode,section.fields[$index].fedcap_fieldapiname)"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <!-- 2nd col-->
+
+                                            <td align="left" ng-if="section.fedcap_sectioncolumn == 2 || section.fedcap_sectioncolumn == 3 || section.fedcap_sectioncolumn == 4 || section.fedcap_sectioncolumn == 5" title="{{section.fields[$index +1].fedcap_helptext}}" ng-hide="section.fields[$index + 1].fedcap_ishidelabel">
+                                                <div ng-if="section.fields[$index + 1].fedcap_fieldtype != 'header'">
+                                                    <div ng-if="section.fields[$index + 1].fedcap_fieldtype != 'spacer'">
+                                                        <p class="form-control-static">
+                                                            <i ng-if="section.fields[$index + 1].fedcap_sourcetype == '1' || section.fields[$index + 1].fedcap_isreadonly == true" class="fa fa-lock" aria-hidden="true"></i>
+                                                            {{section.fields[$index + 1].fedcap_name}}
+                                                            <span class="star pull-right" title="Required" ng-if="section.fields[$index + 1].fedcap_isrequired ===true">*</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="section.fields[$index + 1].fedcap_fieldtype == 'header'">
+                                                    <b style="padding-left: 5px;">{{section.fields[$index + 1].fedcap_name}}</b>
+                                                </div>
+                                            </td>
+                                            <td align="left" ng-if="section.fedcap_sectioncolumn == 2 || section.fedcap_sectioncolumn == 3 || section.fedcap_sectioncolumn == 4 || section.fedcap_sectioncolumn == 5">
+                                                <div ng-if="section.fields[$index + 1].fedcap_name != null">
+                                                    <div ng-if="section.fields[$index + 1].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index + 1].fedcap_fieldapiname}}</b>
+                                                    </div>
+                                                    <img ng-if="section.fields[$index + 1].fedcap_name == 'Opportunity Health Rating'" class="" id="img_calculated_{{section.fields[$index + 1].fedcap_fieldapiname}}" src="{{section.fieldvalue[section.fields[$index + 1].fedcap_fieldapiname]}}">
+                                                    <input type="text" class="form-control" ng-if="section.fields[$index + 1].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 1].fedcap_name != 'Opportunity Health Rating'&amp;&amp; section.fields[$index + 1].fedcap_height < 50" style="height:{{section.fields[$index + 1].fedcap_height}}px" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]}}">
+                                                    <textarea ng-if="section.fields[$index + 1].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 1].fedcap_height > 50" ng-style="section.controlwidth" style="height:{{section.fields[$index + 1].fedcap_height}}px" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Boolean'" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" type="checkbox" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]" ng-checked="section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]">
+                                                    <textarea ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Memo'" style="height:{{section.fields[$index + 1].fedcap_height}}px" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Money'" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Decimal'" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Integer'" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 1].fedcap_fieldtype == 'BigInt'" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]}}">
+                                                    <div ng-if="section.fields[$index + 1].fedcap_fieldtype == 'DateTime'">
+                                                        <input ng-if="section.fields[$index + 1].fedcap_isreadonly == true" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" style="line-height:16px" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]">
+
+                                                        <input ng-if="section.fields[$index + 1].fedcap_isreadonly != true" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control" type="text" datepicker-options="dateOptions" is-open="section.fields[$index + 1].fedcap_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]" ng-click="section.fields[$index + 1].fedcap_isopencalendar = !section.fields[$index + 1].fedcap_isopencalendar">
+
+                                                    </div>
+                                                    <select ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Picklist'" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" class="form-control" id="{{section.fields[$index + 1].fedcap_fieldapiname}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 1].PickList" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]">
+                                                        <option value="">---</option>
+                                                    </select>
+                                                    <div ng-if="section.fields[$index + 1].fedcap_fieldtype == 'MultiSelectPicklistType'">
+                                                        <select id="{{section.fields[$index + 1].fedcap_fieldapiname}}" multiple="multiple" class="mpl_bind" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 1].PickList" ng-model="section.fields[$index + 1].MultiPickList"></select>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index + 1].fedcap_fieldtype == 'Lookup' || section.fields[$index + 1].fedcap_fieldtype == 'Customer'">
+                                                        <div class="searchicon_td">
+                                                            <input id="{{section.fields[$index + 1].fedcap_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index + 1].fedcap_lookupobjecttypecode,section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname])" data-label="{{section.fields[$index + 1].fedcap_name}}" ng-readonly="{{section.fields[$index + 1].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 1].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" class="form-control lookup" type="text" ng-model="section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]" title="{{section.fieldValue[section.fields[$index + 1].fedcap_formattedvalue]}}">
+                                                            <input name="{{section.fields[$index + 1].fedcap_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index + 1].fedcap_fieldapiname]}}" data-webapi="{{section.fields[$index + 1].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 1].fedcap_fieldtype}}" id="{{section.fields[$index + 1].fedcap_fieldapiname}}_id" type="hidden">
+                                                            <i ng-if="section.fields[$index + 1].fedcap_isreadonly != true" class="fa fa-search searchicon" id="img_lookup_search_{{section.fields[$index + 1].fedcap_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index + 1].fedcap_lookupobjecttypecode,section.fields[$index + 1].fedcap_fieldapiname)"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <!-- 3rd col-->
+                                            <td align="left" title="{{section.fields[$index + 2].fedcap_helptext}}" ng-if="section.fedcap_sectioncolumn == 3 || section.fedcap_sectioncolumn == 4 || section.fedcap_sectioncolumn == 5" ng-hide="section.fields[$index + 2].fedcap_ishidelabel">
+                                                <div ng-if="section.fields[$index + 2].fedcap_fieldtype != 'header'">
+                                                    <div ng-if="section.fields[$index + 2].fedcap_fieldtype != 'spacer'">
+                                                        <p class="form-control-static">
+                                                            <i ng-if="section.fields[$index + 2].fedcap_sourcetype == '1' || section.fields[$index + 2].fedcap_isreadonly == true" class="fa fa-lock" aria-hidden="true"></i>
+                                                            {{section.fields[$index + 2].fedcap_name}}
+                                                            <span class="star pull-right" title="Required" ng-if="section.fields[$index + 2].fedcap_isrequired ===true">*</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="section.fields[$index + 2].fedcap_fieldtype == 'header'">
+                                                    <b style="padding-left: 5px;">{{section.fields[$index + 2].fedcap_name}}</b>
+                                                </div>
+                                            </td>
+                                            <td align="left" valign="middle" ng-if="section.fedcap_sectioncolumn == 3 || section.fedcap_sectioncolumn == 4 || section.fedcap_sectioncolumn == 5">
+                                                <div ng-if="section.fields[$index + 2].fedcap_name != null">
+                                                    <div ng-if="section.fields[$index + 2].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index + 2].fedcap_fieldapiname}}</b>
+                                                    </div>
+                                                    <img ng-if="section.fields[$index + 2].fedcap_name == 'Opportunity Health Rating'" class="" id="img_calculated_{{section.fields[$index + 2].fedcap_fieldapiname}}" src="{{section.fieldvalue[section.fields[$index + 2].fedcap_fieldapiname]}}">
+                                                    <input type="text" class="form-control" ng-if="section.fields[$index + 2].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 2].fedcap_name != 'Opportunity Health Rating'&amp;&amp; section.fields[$index + 2].fedcap_height < 50" style="height:{{section.fields[$index + 2].fedcap_height}}px" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]}}">
+                                                    <textarea ng-if="section.fields[$index + 2].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 2].fedcap_height > 50" ng-style="section.controlwidth" style="height:{{section.fields[$index + 2].fedcap_height}}px" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Boolean'" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" type="checkbox" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]" ng-checked="section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]">
+                                                    <textarea ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Memo'" style="height:{{section.fields[$index + 2].fedcap_height}}px" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Money'" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Decimal'" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Integer'" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 2].fedcap_fieldtype == 'BigInt'" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]}}">
+                                                    <div ng-if="section.fields[$index + 2].fedcap_fieldtype == 'DateTime'">
+                                                        <input ng-if="section.fields[$index + 2].fedcap_isreadonly == true" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" style="line-height:16px" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]">
+
+                                                        <input ng-if="section.fields[$index + 2].fedcap_isreadonly != true" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control" type="text" datepicker-options="dateOptions" is-open="section.fields[$index + 2].fedcap_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]" ng-click="section.fields[$index + 2].fedcap_isopencalendar = !section.fields[$index + 2].fedcap_isopencalendar">
+
+                                                    </div>
+                                                    <select ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Picklist'" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" class="form-control" id="{{section.fields[$index + 2].fedcap_fieldapiname}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 2].PickList" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]">
+                                                        <option value="">---</option>
+                                                    </select>
+                                                    <div ng-if="section.fields[$index + 2].fedcap_fieldtype == 'MultiSelectPicklistType'">
+                                                        <select id="{{section.fields[$index + 2].fedcap_fieldapiname}}" multiple="multiple" class="mpl_bind" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 2].PickList" ng-model="section.fields[$index + 2].MultiPickList"></select>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index + 2].fedcap_fieldtype == 'Lookup' || section.fields[$index + 2].fedcap_fieldtype == 'Customer'">
+                                                        <div class="searchicon_td">
+                                                            <input id="{{section.fields[$index + 2].fedcap_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index + 2].fedcap_lookupobjecttypecode,section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname])" data-label="{{section.fields[$index + 2].fedcap_name}}" ng-readonly="{{section.fields[$index + 2].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 2].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" class="form-control lookup" type="text" ng-model="section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]" title="{{section.fieldValue[section.fields[$index + 2].fedcap_formattedvalue]}}">
+                                                            <input name="{{section.fields[$index + 2].fedcap_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index + 2].fedcap_fieldapiname]}}" data-webapi="{{section.fields[$index + 2].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 2].fedcap_fieldtype}}" id="{{section.fields[$index + 2].fedcap_fieldapiname}}_id" type="hidden">
+                                                            <i ng-if="section.fields[$index + 2].fedcap_isreadonly != true" class="fa fa-search searchicon" id="img_lookup_search_{{section.fields[$index + 2].fedcap_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index + 2].fedcap_lookupobjecttypecode,section.fields[$index + 2].fedcap_fieldapiname)"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <!-- 4th col-->
+                                            <td align="left" title="{{section.fields[$index + 3].fedcap_helptext}}" ng-if="section.fedcap_sectioncolumn == 4 || section.fedcap_sectioncolumn == 5" ng-hide="section.fields[$index + 3].fedcap_ishidelabel">
+                                                <div ng-if="section.fields[$index + 3].fedcap_fieldtype != 'header'">
+                                                    <div ng-if="section.fields[$index + 3].fedcap_fieldtype != 'spacer'">
+                                                        <p class="form-control-static">
+                                                            <i ng-if="section.fields[$index + 3].fedcap_sourcetype == '1' || section.fields[$index + 3].fedcap_isreadonly == true" class="fa fa-lock" aria-hidden="true"></i>
+                                                            {{section.fields[$index + 3].fedcap_name}}
+                                                            <span class="star pull-right" title="Required" ng-if="section.fields[$index + 3].fedcap_isrequired ===true">*</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="section.fields[$index + 3].fedcap_fieldtype == 'header'">
+                                                    <b style="padding-left: 5px;">{{section.fields[$index + 3].fedcap_name}}</b>
+                                                </div>
+                                            </td>
+                                            <td align="left" valign="middle" ng-if="section.fedcap_sectioncolumn == 4 || section.fedcap_sectioncolumn == 5">
+                                                <div ng-if="section.fields[$index + 3].fedcap_name != null">
+                                                    <div ng-if="section.fields[$index + 3].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index + 3].fedcap_fieldapiname}}</b>
+                                                    </div>
+                                                    <img ng-if="section.fields[$index + 3].fedcap_name == 'Opportunity Health Rating'" class="" id="img_calculated_{{section.fields[$index + 3].fedcap_fieldapiname}}" src="{{section.fieldvalue[section.fields[$index + 3].fedcap_fieldapiname]}}">
+                                                    <input type="text" class="form-control" ng-if="section.fields[$index + 3].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 3].fedcap_name != 'Opportunity Health Rating'&amp;&amp; section.fields[$index + 3].fedcap_height < 50" style="height:{{section.fields[$index + 3].fedcap_height}}px" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]}}">
+                                                    <textarea ng-if="section.fields[$index + 3].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 3].fedcap_height > 50" ng-style="section.controlwidth" style="height:{{section.fields[$index + 3].fedcap_height}}px" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Boolean'" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" type="checkbox" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]" ng-checked="section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]">
+                                                    <textarea ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Memo'" style="height:{{section.fields[$index + 3].fedcap_height}}px" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Money'" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Decimal'" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Integer'" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 3].fedcap_fieldtype == 'BigInt'" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]}}">
+                                                    <div ng-if="section.fields[$index + 3].fedcap_fieldtype == 'DateTime'">
+                                                        <input ng-if="section.fields[$index + 3].fedcap_isreadonly == true" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" style="line-height:16px" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]">
+
+                                                        <input ng-if="section.fields[$index + 3].fedcap_isreadonly != true" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control" type="text" datepicker-options="dateOptions" is-open="section.fields[$index + 3].fedcap_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]" ng-click="section.fields[$index + 3].fedcap_isopencalendar = !section.fields[$index + 3].fedcap_isopencalendar">
+
+                                                    </div>
+                                                    <select ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Picklist'" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" class="form-control" id="{{section.fields[$index + 3].fedcap_fieldapiname}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 3].PickList" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]">
+                                                        <option value="">---</option>
+                                                    </select>
+                                                    <div ng-if="section.fields[$index + 3].fedcap_fieldtype == 'MultiSelectPicklistType'">
+                                                        <select id="{{section.fields[$index + 3].fedcap_fieldapiname}}" multiple="multiple" class="mpl_bind" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 3].PickList" ng-model="section.fields[$index + 3].MultiPickList"></select>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index + 3].fedcap_fieldtype == 'Lookup' || section.fields[$index + 3].fedcap_fieldtype == 'Customer'">
+                                                        <div class="searchicon_td">
+                                                            <input id="{{section.fields[$index + 3].fedcap_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index + 3].fedcap_lookupobjecttypecode,section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname])" data-label="{{section.fields[$index + 3].fedcap_name}}" ng-readonly="{{section.fields[$index + 3].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 3].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" class="form-control lookup" type="text" ng-model="section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]" title="{{section.fieldValue[section.fields[$index + 3].fedcap_formattedvalue]}}">
+                                                            <input name="{{section.fields[$index + 3].fedcap_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index + 3].fedcap_fieldapiname]}}" data-webapi="{{section.fields[$index + 3].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 3].fedcap_fieldtype}}" id="{{section.fields[$index + 3].fedcap_fieldapiname}}_id" type="hidden">
+                                                            <i ng-if="section.fields[$index + 3].fedcap_isreadonly != true" class="fa fa-search searchicon" id="img_lookup_search_{{section.fields[$index + 3].fedcap_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index + 3].fedcap_lookupobjecttypecode,section.fields[$index + 3].fedcap_fieldapiname)"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <!-- 5th col-->
+                                            <td align="left" title="{{section.fields[$index + 4].fedcap_helptext}}" ng-if="section.fedcap_sectioncolumn == 5" ng-hide="section.fields[$index + 4].fedcap_ishidelabel">
+                                                x
+                                                + 4].fedcap_name}}--&gt;
+                                                <div ng-if="section.fields[$index + 4].fedcap_fieldtype != 'header'" <div="">
+                                                    <div ng-if="section.fields[$index + 4].fedcap_fieldtype != 'spacer'">
+                                                        <p class="form-control-static">
+                                                            <i ng-if="section.fields[$index + 4].fedcap_sourcetype == '1' || section.fields[$index + 4].fedcap_isreadonly == true" class="fa fa-lock" aria-hidden="true"></i>
+                                                            {{section.fields[$index + 4].fedcap_name}}
+                                                            <span class="star pull-right" title="Required" ng-if="section.fields[$index + 4].fedcap_isrequired ===true">*</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="section.fields[$index + 4].fedcap_fieldtype == 'header'">
+                                                    <b style="padding-left: 5px;">{{section.fields[$index + 4].fedcap_name}}</b>
+                                                </div>
+                                            </td>
+                                            <td align="left" valign="middle" ng-if="section.fedcap_sectioncolumn == 5">
+                                                <div ng-if="section.fields[$index + 4].fedcap_name != null">
+                                                    <div ng-if="section.fields[$index + 4].fedcap_fieldtype == 'header'">
+                                                        <b style="padding-left: 5px;">{{section.fields[$index + 4].fedcap_fieldapiname}}</b>
+                                                    </div>
+                                                    <img ng-if="section.fields[$index + 4].fedcap_name == 'Opportunity Health Rating'" class="" id="img_calculated_{{section.fields[$index + 4].fedcap_fieldapiname}}" src="{{section.fieldvalue[section.fields[$index + 4].fedcap_fieldapiname]}}">
+                                                    <input type="text" class="form-control" ng-if="section.fields[$index + 4].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 4].fedcap_name != 'Opportunity Health Rating'&amp;&amp; section.fields[$index + 4].fedcap_height < 50" style="height:{{section.fields[$index + 4].fedcap_height}}px" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]}}">
+                                                    <textarea ng-if="section.fields[$index + 4].fedcap_fieldtype == 'String' &amp;&amp; section.fields[$index + 4].fedcap_height > 50" ng-style="section.controlwidth" style="height:{{section.fields[$index + 4].fedcap_height}}px" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Boolean'" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" type="checkbox" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]" ng-checked="section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]">
+                                                    <textarea ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Memo'" style="height:{{section.fields[$index + 4].fedcap_height}}px" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]" title="{{section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]}}"></textarea>
+                                                    <input ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Money'" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Decimal'" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Integer'" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]}}">
+                                                    <input ng-if="section.fields[$index + 4].fedcap_fieldtype == 'BigInt'" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]}}">
+                                                    <div ng-if="section.fields[$index + 4].fedcap_fieldtype == 'DateTime'">
+                                                        <input ng-if="section.fields[$index + 4].fedcap_isreadonly == true" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" style="line-height:16px" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]">
+
+                                                        <input ng-if="section.fields[$index + 4].fedcap_isreadonly != true" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control" type="text" datepicker-options="dateOptions" is-open="section.fields[$index + 4].fedcap_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]" ng-click="section.fields[$index + 4].fedcap_isopencalendar = !section.fields[$index + 4].fedcap_isopencalendar">
+
+                                                    </div>
+                                                    <select ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Picklist'" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" class="form-control" id="{{section.fields[$index + 4].fedcap_fieldapiname}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 4].PickList" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]">
+                                                        <option value="">---</option>
+                                                    </select>
+                                                    <div ng-if="section.fields[$index + 4].fedcap_fieldtype == 'MultiSelectPicklistType'">
+                                                        <select id="{{section.fields[$index + 4].fedcap_fieldapiname}}" multiple="multiple" class="mpl_bind" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index + 4].PickList" ng-model="section.fields[$index + 4].MultiPickList"></select>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index + 4].fedcap_fieldtype == 'Lookup' || section.fields[$index + 4].fedcap_fieldtype == 'Customer'">
+                                                        <div class="searchicon_td">
+                                                            <input id="{{section.fields[$index + 4].fedcap_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index + 4].fedcap_lookupobjecttypecode,section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname])" data-label="{{section.fields[$index + 4].fedcap_name}}" ng-readonly="{{section.fields[$index + 4].fedcap_isreadonly}}" data-isrequired="{{section.fields[$index + 4].fedcap_isrequired}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" class="form-control lookup" type="text" ng-model="section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]" title="{{section.fieldValue[section.fields[$index + 4].fedcap_formattedvalue]}}">
+                                                            <input name="{{section.fields[$index + 4].fedcap_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index + 4].fedcap_fieldapiname]}}" data-webapi="{{section.fields[$index + 4].fedcap_viewfieldapi}}" data-fieldtype="{{section.fields[$index + 4].fedcap_fieldtype}}" id="{{section.fields[$index + 4].fedcap_fieldapiname}}_id" type="hidden">
+                                                            <i ng-if="section.fields[$index + 4].fedcap_isreadonly != true" class="fa fa-search searchicon" id="img_lookup_search_{{section.fields[$index + 4].fedcap_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index + 4].fedcap_lookupobjecttypecode,section.fields[$index + 4].fedcap_fieldapiname)"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="" ng-if="tab.fedcap_name == 'PWin' || tab.fedcap_name == 'CRS' || tab.fedcap_name == 'PGo' || tab.fedcap_name == 'SGI'">
+                            <!--style="display:none"-->
+                            <table class="table" border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                    <tr>
+                                        <td align="right" valign="middle">
+                                            <button name="submit" title="Submit" style="float:right" class="btn btn-primary sc" id="btnBottomSave_{{tab.fedcap_apinameforcongafield}}" value="save" ng-click="saveForm(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name)" ng-disabled="approvalStatusLock">Save</button> <!--ng-disabled="!myForm.modified"-->
+                                        </td>
+                                        <td align="left" valign="middle">
+                                            <button name="submit" title="Cancel" class="btn btn-primary sc" id="btnBottomCancel_{{tab.fedcap_apinameforcongafield}}" value="Cancel" ng-click="cancelDetails(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name,tab)" ng-disabled="approvalStatusLock">Cancel</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding-top:5px">
+                    <!--<button name="submit" title="Submit" style="margin-left:35%" class="btn btn-primary sc" id="btnBottomSave" value="save" ng-click="saveData()" ng-disabled="approvalStatusLock">Save</button>-->
+                    <!--<button name="submit" title="Submit" style="margin-right:35%" class="btn btn-primary sc" id="btnBottomCancel" value="cancel" ng-click="CancelAndRefresh()" ng-disabled="approvalStatusLock">Cancel</button>-->
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <!--<script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap_datepicker.min.js"></script>-->
+    <script src="fedcap_jquery.min.js"></script>
+    <script src="fedcap_bootstrap.min.js"></script>
+    <link href="fedcap_bootstrap_multiselect.css" rel="stylesheet">
+    <script src="fedcap_bootstrap_multiselect.js"></script>
+    <script src="fedcap_SecurityRolesOnOpportunity_2.0.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            setTimeout(function myfunction() {
+                $('.mpl_bind').multiselect({
+                    nonSelectedText: '---',
+                    buttonWidth: 150,
+                    enableFiltering: true
+                });
+            }, 3500);
+        });
+        //$(document.body).on('mouseover', '#new_designation', function () { // for IE and Edge
+        //    alert('mouseover');
+        //    $('#new_designation').multiselect({
+        //        nonSelectedText: '---',
+        //        buttonWidth: 250,
+        //        enableFiltering: true
+        //    });
+        //});
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+
+            //$(".datePicker span.add-on").click(function () {
+
+            //    $(".dp1 input").css('border-color', '#000');
+            //});
+
+            //$('.datePicker')
+            //    .datepicker({
+            //        format: 'mm/dd/yyyy'
+            //    })
+            //    .on('changeDate', function (e) {
+            //        // Revalidate the date field
+            //        $('#eventForm').formValidation('revalidateField', 'date');
+            //    });
+
+            /*$('#eventForm').formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The name is required'
+                            }
+                        }
+                    },
+                    date: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The date is required'
+                            },
+                            date: {
+                                format: 'MM/DD/YYYY',
+                                message: 'The date is not a valid'
+                            }
+                        }
+                    }
+                }
+            });*/
+        });
+        //window.addEventListener('touchmove', function (event) {
+        //    event.preventDefault()
+        //}, false)
+        //document.querySelector('.mainContainer').addEventListener('touchmove', function (event) {
+        //    event.stopPropagation()
+        //}, false)
+    </script>
+    <style>
+        .mpl_bind {
+            width: 100%;
+        }
+
+        @media {
+            .GovWinFBO {
+                /*width:auto;*/
+            }
+        }
+    </style>
+
+
+
+</body>
+</html>

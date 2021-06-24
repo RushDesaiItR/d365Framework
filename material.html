@@ -1,0 +1,185 @@
+<html>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.12/angular-material.min.css">
+  <head>
+ 
+    <!--
+      Your HTML content here
+    -->  
+    
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.6/angular-messages.min.js"></script>
+  
+    <!-- Angular Material Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.12/angular-material.min.js"></script>
+    
+     <style>
+                 .opportunity-summary-form-group-contract-type {
+            display: flex;
+            flex-direction: row;
+            flex: 1;
+            border: 2px solid red;
+        }
+
+        .contract-type-scroll-view:nth-of-type(1) {
+            height: 100px;
+            overflow-y: scroll;
+            flex-grow: 4;
+            border: 1px solid #9fa5b5;
+        }
+
+        .contract-type-scroll-view:nth-of-type(3) {
+            height: 200px;
+            overflow-y: scroll;
+            flex-grow: 4;
+            border: 1px solid #9fa5b5;
+        }
+
+        .contract-type-scroll-icons {
+            height: 200px;
+            flex-grow: 1;
+            position: relative;
+            /*	align-items: center;
+ 	flex-direction: column;
+ 	justify-content: space-between;*/
+            /*margin: auto;*/
+        }
+
+        .arrow-right {
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 10px solid green;
+            margin: 0;
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+
+        .arrow-left {
+            cursor: pointer;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 10px solid #b01f3f;
+            margin: auto;
+            margin: 0;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+     </style>
+       
+   </head>
+   
+   <body> 
+      
+       <div ng-controller="SelectOptGroupController" ng-cloak="" ng-app="MyApp">
+   
+    <div
+        class="opportunity-summary-form-group-contract-type">
+        <div class="contract-type-scroll-view" 
+            ng-model="selectedToppings" multiple=""
+            style="display: flex;flex-direction: column;">
+            
+                <span class="contract-type-item" ng-repeat="topping in toppings">
+                    {{topping.name}}
+                </span>
+            
+        </div>
+        <div class="contract-type-scroll-icons">
+            <div class="arrow-right"></div>
+            <div class="arrow-left"></div>
+        </div>
+        <div class="contract-type-scroll-view"
+            style="display: flex;flex-direction: column;">
+            <span class="contract-type-item">
+              pppp  {{printSelectedToppings()}}
+            </span>
+        </div>
+    </div>
+       
+       
+       
+        <br/>
+       
+       
+        <div>
+
+          <div layout="row">
+           
+            <md-input-container>
+              <label>Toppings</label>
+              <md-select ng-model="selectedToppings" multiple="">
+                <md-optgroup label="Meats">
+                  <md-option ng-value="topping.name" ng-repeat="topping in toppings | filter: {category: 'meat'}">
+                    {{topping.name}}
+                </md-option>
+                </md-optgroup>
+                <md-optgroup label="Veggies">
+                  <md-option ng-value="topping.name" ng-repeat="topping in toppings | filter: {category: 'veg'}">
+                    {{topping.name}}</md-option>
+                </md-optgroup>
+              </md-select>
+            </md-input-container>
+          </div>
+          <p ng-if="selectedToppings">You ordered a {{size.toLowerCase()}} pizza with
+          {{printSelectedToppings()}}.</p>
+        </div>
+      </div>
+      <script>
+          angular
+    .module('MyApp', ['ngMaterial', 'ngMessages', 'material.svgAssetsCache'])
+    .controller('SelectOptGroupController', function($scope) {
+
+      $scope.toppings = [
+        { category: 'meat', name: 'Pepperoni' },
+        { category: 'meat', name: 'Sausage' },
+        { category: 'meat', name: 'Ground Beef' },
+        { category: 'meat', name: 'Bacon' },
+        { category: 'veg', name: 'Mushrooms' },
+        { category: 'veg', name: 'Onion' },
+        { category: 'veg', name: 'Green Pepper' },
+        { category: 'veg', name: 'Green Olives' }
+      ];
+      $scope.selectedToppings = [];
+      $scope.printSelectedToppings = function printSelectedToppings() {
+        var numberOfToppings = this.selectedToppings.length;
+     if (numberOfToppings > 1) {
+          var needsOxfordComma = numberOfToppings > 2;
+          var lastToppingConjunction = (needsOxfordComma ? ',' : '') + ' and ';
+          var lastTopping = lastToppingConjunction +
+              this.selectedToppings[this.selectedToppings.length - 1];
+          return this.selectedToppings.slice(0, -1).join(', ') + lastTopping;
+        }
+
+        return this.selectedToppings.join('');
+      };
+    });
+
+
+/**
+Copyright 2020 Google LLC. All Rights Reserved. 
+Use of this source code is governed by an MIT-style license that can be found
+in the LICENSE file at http://material.angularjs.org/HEAD/license.
+**/
+      </script>
+      
+      <!--
+      Copyright 2020 Google LLC. All Rights Reserved. 
+      Use of this source code is governed by an MIT-style license that can be found
+      in the LICENSE file at http://material.angularjs.org/HEAD/license.
+      -->
+   </body>
+</html>

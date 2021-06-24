@@ -1,0 +1,272 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: rgb(242, 242, 242);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --blue: #282461;
+  --primary-white: #ffffff;
+  --green: #59a30f;
+  --primary-purple: rgba(176, 30, 67, 255);
+  --primary-gray: #585a81;
+  --orange: #c95e13;
+  --gray: #858ca1;
+  --text: #757475;
+  --tab-border: #d8d9d9;
+}
+
+.gate-container {
+  padding: 40px;
+}
+
+.gate-row {
+  display: flex;
+  flex: 1;
+}
+
+.gate-menus {
+  flex: 1;
+}
+
+/* -----------------------Left menus----------------------------- */
+
+.gate-menus {
+  display: block;
+}
+
+.gate-menu {
+  border-radius: 10px;
+  margin: 20px 0;
+  padding: 20px 40px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background: var(--primary-white);
+  cursor: pointer;
+}
+
+.gate-menus-inner {
+  text-align: center;
+}
+
+.gate-menus-inner h3 {
+  color: var(--primary-gray);
+}
+
+/* -------------------------Active Menu-------------------- */
+
+.gate-menu-active {
+  background-color: var(--blue);
+  color: var(--primary-white);
+  position: relative;
+}
+
+.gate-menus-active-header {
+  color: var(--green);
+}
+
+.gate-menu-active::after {
+  content: "";
+  position: absolute;
+  right: -14px;
+  top: 45%;
+  align-items: center;
+  width: 0;
+  height: 0;
+  border-top: 7px solid transparent;
+  border-left: 14px solid var(--blue);
+  border-bottom: 7px solid transparent;
+  /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+}
+
+/*-----------Orange Menu-----------------------------------*/
+
+.gate-menu-orange {
+  color: var(--orange);
+}
+
+/*-----------Green Menu-----------------------------------*/
+
+.gate-menu-green {
+  color: var(--green);
+}
+
+/*-----------Purple Menu-----------------------------------*/
+
+.gate-menu-purple {
+  color: var(--primary-purple);
+}
+
+/* ---------------------------------Range------------------ */
+
+/*--------------------------------- right item -------*/
+
+.gate-items {
+  flex: 2;
+  margin: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  background: var(--primary-white);
+  border-radius: 10px;
+  padding: 10px 30px;
+}
+
+.gate-item-inner {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.gate-item {
+  width: 45%;
+  margin: 0 10px 0 0;
+}
+
+.gate-item h3 {
+  color: var(--text);
+}
+
+/* .form-box{
+	max-width: 400px;
+	background-color: rgba(255,255,255,0.1);
+	margin:150px auto;
+	padding:40px;
+	border-radius: 8px;
+} */
+
+.form-box label input {
+  display: none;
+}
+
+.form-box label {
+  display: flex;
+  cursor: pointer;
+  margin-bottom: 30px;
+  padding-left: 55px;
+  position: relative;
+}
+
+.form-box label .circle {
+  height: 20px;
+  width: 20px;
+  border: 2px solid rgba(176, 30, 67, 255);
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: -5px;
+  transition: border-color .5s ease;
+}
+
+.form-box label .circle::before {
+  content: '';
+  height: 10px;
+  width: 10px;
+  background-color: rgba(176, 30, 67, 255);
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  box-sizing: border-box;
+  margin-left: 3px;
+  margin-top: 3px;
+  transition: transform .5s ease;
+  transform: scale(0);
+}
+
+.form-box label span {
+  font-size: 15px;
+  color: var(--gray);
+  display: inline-block;
+  transition: color .5s ease;
+}
+
+.form-box label input:checked+.circle {
+  border-color: rgba(176, 30, 67, 255);
+}
+
+.form-box label input:checked+.circle::before {
+  transform: scale(1);
+}
+
+.form-box label input:checked+.circle+span {
+  color: var(--gray);
+  ;
+}
+
+/* -------------------------------------progress bar -----------------*/
+
+.container-progressbar {
+  background-color: rgb(192, 192, 192);
+  width: 80%;
+  position: relative;
+}
+
+.skill {
+  color: white;
+  padding: 1%;
+  text-align: right;
+  font-size: 20px;
+}
+
+.skill-message {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 15px 15px;
+  top: -14px;
+  border-radius: 360%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  color: white;
+}
+
+.skill-message i {
+  font-size: 10px;
+}
+
+/*------------------------ Button---------------- */
+
+.btn-row {
+  display: flex;
+  align-item: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.btn {
+  outline: none;
+  border: none;
+  background: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  background: var(--primary-purple);
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  cursor: pointer;
+}
+
+/* -------------------Top Tab----------------------- */
+
+.tab-container {
+  display: flex;
+  border: 2px solid var(--tab-border);
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.tab-container span {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.active-tab {
+  background: var(--blue);
+  color: white;
+}
