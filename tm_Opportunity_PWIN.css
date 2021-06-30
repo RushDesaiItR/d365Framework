@@ -44,6 +44,15 @@ body {
     --tab-border: #d8d9d9;
 }
 
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
+  
 .gate-container {
     padding: 20px;
 }
@@ -148,16 +157,21 @@ body {
 }
 
 .gate-item-inner {
-    width: 100%;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    align-items: baseline;
+    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
 }
 
 .gate-item {
-    width: 45%;
-    margin: 0 10px 0 0;
+   
+        -ms-flex: 0 0 41.666667%;
+        flex: 0 0 41.666667%;
+        max-width: 41.666667%;
+      
+      
 }
 
 .gate-item h3 {

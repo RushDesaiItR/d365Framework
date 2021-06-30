@@ -13,7 +13,7 @@
 			<div class="spot-column">
 				
               <div class="spot-light-form-group"  ng-repeat="question in Questions track by $index" 
-                   ng-if="question.id < 7">
+                   ng-if="$index % 2 == 0">
 					<h3>{{question.question}}</h3>
 					<div class="radio-conainer">
 						<label ng-repeat="answer in question.answers" ng-if="answer.ans1=='yellow'">
@@ -42,7 +42,7 @@
 			<div class="spot-column">
 				
               <div class="spot-light-form-group" ng-repeat="question in Questions track by $index" 
-                   ng-if="question.id > 6">
+                   ng-if="$index % 2 != 0">
 					<h3>{{question.question}}</h3>
 					<div class="radio-conainer">
 						<label ng-repeat="answer in question.answers" ng-if="answer.ans1=='yellow'">
@@ -66,7 +66,7 @@
 		</div>
 
 		<div class="spot-light-color-info">
-      <input type="submit" name="" ng-click="submit(radiobtn)">
+     
 			<div>
 				<h4 style="color:#ffc820">Yellow</h4>
 				<h6>Program Understanding</h6>

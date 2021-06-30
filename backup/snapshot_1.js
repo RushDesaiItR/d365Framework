@@ -245,7 +245,32 @@
                 //$scope.tabs.tabAllMPLFields = $scope.tabs.tabAllMPLFields + ',' + selectQryforMultiPickList;
             }
             //************************************************************************************************
-            console.log($scope.tabs.sections)
+            for (var i = 0; i < $scope.tabs.sections.length; i++) {
+                for (var k = 0; k < $scope.tabs.sections[i].fields.length; k++) {
+                    if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'Picklist' && $scope.tabs.sections[i].fields[k].tm_fieldapiname == 'fedcap_pwin') {
+                        setRange($scope.tabs.sections[i].fields[k], k)
+
+                    }
+                    
+                }
+            }
+        }
+
+
+
+        function setRange(i, k) {
+          
+            angular.element(document).ready(function () {
+                var rangeSelector = document.querySelector("#rangeSelector_" + k);
+                document.querySelector("#rangeSelector_value_" + k).innerHTML = rangeSelector.value + "%"
+                rangeSelector.step = 10;
+                rangeSelector.style.background = 'linear-gradient(90deg, #59a30f ' + rangeSelector.value + '%,#f6f7f7 0%)'
+                rangeSelector.oninput = function () {
+                    rangeSelector.style.background = 'linear-gradient(90deg, #59a30f ' + rangeSelector.value + '%,#f6f7f7 0%)';
+                    document.querySelector("#rangeSelector_value_" + k).innerHTML = rangeSelector.value + "%"
+                }
+
+            });
         }
         // Added by Nitin A :: To get Dependant Child option label from Parent Picklist option label 
         function LoadDependentPicklistOptionSetLabel(parentPicklist, childPicklistName) {
@@ -800,7 +825,6 @@
                         if (isMultiPickListExist) {
                             //MultiPickListBind(selectQryforMultiPickList, tab, section, fieldIds);
                         }
-                       s
                         $scope.$apply();
                     },
                     function fail(respose) {
@@ -868,7 +892,6 @@
                         });
                         //$scope.tabs.sections[section].fields[field].PickList.push({ "id": result.OptionSet.Options[i].Value, "value": result.OptionSet.Options[i].Label.LocalizedLabels[0].Label, "color": result.OptionSet.Options[i].Color, "title": result.OptionSet.Options[i].Description.LocalizedLabels[0].Label })
                     }
-                    console.log($scope.tabs.sections)
                     $scope.$apply();
                 },
                 (error) => {
@@ -1031,7 +1054,6 @@
             return currencysymbol;
         }
         function getEntityAllFields(selectQry) {
-            console.log($scope.HeaderFields)
             try {
                 Xrm.WebApi.retrieveRecord(EntityName, OID, "?$select=" + selectQry + "").then(
                     function success(entitydata) {
@@ -1067,7 +1089,6 @@
                             }
                             // $scope.HeaderFields[$scope.HeaderFields.length] = array;
                         }
-                       s
                         $scope.$apply();
                     },
                     function fail(respose) {

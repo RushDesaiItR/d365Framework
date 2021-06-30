@@ -1,0 +1,155 @@
+<html><head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script language="javascript" src="tm_DynamicController_Pwin.js"></script>
+    <script src="tm_/js/SDK.MetaData.js"></script>
+    <link rel="stylesheet" href="./tm_Opportunity_PWIN.css">
+    <meta>
+    <meta>
+<meta></head>
+
+<body ng-app="PwinApp" ng-init="activeQuestion(0)" ng-controller="PwinDynamicController" id="top" style="overflow-wrap: break-word;" onfocusout="parent.setEmailRange();" data-new-gr-c-s-loaded="14.1018.0" spellcheck="false">
+    <div class="gate-container" style="font-family: undefined;">
+        <div class="gate-row">
+            <div class="gate-menus" id="tabs" role="tablist">
+                <div ng-repeat="pwintab in pwintabs" class="mobile">
+                    <div class="gate-menu" ng-class="{'gate-menu-active' : pwintab.id == screenId}" ng-click="setScreen(pwintab.id);LoadTabPWin(pwintab.id);">
+                        <div class="gate-menus-inner">
+                            <div>
+                                <h4>{{pwintab.value}}</h4>
+                                <h4 id="mobile-header" ng-style="pwintab.score >= 60 &amp;&amp; {'color':'#59a30f'} || pwintab.score > 0 &amp;&amp; pwintab.score < 60 &amp;&amp; {'color':'rgba(201,94,19,255)'} || pwintab.score === 0 &amp;&amp; {'color':'rgba(176,30,67,255)'}">
+                                    P-WIN:{{pwintab.score}}%
+                                </h4>
+                                <h3>
+                                    Question Progress {{pwintab.score}}%
+                                </h3>
+                            </div>
+                            <i class="fa fa-plus accorian-icon" ng-if="pwintab.collapse==false" aria-hidden="true"></i>
+                            <i class="fa fa-minus accorian-icon" ng-if="pwintab.collapse==true" aria-hidden="true"></i>
+                            <div class="container-progressbar">
+                                <div class="skill" ng-show="width > 1000" s="" ng-style="pwintab.score >= 60 &amp;&amp; {'background-color':'#59a30f', 'width':pwintab.score + '%'} || pwintab.score > 0 &amp;&amp; pwintab.score < 60 &amp;&amp; {'background-color':'rgba(201,94,19,255)', 'width':pwintab.score + '%'} || pwintab.score === 0 &amp;&amp; {'background-color':'rgba(176,30,67,255)', 'width':'1%'}">
+                                </div>
+                                <div class="skill-message" ng-style="pwintab.score >= 60 &amp;&amp; {'left':pwintab.score + '%', 'background-color':'#59a30f'} || pwintab.score > 0 &amp;&amp; pwintab.score < 60 &amp;&amp; {'background-color':'rgba(201,94,19,255)', 'left':pwintab.score + '%'} || pwintab.score === 0 &amp;&amp; {'background-color':'rgba(176,30,67,255)', left:'1%'}">
+                                    <i ng-if="pwintab.score === 0" class="fa fa-arrow-down" aria-hidden="true"></i>
+                                    <i ng-if="pwintab.score >= 60" class="fa fa-check" aria-hidden="true"></i>
+                                    <i ng-if="pwintab.score > 0 &amp;&amp; pwintab.score < 60" class="fa fa-exclamation" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ng-style="pwintab.collapse==true == true && {'background-color':'white', 'padding':'20px', 'margin':'20px'}" -->
+                    <form name="myForm" novalidate="" autocomplete="off">
+                         <div ng-repeat="tab in activeQuestionsArray" id="accoridan-content" class="collapse-false" ng-class="{'collapse-true':pwintab.collapse==true, 'collapse-false':collapse==false} ">
+                        <center>
+                            <h3 ng-if="!tab.questions" style="font-size: 20px;color: rgba(176, 30, 67, 255);text-align: center;">
+                                No Questions In This Tab
+                            </h3>
+                        </center>
+                        <div class="btn-row">
+                            <button name="submit" title="Submit" class="btn" id="btnBottomSave_{{tab.fedcap_apinameforcongafield}}" value="save" ng-click="saveForm(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name)" ng-disabled="approvalStatusLock">Save</button> <!--ng-disabled="!myForm.modified"-->
+                            <!-- <button class="btn">Save</button> -->
+                        </div>
+                        <div ng-repeat="question in tab.questions">
+                            <h3> {{question.fedcap_sequence}}) {{question.fedcap_name}} </h3>
+                            <div class="form-box" ng-repeat="answer in question.answers">
+                                <label ng-if="question.fedcap_answerid == answer.fedcap_pwinanswerid">
+                                    <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" checked="checked" value="{{answer.fedcap_pwin_weighting}}">
+                                    <div class="circle"></div>
+                                    <span>{{answer.fedcap_name}}</span>
+                                </label>
+                                <label ng-if="question.fedcap_answerid != answer.fedcap_pwinanswerid">
+                                    <input type="radio" name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" value="{{answer.fedcap_pwin_weighting}}">
+                                    <div class="circle"></div>
+                                    <span>{{answer.fedcap_name}}</span>
+                                </label>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="btn-row">
+                            <button name="submit" title="Submit" class="btn" id="btnBottomSave_{{tab.fedcap_apinameforcongafield}}" value="save" ng-click="saveForm(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name)" ng-disabled="approvalStatusLock">Save</button> <!--ng-disabled="!myForm.modified"-->
+                            <!-- <button class="btn">Save</button> -->
+                        </div>
+                         </div>
+                     </form>   
+                </div>
+
+            </div>
+            <div class="gate-items" id="gate-items" style="height: 800px;overflow-y: scroll;">
+                <form name="myForm" novalidate="" autocomplete="off">
+                <center>
+                    <h3 ng-if="!activeQuestionsArray[0].questions" style="font-size: 20px;color: rgba(176, 30, 67, 255);text-align: center;">
+                        No Questions In This Tab
+                    </h3>
+                </center>
+                <div class="gate-item-inner">
+                    <div class="btn-row">
+                        <button name="submit" title="Submit" class="btn" id="btnBottomSave_{{tab.fedcap_apinameforcongafield}}" value="save" ng-click="saveForm(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name)" ng-disabled="approvalStatusLock">Save</button> <!--ng-disabled="!myForm.modified"-->
+                        <!-- <button class="btn">Save</button> -->
+                    </div>
+					<div class="col-6">
+					</div>
+                    <div class="gate-item" ng-repeat="question in activeQuestionsArray[0].questions">
+                        <h3> {{question.fedcap_sequence}}) {{question.fedcap_name}} </h3>
+                        <div class="form-box" ng-repeat="answer in question.answers">
+                            <label ng-if="question.fedcap_answerid == answer.fedcap_pwinanswerid">
+                                <input name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" type="radio" checked="checked" value="{{answer.fedcap_pwin_weighting}}">
+                                <div class="circle"></div>
+                                <span>{{answer.fedcap_name}}</span>
+                            </label>
+                            <label ng-if="question.fedcap_answerid != answer.fedcap_pwinanswerid">
+                                <input type="radio" name="ans_{{question.fedcap_pwinquestionid}}" id="{{answer.fedcap_pwinanswerid}}" value="{{answer.fedcap_pwin_weighting}}">
+                                <div class="circle"></div>
+                                <span>{{answer.fedcap_name}}</span>
+                            </label>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="btn-row">
+                        <button name="submit" title="Submit" class="btn" id="btnBottomSave_{{tab.fedcap_apinameforcongafield}}" value="save" ng-click="saveForm(tab.fedcap_customizetabid,tab.tabAllFields,tab.fedcap_name)" ng-disabled="approvalStatusLock">Save</button> <!--ng-disabled="!myForm.modified"-->
+                        <!-- <button class="btn">Save</button> -->
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    <!-- value="{{item.cr38f_answers1}}"
+    checked="true" 
+    name="{{answer.fedcap_name}}" -->
+    <a href="#top" style="text-align:right; color:rgba(176, 30, 67, 255);font-weight:bold;text-decoration:none;font-size:25px">
+        Top
+        <i style="margin-left:10px" class="fa fa-arrow-up" aria-hidden="true"></i>
+    </a>
+    <script>
+        $(document).ready(function () {
+            if ($(window).width() > 1024) {
+                $("#accoridan-content").hide()
+                $("#gate-items").show()
+            }
+            if ($(window).width() < 1024) {
+                $("#accoridan-content").show()
+                $("#gate-items").hide()
+            }
+        })
+        $(window).resize(function () {
+            checkWindowSize()
+        })
+        function checkWindowSize() {
+
+            if ($(window).width() > 1024) {
+                $("#accoridan-content").hide()
+                $("#gate-items").show()
+            }
+
+            if ($(window).width() < 1024) {
+                $("#accoridan-content").show()
+                $("#gate-items").hide()
+            }
+        }
+    </script>
+
+
+
+</body></html>

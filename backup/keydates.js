@@ -1,9 +1,9 @@
 // JavaScript source code
 (function (document, angular) {
     "use strict";
-    var app = angular.module("SnapshotMyApp", ["ngAnimate", "ui.bootstrap", "textAngular", "ngMaterial", "ngMessages", "angularjs-datetime-picker"]); //ngInputModified
+    var app = angular.module("KeyDatesMyApp", ["ngAnimate", "ui.bootstrap", "textAngular", "ngMaterial", "ngMessages", "angularjs-datetime-picker"]); //ngInputModified
     console.log("Into MyAppDynamic");
-    app.controller("SnapshotDynamicController", DynamicController);
+    app.controller("KeyDatesDynamicController", DynamicController);
     function DynamicController($scope, $http) {
         debugger;
         $scope.callStatus = "OUTGOING";
@@ -800,7 +800,6 @@
                         if (isMultiPickListExist) {
                             //MultiPickListBind(selectQryforMultiPickList, tab, section, fieldIds);
                         }
-                       s
                         $scope.$apply();
                     },
                     function fail(respose) {
@@ -868,7 +867,6 @@
                         });
                         //$scope.tabs.sections[section].fields[field].PickList.push({ "id": result.OptionSet.Options[i].Value, "value": result.OptionSet.Options[i].Label.LocalizedLabels[0].Label, "color": result.OptionSet.Options[i].Color, "title": result.OptionSet.Options[i].Description.LocalizedLabels[0].Label })
                     }
-                    console.log($scope.tabs.sections)
                     $scope.$apply();
                 },
                 (error) => {
@@ -1031,7 +1029,6 @@
             return currencysymbol;
         }
         function getEntityAllFields(selectQry) {
-            console.log($scope.HeaderFields)
             try {
                 Xrm.WebApi.retrieveRecord(EntityName, OID, "?$select=" + selectQry + "").then(
                     function success(entitydata) {
@@ -1067,7 +1064,6 @@
                             }
                             // $scope.HeaderFields[$scope.HeaderFields.length] = array;
                         }
-                       s
                         $scope.$apply();
                     },
                     function fail(respose) {

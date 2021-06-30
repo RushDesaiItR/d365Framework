@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+ <script>
+     var data = [
+    {
+        "@odata.etag": "W/\"2817485\"",
+        "accountrolecode": null,
+        "firstname": "Vincent",
+        "fullname": "Vincent Lauriant",
+        "gendercode@odata.community.display.v1.formattedvalue": "Male",
+        "gendercode": 1,
+        "lastname": "Lauriant",
+        "middlename": null,
+        "_ownerid_value@odata.community.display.v1.formattedvalue": "Jamie Reding (Sample Data)",
+        "_ownerid_value": "3785d1f4-97cc-eb11-8235-000d3ac99ffa",
+        "contactid": "465b158c-541c-e511-80d3-3863bb347ba8"
+    },
+    {
+        "@odata.etag": "W/\"2817699\"",
+        "accountrolecode": null,
+        "firstname": "Eva",
+        "fullname": "Eva Elznicova",
+        "gendercode@odata.community.display.v1.formattedvalue": "Female",
+        "gendercode": 2,
+        "lastname": "Elznicova",
+        "middlename": null,
+        "_ownerid_value@odata.community.display.v1.formattedvalue": "Jamie Reding (Sample Data)",
+        "_ownerid_value": "3785d1f4-97cc-eb11-8235-000d3ac99ffa",
+        "contactid": "4fa2e5b9-88df-e311-b8e5-6c3be5a8b200"
+    },
+    {
+        "@odata.etag": "W/\"2817872\"",
+        "accountrolecode": null,
+        "firstname": "Tom",
+        "fullname": "Tom O'Neill",
+        "gendercode@odata.community.display.v1.formattedvalue": "Male",
+        "gendercode": 1,
+        "lastname": "O'Neill",
+        "middlename": null,
+        "_ownerid_value@odata.community.display.v1.formattedvalue": "Jamie Reding (Sample Data)",
+        "_ownerid_value": "3785d1f4-97cc-eb11-8235-000d3ac99ffa",
+        "contactid": "5fa5e5b9-88df-e311-b8e5-6c3be5a8b200"
+    },
+    {
+        "@odata.etag": "W/\"2817957\"",
+        "accountrolecode": null,
+        "firstname": "Susanne",
+        "fullname": "Susanne Schustin",
+        "gendercode@odata.community.display.v1.formattedvalue": "Female",
+        "gendercode": 2,
+        "lastname": "Schustin",
+        "middlename": null,
+        "_ownerid_value@odata.community.display.v1.formattedvalue": "Jamie Reding (Sample Data)",
+        "_ownerid_value": "3785d1f4-97cc-eb11-8235-000d3ac99ffa",
+        "contactid": "67a6e5b9-88df-e311-b8e5-6c3be5a8b200"
+    }
+]
+  var lookup = [];
+  data.map((item, i) => {
+    lookup[i] = {};
+    lookup[i].id = item.contactid;
+    lookup[i].entityType = EntityType;
+    lookup[i].fullname = item.fullname;
+  })
+   var MySystemUserField = FormContext.getAttribute("new_mysystemuserfield");
+    MySystemUserField.setValue(lookup);
+ </script>
+</html>
