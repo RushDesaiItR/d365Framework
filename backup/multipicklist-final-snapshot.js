@@ -418,7 +418,12 @@
 
         }
           $scope.itemActive = function (outerIndex,index,optionId) {
-              $scope.selectedItemActive = optionId;
+              // $scope.tabs.sections[sectionId].fields[fieldId].PickList
+             $scope.selectedItemActive = optionId;
+             console.log( $scope.selectedItemActive)
+            //  $scope.tabs.sections[outerIndex].fields[index].selectedItemActive=null;
+            //  $scope.tabs.sections[outerIndex].fields[index].selectedItemActive = optionId;
+            //  console.log($scope.tabs.sections[outerIndex].fields[index].selectedItemActive) 
 
           }
         $scope.itemInActive = function (outerIndex,index,optionId) {
@@ -509,13 +514,16 @@
         }
 
         function setRange(i, k) {
-           
+           //{{section.fields[$index].tm_isreadonly}}
             angular.element(document).ready(function () {
                 console.log(i)
                 console.log("rangeSelector_"+i+"_"+ k)
                 //rangeSelector_{{$parent.$parent.$index}}_{{$index}}
                 //rangeSelector_{{outerIndex}}_{{$index}}_Value
                 var rangeSelector = document.querySelector("#rangeSelector_"+i+"_"+ k);
+                if($scope.tabs.sections[i].fields[k].tm_isreadonly){
+                    rangeSelector.disabled=true
+                }
                 document.querySelector("#rangeSelector_"+i+"_"+ k+"_Value").innerHTML = rangeSelector.value + "%"
                 rangeSelector.step = 10;
                 rangeSelector.style.background = 'linear-gradient(90deg, #59a30f ' + rangeSelector.value + '%,#f6f7f7 0%)'
