@@ -42,53 +42,6 @@
             border: none;
             /* background: linear-gradient(90deg, red 60%,blue 40%);*/
         }
-        .black {
-            font-weight: bold;
-        }
-
-        .gray {
-            font-weight: bold;
-            color: gray;
-        }
-
-        md-switch .md-bar {
-            left: -5px;
-            width: 45px;
-            right: -5px;
-            top: 0.25px;
-            border: 1px solid #ab1239;
-            height: 24px;
-            border-radius: 15px;
-            position: absolute;
-        }
-
-        md-switch.md-default-theme.md-checked:not([disabled]) .md-bar, md-switch.md-checked:not([disabled]) .md-bar {
-            background-color: white;
-        }
-
-        md-switch.md-default-theme.md-checked:not([disabled]) .md-thumb, md-switch.md-checked:not([disabled]) .md-thumb {
-            background-color: #ab1239;
-        }
-
-        md-switch.md-default-theme .md-thumb, md-switch .md-thumb {
-            background-color: #ab1239;
-        }
-
-        md-switch.md-default-theme .md-bar, md-switch .md-bar {
-            background-color: white;
-        }
-        switch {
-            position: relative;
-            display: inline-block;
-            width: 20px;
-            height: 15px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
 
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
@@ -206,7 +159,7 @@
     <meta>
     <meta>
     <meta>
-<meta><meta><meta><meta><meta></head>
+<meta><meta><meta><meta><meta><meta><meta></head>
 
 <body style="overflow-wrap: break-word" onfocusout="parent.setEmailRange();" data-new-gr-c-s-loaded="14.1018.0" spellcheck="false">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
@@ -275,16 +228,14 @@
                 <div class="container-fluid">
                     <div class="row">
                         <!-- ---------------colum 1 ---------------------------->
-                        <div 
-                        class="container-column-left"
-                        ng-class="{
+                        <div class="container-column-left" ng-class="{
                           'col-md-8':tabs.tm_columnsratio == '80 : 20' ,
                           'col-md-6':tabs.tm_columnsratio == '50 : 50',
                           'col-md-12':tabs.tm_columnsratio == '100',
                           'col-md-9':tabs.tm_columnsratio == '70 : 30',
                           'col-md-7':tabs.tm_columnsratio == '60 : 40',
                         }">
-                            <ng-container ng-repeat="section in tabs.sections">
+                            <ng-container ng-repeat="section in tabs.sections" ng-init="outerIndex=$index">
                                 <div ng-if="$index % 2 == 0" class="container-card" style="display: {{section.display}};" data-sectionname="{{section.tm_name}}" data-secguid="{{section.tm_customizesectionid}}" id="{{section.tm_customizesectionid}}">
                                     <div class="sc">
                                         <section class="sectionTitle" ng-hide="section.tm_ishidesectionlabel" style="color:{{section.tm_sectionlabelcolor}}; font-size:{{section.tm_sectionlabelfontsize}};">
@@ -293,7 +244,7 @@
                                     </div>
                                     <ng-container ng-if="section.fields &amp;&amp; section.fields.length > 0">
                                         <div class="row">
-                                            <ng-container ng-repeat="fields in section.fields">
+                                            <ng-container ng-repeat="fields in section.fields" ng-init="innerIndex=$index">
                                                 <div class="{{section.fields[$index].tm_colspan == '1' ? 'col-md-12' : section.fields[$index].tm_colspan == '2' ? 'col-md-6': ''}}">
                                                     <ng-container ng-if="section.fields[$index].tm_fieldapiname == 'directioncode'">
                                                         <div class="row">
@@ -383,53 +334,38 @@
                                                         </select>
 
                                                         <div ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_fieldapiname == 'fedcap_pwin'" class="rangeSelector FieldText">
-                                                            <input style="width: 80%;" type="range" min="0" max="100" id="rangeSelector_{{$index}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}">
+                                                            <input style="width: 80%;" type="range" min="0" max="100" id="rangeSelector_{{outerIndex}}_{{$index}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}">
                                                             <!-- ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]" -->
-                                                            <h4 style="width: 20%;font-size:13px;" id="rangeSelector_value_{{$index}}">
+                                                            <h4 style="width: 20%;font-size:13px;" id="rangeSelector_{{outerIndex}}_{{$index}}_Value">
                                                             </h4>
-                                                           
-                                                        </div>
-                                                        <div ng-if="section.fields[$index].tm_fieldtype == 'MultiSelectPicklistType'"   class="opportunity-summary-form-group">
-                                                            <div class="opportunity-summary-form-group-contract-type" >
-                                                                <div class="contract-type-scroll-view" style="display: flex;flex-direction: column;">
-                                                                    <span ng-class="{'contract-type-active':selectedItemActive == {{ option.id}}}" ng-repeat="option in section.fields[$index].PickList" ng-click="itemActive(option.id)" class="contract-type-item">
-                                                                        {{ option.value }}
-                                                                    </span>
-                                                                </div>
-                                                                <div class="contract-type-scroll-icons">
-                                                                    <div class="arrow-right" ng-click="addPickListItem($index)">
-                                                                    </div>
-                                                                    <div class="arrow-left" ng-click="removePickListItem($index)">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="contract-type-scroll-view" style="display: flex;flex-direction: column;">
-                                                                    <span ng-repeat="option in selectedPickList[$index]" ng-click="itemInActive(option.id)" ng-class="{'contract-type-active':selectedPickItemInActive == {{option.id}}}" class="contract-type-item">
-                                                                        {{ option.value }}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
                                                             
                                                         </div>
-                                                        <!-- <div ng-if="section.fields[$index].tm_fieldtype == 'MultiSelectPicklistType' && section.fields[$index].tm_isreadonly == true"   class="opportunity-summary-form-group">
+                                                        
+                                                        <div ng-if="section.fields[$index].tm_fieldtype == 'MultiSelectPicklistType'" class="opportunity-summary-form-group">
                                                             <div class="opportunity-summary-form-group-contract-type">
                                                                 <div class="contract-type-scroll-view" style="display: flex;flex-direction: column;">
-                                                                    <span ng-class="{'contract-type-active':selectedItemActive == {{ option.id}}}" ng-repeat="option in section.fields[$index].PickList"  class="contract-type-item">
+                                                                    <span ng-class="{'contract-type-active':selectedItemActive == {{ option.id}}}"
+                                                                     ng-repeat="option in section.fields[$index].PickList" 
+                                                                     ng-click="itemActive(outerIndex,$index,option.id)" class="contract-type-item">
                                                                         {{ option.value }}
                                                                     </span>
                                                                 </div>
                                                                 <div class="contract-type-scroll-icons">
-                                                                    <div class="arrow-right" >
+                                                                    <div class="arrow-right" ng-click="addPickListItem(outerIndex, $index)">
                                                                     </div>
-                                                                    <div class="arrow-left" >
+                                                                    <div class="arrow-left" ng-click="removePickListItem(outerIndex,  $index)">
                                                                     </div>
                                                                 </div>
                                                                 <div class="contract-type-scroll-view" style="display: flex;flex-direction: column;">
-                                                                    <span ng-repeat="option in selectedPickList[$index]"  ng-class="{'contract-type-active':selectedPickItemInActive == {{option.id}}}" class="contract-type-item">
+                                                                    <span ng-repeat="option in selectedPickList[outerIndex].fields[$index].optionsSelected"
+                                                                     ng-click="itemInActive(outerIndex,$index,option.id)"
+                                                                     ng-class="{'contract-type-active':selectedPickItemInActive == {{option.id}}}"
+                                                                      class="contract-type-item">
                                                                         {{ option.value }}
                                                                     </span>
                                                                 </div>
                                                             </div>
-                                                        </div> -->
+                                                        </div>
                                                         <!-- <div ng-if="section.fields[$index].tm_fieldtype == 'MultiSelectPicklistType'" class="sc">
                                                             <select id="{{section.fields[$index].tm_fieldapiname}}" multiple="multiple" class="mpl_bind sc" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index].PickList" ng-model="section.fields[$index].MultiPickList"></select>
                                                         </div> -->
@@ -447,89 +383,105 @@
 
                         <!-- ---------------colum 1 End ---------------------------->
                         <!-- ---------------colum 2 ---------------------------->
-                        
                         <div class="container-column-right" ng-class="{
-                            'col-md-6':tabs.tm_columnsratio == '50 : 50',
-                            'col-md-4':tabs.tm_columnsratio == '80 : 20',
-                            'col-md-3':tabs.tm_columnsratio == '70 : 30',
-                            'col-md-5':tabs.tm_columnsratio == '60 : 40',
-                            }">
-                              <ng-container ng-repeat="section in tabs.sections ">
-                                  <div ng-if="$index % 2 != 0" class="container-card" style="display: {{section.display}};" data-sectionname="{{section.tm_name}}" data-secguid="{{section.tm_customizesectionid}}" id="{{section.tm_customizesectionid}}">
-                                      <div class="sc">
-                                          <section class="sectionTitle" ng-hide="section.tm_ishidesectionlabel" style="color:{{section.tm_sectionlabelcolor}}; font-size:{{section.tm_sectionlabelfontsize}};">{{section.tm_name}}</section>
-                                      </div>
-                                      <ng-container  ng-if="section.fields &amp;&amp; section.fields.length > 0">
-                                          <div class="row">
-                                              <ng-container ng-repeat="fields in section.fields">
-                                                  <div class="{{section.fields[$index].tm_colspan == '1' ? 'col-md-12' : section.fields[$index].tm_colspan == '2' ? 'col-md-6': ''}}">
-                                                      <ng-container ng-if="section.fields[$index].tm_fieldapiname == 'directioncode'">
-                                                          <div class="row">
-                                                              <div class="col-md-4">
-                                                                  <table style="width: 100%">
-                                                                      <tbody>
-                                                                          <tr>
-                                                                              <td><i style="font-size: 25px" class="fa fa-arrow-circle-o-up"></i></td>
-                                                                              <td style="font-family: SegoeUI, Segoe UI" ;"font-size="14px;&quot;" class="{{callStatus == 'OUTGOING' ? 'black' : 'gray'}}">OUTGOING</td>
-                                                                              <td><md-switch ng-click="changeFieldOrder()" title="{{callStatus}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" class="form-control sc FieldText" ng-model="callStatus" id="{{section.fields[$index].tm_fieldapiname}}" data-fieldtype="Boolean" ng-true-value="'INCOMING'" ng-false-value="'OUTGOING'" style="color: rgb(176, 31, 63);padding-right: 5px;border-width: 0px;">  </md-switch></td>
-                                                                              <td style="font-family: SegoeUI, Segoe UI" ;font-size="" 14px;"="" class="{{callStatus == 'INCOMING' ? 'black' : 'gray'}}">INCOMING</td>
-                                                                              <td><i style="font-size: 25px" class="fa fa-arrow-circle-o-down"></i></td>
-                                                                          </tr>
-                                                                      </tbody>
-                                                                  </table>
-                                                              </div>
-                                                              <div class="col-md-8" id="infomessage" style="margin-top: 21px; text-align: end; color:#ab1239;  font-weight: bold; visibility:hidden;">To view field order change please save record</div>
-                                                          </div>
-                                                      </ng-container>
-                                                      <div class="{{section.fields[$index].tm_colspan == '1' ? section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-2':'':section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-4':''}}">
-                                                          <label ng-if="section.fields[$index].tm_fieldapiname != 'directioncode'" class="FieldTitleLable" for="{{section.fields[$index].tm_fieldapiname}}">{{fields.tm_name}}</label>
-                                                      </div>
-                                                      <div ng-if="section.fields[$index].tm_fieldapiname != 'directioncode'" class="{{section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-8' :''}} borderfields">
-                                                          <input ng-if="section.fields[$index].tm_fieldtype == 'String'" ng-style="section.controlwidth" style="height:{{section.fields[$index].tm_height}}px" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]" title="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}">
-                                                          <select ng-if="section.fields[$index].tm_fieldtype == 'Boolean' &amp;&amp; section.fields[$index].tm_fieldapiname != 'directioncode'" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" class="form-control sc FieldText" id="{{section.fields[$index].tm_fieldapiname}}" data-fieldtype="Boolean" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
-                                                              <option value="">---</option>
-                                                              <option label="No" value="No">No</option>
-                                                              <option label="Yes" value="Yes">Yes</option>
-                                                          </select>
-                                                          <ng-container ng-if="section.fields[$index].tm_fieldtype == 'Memo'">
-                                                              <text-angular name="textBox" ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" type="text" placeholder="---" title="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}"></text-angular>
-                                                          </ng-container>
-                                                          <input ng-if="section.fields[$index].tm_fieldtype == 'Money'" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
-                                                          <input ng-if="section.fields[$index].tm_fieldtype == 'Decimal'" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
-                                                          <input ng-if="section.fields[$index].tm_fieldtype == 'Integer'" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
-                                                          <input ng-if="section.fields[$index].tm_fieldtype == 'BigInt'" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
-                                                          <div class="sc" ng-if="section.fields[$index].tm_fieldtype == 'Lookup' || section.fields[$index].tm_fieldtype == 'Customer'">
-                                                              <div class="searchicon_td sc">
-                                                                  <input id="{{section.fields[$index].tm_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index].tm_lookupobjecttypecode,section.fieldValue[section.fields[$index].tm_fieldapiname],section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control lookup sc FieldText" type="text" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
-                                                                  <input name="{{section.fields[$index].tm_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" id="{{section.fields[$index].tm_fieldapiname}}_id" type="hidden">
-                                                                  <input name="{{section.fields[$index].tm_fieldapiname}}_entityname" value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}" id="{{section.fields[$index].tm_fieldapiname}}_entityname" type="hidden">
-                                                                  <i ng-if="section.fields[$index].tm_isreadonly != true" class="fa fa-search searchicon" id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index].tm_lookupobjecttypecode,section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"></i>
-                                                              </div>
-                                                          </div>
-                                                          <div class="sc" ng-if="section.fields[$index].tm_fieldtype == 'PartyList'">
-                                                              <div class="searchicon_td sc">
-                                                                  <input id="{{section.fields[$index].tm_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index].tm_lookupobjecttypecode,section.fieldValue[section.fields[$index].tm_fieldapiname],section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control lookup sc FieldText" type="text" ng-model="section.fieldValue.email_activity_parties[0][section.fields[$index].tm_formattedvalue]" title="{{section.fieldValue.email_activity_parties[0][section.fields[$index].tm_formattedvalue]}}">
-                                                                  <input name="{{section.fields[$index].tm_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" id="{{section.fields[$index].tm_fieldapiname}}_id" type="hidden">
-                                                                  <input name="{{section.fields[$index].tm_fieldapiname}}_entityname" value="" id="{{section.fields[$index].tm_fieldapiname}}_entityname" type="hidden">
-                                                                  <input name="{{section.fields[$index].tm_fieldapiname}}_type" id="{{section.fields[$index].tm_fieldapiname}}_type" type="hidden">
-                                                                  <i ng-if="section.fields[$index].tm_isreadonly != true" class="fa fa-search searchicon" id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index].tm_lookupobjecttypecode,section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"></i>
-                                                              </div>
-                                                          </div>
-                                                          <div ng-if="section.fields[$index].tm_fieldtype == 'DateTime' &amp;&amp; section.tm_name != 'Appointment'">
-                                                              <div class="calendericon_td sc">
-                                                                  <input ng-if="section.fields[$index].tm_isreadonly == true" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" style="line-height: 16px" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
-                                                                  <input ng-if="section.fields[$index].tm_isreadonly != true" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" style="line-height: 16px" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" datepicker-options="dateOptions" is-open="section.fields[$index].tm_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" ng-click="section.fields[$index].tm_isopencalendar = !section.fields[$index].tm_isopencalendar">
-                                                                  <i ng-if="section.fields[$index].tm_isreadonly != true" class="fa fa-calendar calendericon" id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}" aria-hidden="true" ng-click=""></i>
-                                                              </div>
-                                                          </div>
-                                                          <div ng-if="section.fields[$index].tm_fieldtype == 'DateTime' &amp;&amp; section.tm_name == 'Appointment'">
-                                                              <div class="calendericon_td sc">
-                                                                  <input ng-if="section.fields[$index].tm_isreadonly == true" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" style="line-height: 16px" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" datetime-picker="" date-format="MM-dd-yyyy HH:mm:ss" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
-                                                                  <input ng-if="section.fields[$index].tm_isreadonly != true" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" style="line-height: 16px" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" datetime-picker="" date-format="MM-dd-yyyy HH:mm:ss" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
-                                                                  <i ng-if="section.fields[$index].tm_isreadonly != true" class="fa fa-calendar calendericon" id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}" aria-hidden="true" ng-click=""></i>
-                                                              </div>
-                                                          </div>
-                                                          <select ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_isdependentpicklist == false &amp;&amp; section.fields[$index].tm_fieldapiname != 'fedcap_pwin'" ng-change="GetDependentPicklistOptionSetLabel(section,section.fields[$index].tm_isdependentpicklist,section.fields[$index].tm_fieldapiname)" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" class="form-control sc FieldText" id="{{section.fields[$index].tm_fieldapiname}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index].PickList" ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]">
+                          'col-md-6':tabs.tm_columnsratio == '50 : 50',
+                          'col-md-4':tabs.tm_columnsratio == '80 : 20',
+                          'col-md-3':tabs.tm_columnsratio == '70 : 30,
+                          'col-md-5':tabs.tm_columnsratio == '60 : 40',
+                          }">
+                            <ng-container ng-repeat="section in tabs.sections" ng-init="outerIndex=$index">
+                                <div ng-if="$index % 2 != 0" class="container-card" style="display: {{section.display}};" data-sectionname="{{section.tm_name}}" data-secguid="{{section.tm_customizesectionid}}" id="{{section.tm_customizesectionid}}">
+                                    <div class="sc">
+                                        <section class="sectionTitle" ng-hide="section.tm_ishidesectionlabel" style="color:{{section.tm_sectionlabelcolor}}; font-size:{{section.tm_sectionlabelfontsize}};">
+                                            {{section.tm_name}}
+                                        </section>
+                                    </div>
+                                    <ng-container ng-if="section.fields &amp;&amp; section.fields.length > 0">
+                                        <div class="row">
+                                            <ng-container ng-repeat="fields in section.fields" ng-init="innerIndex=$index">
+                                                <div class="{{section.fields[$index].tm_colspan == '1' ? 'col-md-12' : section.fields[$index].tm_colspan == '2' ? 'col-md-6': ''}}">
+                                                    <ng-container ng-if="section.fields[$index].tm_fieldapiname == 'directioncode'">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <table style="width: 100%">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <i style="font-size: 25px" class="fa fa-arrow-circle-o-up"></i>
+                                                                            </td>
+                                                                            <td style="font-family: SegoeUI, Segoe UI" ;"font-size="14px;&quot;" class="{{callStatus == 'OUTGOING' ? 'black' : 'gray'}}">
+                                                                                OUTGOING
+                                                                            </td>
+                                                                            <td>
+                                                                                <md-switch ng-click="changeFieldOrder()" title="{{callStatus}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" class="form-control sc FieldText" ng-model="callStatus" id="{{section.fields[$index].tm_fieldapiname}}" data-fieldtype="Boolean" ng-true-value="'INCOMING'" ng-false-value="'OUTGOING'" style="color: rgb(176, 31, 63);padding-right: 5px;border-width: 0px;">
+                                                                                </md-switch>
+                                                                            </td>
+                                                                            <td style="font-family: SegoeUI, Segoe UI" ;font-size="" 14px;"="" class="{{callStatus == 'INCOMING' ? 'black' : 'gray'}}">
+                                                                                INCOMING
+                                                                            </td>
+                                                                            <td>
+                                                                                <i style="font-size: 25px" class="fa fa-arrow-circle-o-down"></i>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="col-md-8" id="infomessage" style="margin-top: 21px; text-align: end; color:#ab1239;  font-weight: bold; visibility:hidden;">
+                                                                To view field order change please save record
+                                                            </div>
+                                                        </div>
+                                                    </ng-container>
+                                                    <div class="{{section.fields[$index].tm_colspan == '1' ? section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-2':'':section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-4':''}}">
+                                                        <label ng-if="section.fields[$index].tm_fieldapiname != 'directioncode'" class="FieldTitleLable" for="{{section.fields[$index].tm_fieldapiname}}">{{fields.tm_name}}</label>
+                                                    </div>
+                                                    <div ng-if="section.fields[$index].tm_fieldapiname != 'directioncode'" class="{{section.fields[$index].tm_fieldvaluealignment == 'Right' ? 'col-md-8' :''}} borderfields">
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'String'" ng-style="section.controlwidth" style="height:{{section.fields[$index].tm_height}}px" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]" title="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}">
+                                                        <select ng-if="section.fields[$index].tm_fieldtype == 'Boolean' &amp;&amp; section.fields[$index].tm_fieldapiname != 'directioncode'" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" class="form-control sc FieldText" id="{{section.fields[$index].tm_fieldapiname}}" data-fieldtype="Boolean" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                            <option value="">---</option>
+                                                            <option label="No" value="No">No</option>
+                                                            <option label="Yes" value="Yes">Yes</option>
+                                                        </select>
+                                                        <ng-container ng-if="section.fields[$index].tm_fieldtype == 'Memo'">
+                                                            <text-angular name="textBox" ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" type="text" placeholder="---" title="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}">
+                                                            </text-angular>
+                                                        </ng-container>
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'Money'" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'Decimal'" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" onkeypress="return IsDecimalKey(event, this)" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'Integer'" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                        <input ng-if="section.fields[$index].tm_fieldtype == 'BigInt'" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" onkeypress="return IsNumberKey(event, this)" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                        <div class="sc" ng-if="section.fields[$index].tm_fieldtype == 'Lookup' || section.fields[$index].tm_fieldtype == 'Customer'">
+                                                            <div class="searchicon_td sc">
+                                                                <input id="{{section.fields[$index].tm_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index].tm_lookupobjecttypecode,section.fieldValue[section.fields[$index].tm_fieldapiname],section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control lookup sc FieldText" type="text" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" title="{{section.fieldValue[section.fields[$index].tm_formattedvalue]}}">
+                                                                <input name="{{section.fields[$index].tm_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" id="{{section.fields[$index].tm_fieldapiname}}_id" type="hidden">
+                                                                <input name="{{section.fields[$index].tm_fieldapiname}}_entityname" value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}" id="{{section.fields[$index].tm_fieldapiname}}_entityname" type="hidden">
+                                                                <i ng-if="section.fields[$index].tm_isreadonly != true" class="fa fa-search searchicon" id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index].tm_lookupobjecttypecode,section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="sc" ng-if="section.fields[$index].tm_fieldtype == 'PartyList'">
+                                                            <div class="searchicon_td sc">
+                                                                <input id="{{section.fields[$index].tm_fieldapiname}}" placeholder="---" ng-dblclick="OpenLookupRecord(section.fields[$index].tm_lookupobjecttypecode,section.fieldValue[section.fields[$index].tm_fieldapiname],section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control lookup sc FieldText" type="text" ng-model="section.fieldValue.email_activity_parties[0][section.fields[$index].tm_formattedvalue]" title="{{section.fieldValue.email_activity_parties[0][section.fields[$index].tm_formattedvalue]}}">
+                                                                <input name="{{section.fields[$index].tm_fieldapiname}}_id" value="{{section.fieldValue[section.fields[$index].tm_fieldapiname]}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" id="{{section.fields[$index].tm_fieldapiname}}_id" type="hidden">
+                                                                <input name="{{section.fields[$index].tm_fieldapiname}}_entityname" value="" id="{{section.fields[$index].tm_fieldapiname}}_entityname" type="hidden">
+                                                                <input name="{{section.fields[$index].tm_fieldapiname}}_type" id="{{section.fields[$index].tm_fieldapiname}}_type" type="hidden">
+                                                                <i ng-if="section.fields[$index].tm_isreadonly != true" class="fa fa-search searchicon" id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}" aria-hidden="true" ng-click="OpenLookup(section.fields[$index].tm_lookupobjecttypecode,section.fields[$index].tm_fieldapiname,section.fields[$index].tm_fieldtype)"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div ng-if="section.fields[$index].tm_fieldtype == 'DateTime' &amp;&amp; section.tm_name != 'Appointment'">
+                                                            <div class="calendericon_td sc">
+                                                                <input ng-if="section.fields[$index].tm_isreadonly == true" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" style="line-height: 16px" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" datepicker-options="dateOptions" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                                <input ng-if="section.fields[$index].tm_isreadonly != true" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" style="line-height: 16px" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" datepicker-options="dateOptions" is-open="section.fields[$index].tm_isopencalendar" uib-datepicker-popup="{{dateformat}}" placeholder="---" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]" ng-click="section.fields[$index].tm_isopencalendar = !section.fields[$index].tm_isopencalendar">
+                                                                <i ng-if="section.fields[$index].tm_isreadonly != true" class="fa fa-calendar calendericon" id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}" aria-hidden="true" ng-click=""></i>
+                                                            </div>
+                                                        </div>
+                                                        <div ng-if="section.fields[$index].tm_fieldtype == 'DateTime' &amp;&amp; section.tm_name == 'Appointment'">
+                                                            <div class="calendericon_td sc">
+                                                                <input ng-if="section.fields[$index].tm_isreadonly == true" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" style="line-height: 16px" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" datetime-picker="" date-format="MM-dd-yyyy HH:mm:ss" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                                <input ng-if="section.fields[$index].tm_isreadonly != true" id="{{section.fields[$index].tm_fieldapiname}}" data-label="{{section.fields[$index].tm_name}}" style="line-height: 16px" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-webapi="{{section.fields[$index].tm_viewfieldapi}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" class="form-control sc FieldText" type="text" datetime-picker="" date-format="MM-dd-yyyy HH:mm:ss" ng-model="section.fieldValue[section.fields[$index].tm_formattedvalue]">
+                                                                <i ng-if="section.fields[$index].tm_isreadonly != true" class="fa fa-calendar calendericon" id="img_lookup_search_{{section.fields[$index].tm_fieldapiname}}" aria-hidden="true" ng-click=""></i>
+                                                            </div>
+                                                        </div>
+
+                                                        <select ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_isdependentpicklist == false &amp;&amp; section.fields[$index].tm_fieldapiname != 'fedcap_pwin'" ng-change="GetDependentPicklistOptionSetLabel(section,section.fields[$index].tm_isdependentpicklist,section.fields[$index].tm_fieldapiname)" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" class="form-control sc FieldText" id="{{section.fields[$index].tm_fieldapiname}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index].PickList" ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]">
                                                             <option value="">---</option>
                                                         </select>
                                                         <select ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_isdependentpicklist == true &amp;&amp; section.fields[$index].tm_fieldapiname != 'fedcap_pwin'" ng-change="GetDependentPicklistOptionSetLabel(section,section.fields[$index].tm_isdependentpicklist,section.fields[$index].tm_fieldapiname)" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" class="form-control sc FieldText" id="{{section.fields[$index].tm_fieldapiname}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" ng-options="option as option.value for option in section.fields[$index].DependentPicklist track by option.id" ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]">
@@ -537,44 +489,46 @@
                                                         </select>
 
                                                         <div ng-if="section.fields[$index].tm_fieldtype == 'Picklist' &amp;&amp; section.fields[$index].tm_fieldapiname == 'fedcap_pwin'" class="rangeSelector FieldText">
-                                                            <input style="width: 80%;" type="range" min="0" max="100" id="rangeSelector_{{$index}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}">
+                                                            <input style="width: 80%;" type="range" min="0" max="100" id="rangeSelector_{{outerIndex}}_{{$index}}" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}">
                                                             <!-- ng-model="section.fieldValue[section.fields[$index].tm_fieldapiname]" -->
-                                                            <h4 style="width: 20%;font-size:13px;" id="rangeSelector_value_{{$index}}">
+                                                            <h4 style="width: 20%;font-size:13px" id="rangeSelector_{{outerIndex}}_{{$index}}_Value">
                                                             </h4>
+                                                            
                                                            
                                                         </div>
-                                                        <div ng-if="section.fields[$index].tm_fieldtype == 'MultiSelectPicklistType'"   class="opportunity-summary-form-group">
-                                                            <div class="opportunity-summary-form-group-contract-type"
-                                                            >
-                                                                <div class="contract-type-scroll-view" style="display: flex;flex-direction: column;">
-                                                                    <span ng-class="{'contract-type-active':selectedItemActive == {{ option.id}}}" ng-repeat="option in section.fields[$index].PickList" ng-click="itemActive(option.id)" class="contract-type-item">
-                                                                        {{ option.value }}
-                                                                    </span>
+                                                        <div ng-if="section.fields[$index].tm_fieldtype == 'MultiSelectPicklistType'" class="opportunity-summary-form-group-contract-type">
+                                                            <div class="contract-type-scroll-view" style="display: flex;flex-direction: column;">
+                                                                <span ng-repeat="option in section.fields[$index].PickList" 
+                                                                ng-class="{'contract-type-active':selectedItemActive == {{ option.id}}}" 
+                                                                ng-click="itemActive(outerIndex,$index,option.id)" class="contract-type-item">
+                                                                    {{ option.value }}
+                                                                </span>
+                                                            </div>
+                                                            <div class="contract-type-scroll-icons">
+                                                                <div class="arrow-right" ng-click="addPickListItem(outerIndex,$index)">
                                                                 </div>
-                                                                <div class="contract-type-scroll-icons">
-                                                                    <div class="arrow-right" ng-click="addPickListItem($index)">
-                                                                    </div>
-                                                                    <div class="arrow-left" ng-click="removePickListItem($index)">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="contract-type-scroll-view" style="display: flex;flex-direction: column;">
-                                                                    <span ng-repeat="option in selectedPickList[$index]" ng-click="itemInActive(option.id)" ng-class="{'contract-type-active':selectedPickItemInActive == {{option.id}}}" class="contract-type-item">
-                                                                        {{ option.value }}
-                                                                    </span>
+                                                                <div class="arrow-left" ng-click="removePickListItem(outerIndex,$index)">
                                                                 </div>
                                                             </div>
-                                                            
+                                                            <div class="contract-type-scroll-view" style="display: flex;flex-direction: column;">
+                                                                <span ng-repeat="option in selectedPickList[outerIndex].fields[$index].optionsSelected"
+                                                                 ng-class="{'contract-type-active':selectedPickItemInActive == {{option.id}}}"
+                                                                  ng-click="itemInActive(outerIndex,$index,option.id)" class="contract-type-item">
+                                                                    {{ option.value }}
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                    
-                                                      </div>
-                                                  </div>
-                                              </ng-container>
-                                          </div>
-                                      </ng-container>
-                                  </div>
-                              </ng-container>
-                          </div>
-                   
+                                                        <!-- <div ng-if="section.fields[$index].tm_fieldtype == 'MultiSelectPicklistType'" class="sc">
+                                                            <select id="{{section.fields[$index].tm_fieldapiname}}" multiple="multiple" class="mpl_bind sc" data-label="{{section.fields[$index].tm_name}}" ng-readonly="{{section.fields[$index].tm_isreadonly}}" data-isrequired="{{section.fields[$index].tm_isrequired}}" data-fieldtype="{{section.fields[$index].tm_fieldtype}}" ng-options="option.id as option.value for option in section.fields[$index].PickList" ng-model="section.fields[$index].MultiPickList"></select>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </div>
                         <!-- ---------------colum 2 ---------------------------->
                     </div>
                 </div>

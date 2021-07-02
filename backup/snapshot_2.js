@@ -12,7 +12,7 @@
         var EntityName = parent.Xrm.Page.data.entity.getEntityName();
         var FormID = parent.Xrm.Page.ui.formSelector.getCurrentItem().getId();
         var tabsdata = parent.Xrm.Page.ui.tabs.get();
-        var selectedTab = tabsdata.filter(item=>item.getDisplayState()=='expanded')
+        var selectedTab = tabsdata.filter(item => item.getDisplayState() == 'expanded');
         var UserId = Xrm.Page.context.getUserId();
         var entityID = Xrm.Page.data.entity.getId();
         var OID = entityID.substring(1, 37);
@@ -24,18 +24,17 @@
         $scope.HeaderFields;
         $scope.HeaderFieldsValue;
         $scope.tabs = {};
-
         $scope.fieldCollection = null;
         $scope.booleanArray = [
             { value: "? boolean:true ?", label: "Yes" },
             { value: "? boolean:false ?", name: "No" },
         ];
-        // ---------------------------Added By Nitin A 2 For Multiicklist-------------
-            $scope.setPickListItems = []
-            $scope.selectedPickItemActive = []
-            $scope.selectedPickItemInActive = []
-            $scope.selectedPickList = []
-         // ---------------------------end---------------------    
+         // ---------------------------Added By Nitin A 2 For Multiicklist-------------
+         $scope.setPickListItems = []
+         $scope.selectedPickItemActive = []
+         $scope.selectedPickItemInActive = []
+         $scope.selectedPickList = []
+      // ---------------------------end--------------------- 
         function GetFormName(executionContext) {
             //debugger;
             try {
@@ -59,54 +58,51 @@
                         if (result.length > 0) {
                             try {
                                 for (var i = 0; i < result.length; i++) {
-                                    
-                                       
-                                        if (selectedTab[0].getName().toLowerCase() === result[i].tm_tabid.toLowerCase()) {
-
-                                            //Editable
-                                            if (result[i].tm_tabtype === "Editable") {
-                                                $scope.tabs["tm_tabid"] = result[i].tm_tabid.toLowerCase();
-                                                $scope.tabs["tm_columnsratio"] = result[i].tm_columnsratio.toLowerCase();
-                                                var tm_customizetabid = result[i].tm_customizetabid;
-                                                GetSections(tm_customizetabid, function (sectiondata) {
-                                                    $scope.tabs.sections = sectiondata;
-                                                    GetFields(EntityName, function (fieldsdata) {
-                                                        for (var sectionObject in sectiondata) {
-                                                            //debugger;
-                                                            console.log(sectionObject);
-                                                            $scope.tabs.tabAllFields = "";
-                                                            var tm_customizesectionid = sectiondata[sectionObject].tm_customizesectionid;
-                                                            var data = fieldsdata.filter(function (field) {
-                                                                return field._tm_section_value === tm_customizesectionid;
-                                                            });
-                                                            $scope.tabs.sections[sectionObject].fields = data;
-                                                            LoadOptionSetAndGetTabFieldsInQuery(0, sectionObject);
-                                                            if (data.length > 0) {
-                                                                GetFieldEntityData(tm_customizesectionid, 0, sectionObject);
-                                                            } else {
-                                                                $scope.tabs.sections[sectionObject].display = "none"; // if fields not available
-                                                            }
-                                                            if ($scope.fieldCollection === null) {
-                                                                $scope.fieldCollection = $scope.tabs.tabAllFields;
-                                                            } else {
-                                                                $scope.fieldCollection = $scope.fieldCollection + "," + $scope.tabs.tabAllFields;
-                                                            }
+                                    if (selectedTab[0].getName().toLowerCase() === result[i].tm_tabid.toLowerCase()) {
+                                        //Editable
+                                        if (result[i].tm_tabtype === "Editable") {
+                                            $scope.tabs["tm_tabid"] = result[i].tm_tabid.toLowerCase();
+                                            $scope.tabs["tm_columnsratio"] = result[i].tm_columnsratio.toLowerCase();
+                                            var tm_customizetabid = result[i].tm_customizetabid;
+                                            GetSections(tm_customizetabid, function (sectiondata) {
+                                                $scope.tabs.sections = sectiondata;
+                                                GetFields(EntityName, function (fieldsdata) {
+                                                    for (var sectionObject in sectiondata) {
+                                                        //debugger;
+                                                        console.log(sectionObject);
+                                                        $scope.tabs.tabAllFields = "";
+                                                        var tm_customizesectionid = sectiondata[sectionObject].tm_customizesectionid;
+                                                        var data = fieldsdata.filter(function (field) {
+                                                            return field._tm_section_value === tm_customizesectionid;
+                                                        });
+                                                        $scope.tabs.sections[sectionObject].fields = data;
+                                                        LoadOptionSetAndGetTabFieldsInQuery(0, sectionObject);
+                                                        if (data.length > 0) {
+                                                            GetFieldEntityData(tm_customizesectionid, 0, sectionObject);
+                                      
+                                                        } else {
+                                                            $scope.tabs.sections[sectionObject].display = "none"; // if fields not available
                                                         }
-                                                        // $scope.fieldCollection = $scope.tabs.tabAllFields;
-                                                    });
+                                                        if ($scope.fieldCollection === null) {
+                                                            $scope.fieldCollection = $scope.tabs.tabAllFields;
+                                                        } else {
+                                                            $scope.fieldCollection = $scope.fieldCollection + "," + $scope.tabs.tabAllFields;
+                                                        }
+                                                    }
+                                                    // $scope.fieldCollection = $scope.tabs.tabAllFields;
                                                 });
-                                                // GetTabData(result);
-                                            }
-                                            //Grid
-                                            if (result[i].tm_tabtype === "Grid") {
-                                                // alert();
-                                            }
-                                            //TimeLine
-                                            if (result[i].tm_tabtype === "Timeline") {
-                                                // alert();
-                                            }
+                                            });
+                                            // GetTabData(result);
                                         }
-                                    
+                                        //Grid
+                                        if (result[i].tm_tabtype === "Grid") {
+                                            // alert();
+                                        }
+                                        //TimeLine
+                                        if (result[i].tm_tabtype === "Timeline") {
+                                            // alert();
+                                        }
+                                    }
                                 }
                             } catch (e) {
                                 alert("Error");
@@ -125,7 +121,6 @@
             }
         }
         function GetSections(tm_customizetabid, callback) {
-            debugger;
             $scope.AllSections = null;
             $http({
                 method: "GET",
@@ -160,7 +155,6 @@
         function GetFields(EntityName, callback) {
             //   $scope.AllFeilds = null;
             //  var serverUrl = location.protocol + "//" + location.host;
-            debugger;
             $http({
                 method: "GET",
                 async: false,
@@ -208,19 +202,23 @@
         }
         function LoadOptionSetAndGetTabFieldsInQuery(tab, section) {
             //*******************************************************************************************
-            console.log(section)
             var selectQry = "";
             var selectQryforMultiPickList = "";
             var isMultiPickListExist = false;
             var fieldIds = [];
-           
             for (var i = 0; i < $scope.tabs.sections[section].fields.length; i++) {
                 if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] === "Picklist") {
-                    GetOptionSetLabel(tab, section, i, EntityName, $scope.tabs.sections[section].fields[i]["tm_fieldapiname"]);
-                    console.log("$scope.tabs.sections", $scope.tabs.sections)
-                }
-                if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] === "MultiSelectPicklistType") {
+                    if ($scope.tabs.sections[section].fields[i]["tm_isdependentpicklist"] === false) {
+                        GetOptionSetLabel(tab, section, i, EntityName, $scope.tabs.sections[section].fields[i]["tm_fieldapiname"]);
 
+                    }
+                    if ($scope.tabs.sections[section].fields[i]["tm_isdependentpicklist"] === true) {
+                        LoadDependentPicklistOptionSetLabel($scope.tabs.sections[section].fields[i]["tm_parentpicklist"], $scope.tabs.sections[section].fields[i]["tm_fieldapiname"]);
+                        // SetDependentChildPicklist();
+                    }
+                }
+
+                if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] === "MultiSelectPicklistType") {
                     isMultiPickListExist = true;
                     fieldIds.push({ id: i });
                     if (selectQryforMultiPickList === "") {
@@ -229,10 +227,7 @@
                         selectQryforMultiPickList = selectQryforMultiPickList + "," + $scope.tabs.sections[section].fields[i]["tm_fieldapiname"];
                     }
                     GetOptionSetLabelMulti(tab, section, i, EntityName, $scope.tabs.sections[section].fields[i]['tm_fieldapiname']);
-                            
                 }
-               
-                
                 if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] !== "spacer") {
                     if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] !== "header") {
                         if (selectQry === "") {
@@ -242,42 +237,35 @@
                         }
                     }
                 }
+                if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'MultiSelectPicklistType') {
+                    $scope.selectedPickItemActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
+                    $scope.setPickListItems[k] = $scope.tabs.sections[i].fields[k].PickList;
+                    $scope.selectedPickItemInActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
+                    $scope.selectedPickList[k] = Array()
+                }
+                if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'Picklist' && $scope.tabs.sections[i].fields[k].tm_fieldapiname == 'fedcap_pwin') {
+                     setRange($scope.tabs.sections[i].fields[k], k)
+                }
             }
-
-
             if (selectQry !== "") {
                 if ($scope.tabs.tabAllFields === "") {
                     $scope.tabs.tabAllFields = selectQry;
                 } else $scope.tabs.tabAllFields = $scope.tabs.tabAllFields + "," + selectQry;
-            
+                //////debugger;
+                //if ($scope.fieldCollection === null) {
+                //    $scope.fieldCollection = $scope.tabs.tabAllFields;
+                //}
+                //else {
+                //    $scope.fieldCollection = fieldCollection + ',' + $scope.tabs.tabAllFields;
+                //}
+                //$scope.tabs.tabAllMPLFields = $scope.tabs.tabAllMPLFields + ',' + selectQryforMultiPickList;
             }
-            //*******************************************************Added By Rushikeh To Set Range Inut*****************************************
+            //************************************************************************************************
            
-            for (var i = 0; i < $scope.tabs.sections.length; i++) {
-                for (var k = 0; k < $scope.tabs.sections[i].fields.length; k++) {
-                    if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'Picklist' && $scope.tabs.sections[i].fields[k].tm_fieldapiname == 'fedcap_pwin') {
-                        setRange($scope.tabs.sections[i].fields[k], k)
-
-                    }
-                    
-                }
-            }
-            // for (var i = 0; i < $scope.tabs.sections.length; i++) {
-            //     for (var k = 0; k < $scope.tabs.sections[i].fields.length; k++) {
-            //        if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'MultiSelectPicklistType') {
-            //              console.log($scope.tabs.sections[i].fields[k])
-                         
-            //              console.log($scope.tabs.sections[i].fields[k].PickList)
-            //              $scope.selectedPickItemActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
-            //              $scope.setPickListItems[k] = $scope.tabs.sections[i].fields[k].PickList;
-            //              $scope.selectedPickItemInActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
-            //              $scope.selectedPickList[k] = Array()
-            //          }
-            //     }
-            // }
         }
 
-      
+
+
         function setRange(i, k) {
           
             angular.element(document).ready(function () {
@@ -292,58 +280,75 @@
 
             });
         }
+        // Added by Nitin A :: To get Dependant Child option label from Parent Picklist option label 
+        function LoadDependentPicklistOptionSetLabel(parentPicklist, childPicklistName) {
+            debugger
+            var parentPicklistLogicalName = parentPicklist;
+            try {
 
-        //*******************************************************End To Set Range Inut*****************************************
-        //-----------------------------------------------------Added By RUshikesh For MutiPicklist----------------------------------------------------------------
+                Xrm.WebApi.retrieveRecord(EntityName, OID, "?$select=" + parentPicklistLogicalName + "").then(
+                    function success(result) {
+                        //debugger
+                        var attributeLogical = parentPicklistLogicalName + "@OData.Community.Display.V1.FormattedValue";
+                        var parentOption = result[attributeLogical];
+                        SetDependentPicklistOptionSetLabel(result, parentPicklist, childPicklistName, parentOption);
+                        // SetDependentChildPicklist();
 
-        $scope.addPickListItem = function (fieldId) {
-
-            var exists = false;
-
-            $scope.selectedPickList[fieldId].map(item => {
-                if (item.id == $scope.selectedItemActive[fieldId]) {
-                    exists = true;
-                }
-            })
+                    },
+                    function fail(respose) {
+                        ////debugger
+                        console.log(respose);
+                    }
+                );
 
 
-            if (!exists) {
 
-                var item = $scope.setPickListItems[fieldId].filter(item =>
-                    item.id == $scope.selectedItemActive
-                )
-                $scope.selectedPickList[fieldId].push(...item)
 
+            } catch (e) {
+                console.log(e.message.toString());
             }
 
         }
-        $scope.itemActive = function (id) {
-            $scope.selectedItemActive = id;
+    // ------------------------------------   added by Nitnin A 2------------------------
+    $scope.addPickListItem = function (fieldId) {
+
+        var exists = false;
+
+        $scope.selectedPickList[fieldId].map(item => {
+            if (item.id == $scope.selectedItemActive[fieldId]) {
+                exists = true;
+            }
+        })
+
+
+        if (!exists) {
+
+            var item = $scope.setPickListItems[fieldId].filter(item =>
+                item.id == $scope.selectedItemActive
+            )
+            $scope.selectedPickList[fieldId].push(...item)
 
         }
-        $scope.itemInActive = function (id) {
-            $scope.selectedPickItemInActive = id;
-        }
-        $scope.removePickListItem = function (fieldId) {
-            console.log(fieldId, $scope.selectedPickItemInActive)
-            var items = [];
-            $scope.selectedPickList[fieldId] = $scope.selectedPickList[fieldId].filter(item =>
-                item.id != $scope.selectedPickItemInActive)
-        }
+
+    }
+    $scope.itemActive = function (id) {
+        $scope.selectedItemActive = id;
+
+    }
+    $scope.itemInActive = function (id) {
+        $scope.selectedPickItemInActive = id;
+    }
+    $scope.removePickListItem = function (fieldId) {
+        console.log(fieldId, $scope.selectedPickItemInActive)
+        var items = [];
+        $scope.selectedPickList[fieldId] = $scope.selectedPickList[fieldId].filter(item =>
+            item.id != $scope.selectedPickItemInActive)
+    }
 
 
 
-
-
-
-
-        //-----------------------------------------------------Picklist----------------------------------------------------------------
-        // Added by Nitin A :: To get Dependant Child option label from Parent Picklist option label 
         $scope.GetDependentPicklistOptionSetLabel = function (section, isDependentPicklist, parentPicklist) {
-            //debugger;
-
-
-
+            //debugger
             var ParentPicklistLogicalName = parentPicklist;
             $http({
                 method: "GET",
@@ -396,8 +401,10 @@
 
 
         };
-        function SetDependentPicklistOptionSetLabel(section, parentPicklist, childPicklistLogicalName, parentOption) {
 
+
+        function SetDependentPicklistOptionSetLabel(section, parentPicklist, childPicklistLogicalName, parentOption) {
+            debugger;
             $http({
                 method: "GET",
                 async: false,
@@ -415,10 +422,10 @@
 
                     var result = response.data.value;
                     if (result.length > 0) {
-
+                        var selectedIndex;
                         var childPicklistOptions = result[0]["tm_childpicklistoptions"];
                         var childOptionset = childPicklistOptions.split(";", 5000);
-
+                        // $scope[childPicklistLogicalName] = 0;
                         for (var k = 0; k < $scope.tabs.sections.length; k++) {
                             var fieldLength = $scope.tabs.sections[k].fields.length;
                             for (var j = 0; j < fieldLength; j++) {
@@ -433,15 +440,34 @@
 
                                         var childoptionsetLabel = childPicklistOptions.split(";", 5000)[i].split(":", 2)[0];
                                         var childoptionsetValue = childPicklistOptions.split(";", 5000)[i].split(":", 2)[1];
-
-                                        $scope.tabs.sections[sectionIndx].fields[fieldIndex].DependentPicklist.push({ id: parseInt(childoptionsetValue), value: childoptionsetLabel });
+                                        if ($scope.tabs.sections[k].fieldValue[childPicklistLogicalName] === parseInt(childoptionsetValue)) {
+                                            selectedIndex = i + 1;
+                                        }
+                                        var optionsetValue = parseInt(childoptionsetValue);
+                                        $scope.tabs.sections[sectionIndx].fields[fieldIndex].DependentPicklist.push({ id: optionsetValue, value: childoptionsetLabel });
+                                    }
+                                    var childPicklistName = childPicklistLogicalName + "@OData.Community.Display.V1.FormattedValue";
+                                    //var parentOption = result[attributeLogical];
+                                    if ($scope.tabs.sections[k].fieldValue[childPicklistLogicalName] !== null && $scope.tabs.sections[k].fieldValue[childPicklistLogicalName] !== undefined) {
+                                        //   document.getElementById(childPicklistLogicalName).options.selectedIndex = selectedIndex;
+                                        $scope[childPicklistLogicalName] = $scope.tabs.sections[k].fieldValue[childPicklistName];
+                                        if ($scope.tabs.sections[k].fieldValue[childPicklistLogicalName] !== null && $scope.tabs.sections[k].fieldValue[childPicklistLogicalName] !== undefined) {
+                                            // document.getElementById(childPicklistLogicalName).options.selectedIndex = selectedIndex;
+                                            debugger;
+                                            var picklistArraylength = $scope.tabs.sections[sectionIndx].fields[fieldIndex].DependentPicklist.length;
+                                            for (var z = 0; z < picklistArraylength; z++) {
+                                                if ($scope.tabs.sections[k].fieldValue[childPicklistLogicalName] === $scope.tabs.sections[sectionIndx].fields[fieldIndex].DependentPicklist[z].id) {
+                                                    $scope[childPicklistLogicalName] = $scope.tabs.sections[sectionIndx].fields[fieldIndex].DependentPicklist[z];
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
 
                     }
-                    //  $scope.$apply();
+                    // $scope.$apply();
                 },
                 (error) => {
                     console.log("Error" + error);
@@ -449,8 +475,10 @@
             );
 
         }
+
+
         $scope.ClearDependentPicklistArray = function (fieldApiname) {
-            //debugger;
+            //debugger
             var ChildName = fieldApiname;
             var req = new XMLHttpRequest();
             req.open("GET", Xrm.Page.context.getClientUrl() + "/api/data/v9.1/tm_customizefields?$filter=tm_fieldapiname eq '" + fieldApiname + "' and tm_parentpicklist ne null", true);
@@ -504,6 +532,8 @@
 
 
         };
+
+
         function GetPicklistRelationship(Selectedlabel, ParentName) {
             var resultLength;
             var req = new XMLHttpRequest();
@@ -600,7 +630,6 @@
             return convertDate;
         }
         function GetFieldEntityData(sectionGUID, tab, section) {
-
             ////debugger;           
             var selectQry = $scope.tabs.tabAllFields;
 
@@ -666,7 +695,8 @@
 
                         for (i = 0; i < $scope.tabs.sections[section].fields.length; i++) {
                             if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] === "MultiSelectPicklistType") {
-
+                                //var formattedvalue = $scope.tabs.sections[section].fields[i]["tm_fieldapiname"] + "@OData.Community.Display.V1.FormattedValue";
+                                //var selectedValues = opportunity[formattedvalue].split(";", 1000);
                                 var selectedValues = [];
                                 var fieldname = $scope.tabs.sections[section].fields[i]["tm_fieldapiname"];
                                 var selectedarrLength = opportunity[fieldname].split(",", 1000).length;
@@ -895,7 +925,6 @@
                 (response) => {
                     // this callback will be called asynchronously
                     // when the response is available
-
                     //debugger;
                     var result = response.data.value;
                     $scope.tabs.sections[section].fields[field].PickList = [];
@@ -905,7 +934,6 @@
                             id: result[0].OptionSet.Options[i].Value,
                             value: result[0].OptionSet.Options[i].Label.LocalizedLabels[0].Label,
                         });
-
                         //$scope.tabs.sections[section].fields[field].PickList.push({ "id": result.OptionSet.Options[i].Value, "value": result.OptionSet.Options[i].Label.LocalizedLabels[0].Label, "color": result.OptionSet.Options[i].Color, "title": result.OptionSet.Options[i].Description.LocalizedLabels[0].Label })
                     }
                     $scope.$apply();
@@ -930,8 +958,7 @@
             //);
         }
         function GetOptionSetLabelMulti(tab, section, field, EntityLogicalName, AttributeLogicalName) {
-            debugger;
-            
+            console.log("called..................")
             $http({
                 method: "GET",
                 async: false,
@@ -962,23 +989,11 @@
                             id: result[0].OptionSet.Options[i].Value,
                             value: result[0].OptionSet.Options[i].Label.LocalizedLabels[0].Label,
                         });
-
                         //$scope.tabs.sections[section].fields[field].PickList.push({ "id": result.OptionSet.Options[i].Value, "value": result.OptionSet.Options[i].Label.LocalizedLabels[0].Label, "color": result.OptionSet.Options[i].Color, "title": result.OptionSet.Options[i].Description.LocalizedLabels[0].Label })
                     }
-                    for (var i = 0; i < $scope.tabs.sections.length; i++) {
-                        for (var k = 0; k < $scope.tabs.sections[i].fields.length; k++) {
-                           if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'MultiSelectPicklistType') {
-                                 console.log($scope.tabs.sections[i].fields[k])
-                                  console.log($scope.tabs.sections[i].fields[k].PickList)
-                                 $scope.selectedPickItemActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
-                                 $scope.setPickListItems[k] = $scope.tabs.sections[i].fields[k].PickList;
-                                 $scope.selectedPickItemInActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
-                                 $scope.selectedPickList[k] = Array()
-                             }
-                        }
-                    }
-                    
-                    console.log($scope.tabs.sections)
+                    // ---------------------added by Nitin A 2 By For Range And Multipicklist Set----------------
+                   
+                    //-------------------------------------Range And Multipicklist Set End----------------------------------------------------
                     $scope.$apply();
                 },
                 (error) => {
@@ -1223,5 +1238,3 @@
         }
     }
 })(document, angular);
-
-

@@ -1,3 +1,5 @@
+
+
 // JavaScript source code
 (function (document, angular) {
     "use strict";
@@ -232,7 +234,10 @@
                             
                 }
                
-                
+                if ($scope.tabs.sections[section].fields[i].tm_fieldtype == 'Picklist' && $scope.tabs.sections[section].fields[i].tm_fieldapiname == 'fedcap_pwin') {
+                    setRange($scope.tabs.sections[section].fields[i], i)
+
+                }
                 if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] !== "spacer") {
                     if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] !== "header") {
                         if (selectQry === "") {
@@ -253,28 +258,22 @@
             }
             //*******************************************************Added By Rushikeh To Set Range Inut*****************************************
            
-            for (var i = 0; i < $scope.tabs.sections.length; i++) {
-                for (var k = 0; k < $scope.tabs.sections[i].fields.length; k++) {
-                    if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'Picklist' && $scope.tabs.sections[i].fields[k].tm_fieldapiname == 'fedcap_pwin') {
-                        setRange($scope.tabs.sections[i].fields[k], k)
-
-                    }
-                    
-                }
-            }
-            // for (var i = 0; i < $scope.tabs.sections.length; i++) {
-            //     for (var k = 0; k < $scope.tabs.sections[i].fields.length; k++) {
-            //        if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'MultiSelectPicklistType') {
-            //              console.log($scope.tabs.sections[i].fields[k])
+            
+           
+            
+             for (var i = 0; i < $scope.tabs.sections.length; i++) {
+                 for (var k = 0; k < $scope.tabs.sections[i].fields.length; k++) {
+                    if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'MultiSelectPicklistType') {
+                          console.log($scope.tabs.sections[i].fields[k])
                          
-            //              console.log($scope.tabs.sections[i].fields[k].PickList)
-            //              $scope.selectedPickItemActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
-            //              $scope.setPickListItems[k] = $scope.tabs.sections[i].fields[k].PickList;
-            //              $scope.selectedPickItemInActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
-            //              $scope.selectedPickList[k] = Array()
-            //          }
-            //     }
-            // }
+                          console.log($scope.tabs.sections[i].fields[k].PickList)
+                          $scope.selectedPickItemActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
+                          $scope.setPickListItems[k] = $scope.tabs.sections[i].fields[k].PickList;
+                          $scope.selectedPickItemInActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
+                          $scope.selectedPickList[k] = Array()
+                      }
+                 }
+             }
         }
 
       
@@ -297,7 +296,9 @@
         //-----------------------------------------------------Added By RUshikesh For MutiPicklist----------------------------------------------------------------
 
         $scope.addPickListItem = function (fieldId) {
-
+          if($scope.selectedPickList == undefined){
+              
+          }
             var exists = false;
 
             $scope.selectedPickList[fieldId].map(item => {
@@ -968,8 +969,6 @@
                     for (var i = 0; i < $scope.tabs.sections.length; i++) {
                         for (var k = 0; k < $scope.tabs.sections[i].fields.length; k++) {
                            if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'MultiSelectPicklistType') {
-                                 console.log($scope.tabs.sections[i].fields[k])
-                                  console.log($scope.tabs.sections[i].fields[k].PickList)
                                  $scope.selectedPickItemActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
                                  $scope.setPickListItems[k] = $scope.tabs.sections[i].fields[k].PickList;
                                  $scope.selectedPickItemInActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;

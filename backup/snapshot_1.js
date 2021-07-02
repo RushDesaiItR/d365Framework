@@ -29,6 +29,12 @@
             { value: "? boolean:true ?", label: "Yes" },
             { value: "? boolean:false ?", name: "No" },
         ];
+         // ---------------------------Added By Nitin A 2 For Multiicklist-------------
+         $scope.setPickListItems = []
+         $scope.selectedPickItemActive = []
+         $scope.selectedPickItemInActive = []
+         $scope.selectedPickList = []
+      // ---------------------------end--------------------- 
         function GetFormName(executionContext) {
             //debugger;
             try {
@@ -221,6 +227,15 @@
                     }
                     GetOptionSetLabelMulti(tab, section, i, EntityName, $scope.tabs.sections[section].fields[i]['tm_fieldapiname']);
                 }
+                if ($scope.tabs.sections[section].fields[i].tm_fieldtype == 'MultiSelectPicklistType') {
+                    $scope.selectedPickItemActive[i] = $scope.tabs.sections[section].fields[i].PickList.length + 1;
+                    $scope.setPickListItems[i] = $scope.tabs.sections[section].fields[i].PickList;
+                    $scope.selectedPickItemInActive[i] = $scope.tabs.sections[section].fields[i].PickList.length + 1;
+                    $scope.selectedPickList[i] = Array()
+                }
+                if ($scope.tabs.sections[section].fields[i].tm_fieldtype == 'Picklist' && $scope.tabs.sections[section].fields[i].tm_fieldapiname == 'fedcap_pwin') {
+                     setRange($scope.tabs.sections[section].fields[i], i)
+               }
                 if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] !== "spacer") {
                     if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] !== "header") {
                         if (selectQry === "") {
@@ -245,15 +260,7 @@
                 //$scope.tabs.tabAllMPLFields = $scope.tabs.tabAllMPLFields + ',' + selectQryforMultiPickList;
             }
             //************************************************************************************************
-            for (var i = 0; i < $scope.tabs.sections.length; i++) {
-                for (var k = 0; k < $scope.tabs.sections[i].fields.length; k++) {
-                    if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'Picklist' && $scope.tabs.sections[i].fields[k].tm_fieldapiname == 'fedcap_pwin') {
-                        setRange($scope.tabs.sections[i].fields[k], k)
-
-                    }
-                    
-                }
-            }
+           
         }
 
 
@@ -301,6 +308,42 @@
             }
 
         }
+    // ------------------------------------   added by Nitnin A 2------------------------
+    $scope.addPickListItem = function (fieldId) {
+
+        var exists = false;
+
+        $scope.selectedPickList[fieldId].map(item => {
+            if (item.id == $scope.selectedItemActive[fieldId]) {
+                exists = true;
+            }
+        })
+
+
+        if (!exists) {
+
+            var item = $scope.setPickListItems[fieldId].filter(item =>
+                item.id == $scope.selectedItemActive
+            )
+            $scope.selectedPickList[fieldId].push(...item)
+
+        }
+
+    }
+    $scope.itemActive = function (id) {
+        $scope.selectedItemActive = id;
+
+    }
+    $scope.itemInActive = function (id) {
+        $scope.selectedPickItemInActive = id;
+    }
+    $scope.removePickListItem = function (fieldId) {
+        console.log(fieldId, $scope.selectedPickItemInActive)
+        var items = [];
+        $scope.selectedPickList[fieldId] = $scope.selectedPickList[fieldId].filter(item =>
+            item.id != $scope.selectedPickItemInActive)
+    }
+
 
 
         $scope.GetDependentPicklistOptionSetLabel = function (section, isDependentPicklist, parentPicklist) {
@@ -946,6 +989,7 @@
                         });
                         //$scope.tabs.sections[section].fields[field].PickList.push({ "id": result.OptionSet.Options[i].Value, "value": result.OptionSet.Options[i].Label.LocalizedLabels[0].Label, "color": result.OptionSet.Options[i].Color, "title": result.OptionSet.Options[i].Description.LocalizedLabels[0].Label })
                     }
+                   
                     $scope.$apply();
                 },
                 (error) => {

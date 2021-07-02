@@ -24,18 +24,11 @@
         $scope.HeaderFields;
         $scope.HeaderFieldsValue;
         $scope.tabs = {};
-
         $scope.fieldCollection = null;
         $scope.booleanArray = [
             { value: "? boolean:true ?", label: "Yes" },
             { value: "? boolean:false ?", name: "No" },
         ];
-        // ---------------------------Added By Nitin A 2 For Multiicklist-------------
-            $scope.setPickListItems = []
-            $scope.selectedPickItemActive = []
-            $scope.selectedPickItemInActive = []
-            $scope.selectedPickList = []
-         // ---------------------------end---------------------    
         function GetFormName(executionContext) {
             //debugger;
             try {
@@ -124,7 +117,7 @@
                 Xrm.Utility.alertDialog(e.message);
             }
         }
-        function GetSections(tm_customizetabid, callback) {
+        function GetSections(tm_customizetaAbid, callback) {
             debugger;
             $scope.AllSections = null;
             $http({
@@ -251,30 +244,10 @@
                 } else $scope.tabs.tabAllFields = $scope.tabs.tabAllFields + "," + selectQry;
             
             }
-            //*******************************************************Added By Rushikeh To Set Range Inut*****************************************
            
-            for (var i = 0; i < $scope.tabs.sections.length; i++) {
-                for (var k = 0; k < $scope.tabs.sections[i].fields.length; k++) {
-                    if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'Picklist' && $scope.tabs.sections[i].fields[k].tm_fieldapiname == 'fedcap_pwin') {
-                        setRange($scope.tabs.sections[i].fields[k], k)
-
-                    }
-                    
-                }
-            }
-            // for (var i = 0; i < $scope.tabs.sections.length; i++) {
-            //     for (var k = 0; k < $scope.tabs.sections[i].fields.length; k++) {
-            //        if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'MultiSelectPicklistType') {
-            //              console.log($scope.tabs.sections[i].fields[k])
-                         
-            //              console.log($scope.tabs.sections[i].fields[k].PickList)
-            //              $scope.selectedPickItemActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
-            //              $scope.setPickListItems[k] = $scope.tabs.sections[i].fields[k].PickList;
-            //              $scope.selectedPickItemInActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
-            //              $scope.selectedPickList[k] = Array()
-            //          }
-            //     }
-            // }
+           
+           
+        
         }
 
       
@@ -931,7 +904,10 @@
         }
         function GetOptionSetLabelMulti(tab, section, field, EntityLogicalName, AttributeLogicalName) {
             debugger;
-            
+            $scope.setPickListItems = []
+            $scope.selectedPickItemActive = []
+            $scope.selectedPickItemInActive = []
+            $scope.selectedPickList = []
             $http({
                 method: "GET",
                 async: false,
@@ -1223,5 +1199,4 @@
         }
     }
 })(document, angular);
-
 

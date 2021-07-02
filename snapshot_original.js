@@ -17,6 +17,7 @@
         var entityID = Xrm.Page.data.entity.getId();
         var OID = entityID.substring(1, 37);
         var serverUrl = location.protocol + "//" + location.host;
+          
         GetCurrency();
         GetFormName();
         GetUserSettingsCollection(UserId.substring(1, 37));
@@ -24,11 +25,13 @@
         $scope.HeaderFields;
         $scope.HeaderFieldsValue;
         $scope.tabs = {};
+       
         $scope.fieldCollection = null;
         $scope.booleanArray = [
             { value: "? boolean:true ?", label: "Yes" },
             { value: "? boolean:false ?", name: "No" },
         ];
+          
         function GetFormName(executionContext) {
             //debugger;
             try {
@@ -195,6 +198,12 @@
         }
         function LoadOptionSetAndGetTabFieldsInQuery(tab, section) {
             //*******************************************************************************************
+                // ---------------------------Added By Nitin A 2 For Multiicklist-------------
+              $scope.setPickListItems = []
+              $scope.selectedPickItemActive = []
+              $scope.selectedPickItemInActive = []
+              $scope.selectedPickList = []
+           // ---------------------------end--------------------- 
             var selectQry = "";
             var selectQryforMultiPickList = "";
             var isMultiPickListExist = false;
@@ -221,6 +230,15 @@
                     }
                     GetOptionSetLabelMulti(tab, section, i, EntityName, $scope.tabs.sections[section].fields[i]['tm_fieldapiname']);
                 }
+            //     if ($scope.tabs.sections[section].fields[i].tm_fieldtype == 'MultiSelectPicklistType') {
+            //         $scope.selectedPickItemActive[i] = $scope.tabs.sections[section].fields[i].PickList.length + 1;
+            //         $scope.setPickListItems[i] = $scope.tabs.sections[section].fields[i].PickList;
+            //         $scope.selectedPickItemInActive[i] = $scope.tabs.sections[section].fields[i].PickList.length + 1;
+            //         $scope.selectedPickList[i] = Array()
+            //     }
+            //     if ($scope.tabs.sections[section].fields[i].tm_fieldtype == 'Picklist' && $scope.tabs.sections[section].fields[i].tm_fieldapiname == 'fedcap_pwin') {
+            //          setRange($scope.tabs.sections[section].fields[i], i)
+            //    }
                 if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] !== "spacer") {
                     if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] !== "header") {
                         if (selectQry === "") {
@@ -245,7 +263,6 @@
                 //$scope.tabs.tabAllMPLFields = $scope.tabs.tabAllMPLFields + ',' + selectQryforMultiPickList;
             }
             //************************************************************************************************
-            console.log($scope.tabs.sections)
         }
         // Added by Nitin A :: To get Dependant Child option label from Parent Picklist option label 
         function LoadDependentPicklistOptionSetLabel(parentPicklist, childPicklistName) {
@@ -800,7 +817,6 @@
                         if (isMultiPickListExist) {
                             //MultiPickListBind(selectQryforMultiPickList, tab, section, fieldIds);
                         }
-                       s
                         $scope.$apply();
                     },
                     function fail(respose) {
@@ -812,6 +828,59 @@
                 console.log(e.message.toString());
             }
         }
+
+        function setRange(i, k) {
+          
+            angular.element(document).ready(function () {
+                var rangeSelector = document.querySelector("#rangeSelector_" + k);
+                document.querySelector("#rangeSelector_value_" + k).innerHTML = rangeSelector.value + "%"
+                rangeSelector.step = 10;
+                rangeSelector.style.background = 'linear-gradient(90deg, #59a30f ' + rangeSelector.value + '%,#f6f7f7 0%)'
+                rangeSelector.oninput = function () {
+                    rangeSelector.style.background = 'linear-gradient(90deg, #59a30f ' + rangeSelector.value + '%,#f6f7f7 0%)';
+                    document.querySelector("#rangeSelector_value_" + k).innerHTML = rangeSelector.value + "%"
+                }
+
+            });
+        }
+
+        // ------------------------------------   added by Nitnin A 2------------------------
+    $scope.addPickListItem = function (fieldId) {
+
+       var exists = false;
+       console.log(fieldId,  $scope.selectedPickList)
+        $scope.selectedPickList[fieldId].map(item => {
+            if (item.id == $scope.selectedItemActive[fieldId]) {
+                exists = true;
+            }
+        })
+
+
+        if (!exists) {
+
+            var item = $scope.setPickListItems[fieldId].filter(item =>
+                item.id == $scope.selectedItemActive
+            )
+            $scope.selectedPickList[fieldId].push(...item)
+
+        }
+
+    }
+    $scope.itemActive = function (id) {
+        $scope.selectedItemActive = id;
+
+    }
+    $scope.itemInActive = function (id) {
+        $scope.selectedPickItemInActive = id;
+    }
+    $scope.removePickListItem = function (fieldId) {
+        console.log(fieldId, $scope.selectedPickItemInActive)
+        var items = [];
+        $scope.selectedPickList[fieldId] = $scope.selectedPickList[fieldId].filter(item =>
+            item.id != $scope.selectedPickItemInActive)
+    }
+
+
         function BindCalenderIE(sectionId) {
             var datefield = document.createElement("input");
             datefield.id = sectionId;
@@ -868,7 +937,6 @@
                         });
                         //$scope.tabs.sections[section].fields[field].PickList.push({ "id": result.OptionSet.Options[i].Value, "value": result.OptionSet.Options[i].Label.LocalizedLabels[0].Label, "color": result.OptionSet.Options[i].Color, "title": result.OptionSet.Options[i].Description.LocalizedLabels[0].Label })
                     }
-                    console.log($scope.tabs.sections)
                     $scope.$apply();
                 },
                 (error) => {
@@ -1031,7 +1099,6 @@
             return currencysymbol;
         }
         function getEntityAllFields(selectQry) {
-            console.log($scope.HeaderFields)
             try {
                 Xrm.WebApi.retrieveRecord(EntityName, OID, "?$select=" + selectQry + "").then(
                     function success(entitydata) {
@@ -1067,7 +1134,6 @@
                             }
                             // $scope.HeaderFields[$scope.HeaderFields.length] = array;
                         }
-                       s
                         $scope.$apply();
                     },
                     function fail(respose) {
