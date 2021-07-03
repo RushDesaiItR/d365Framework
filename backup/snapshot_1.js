@@ -29,12 +29,12 @@
             { value: "? boolean:true ?", label: "Yes" },
             { value: "? boolean:false ?", name: "No" },
         ];
-         // ---------------------------Added By Nitin A 2 For Multiicklist-------------
-         $scope.setPickListItems = []
-         $scope.selectedPickItemActive = []
-         $scope.selectedPickItemInActive = []
-         $scope.selectedPickList = []
-      // ---------------------------end--------------------- 
+                // ---------------------------Added By Nitin A 2 For Multiicklist-------------
+                $scope.setPickListItems = []
+                $scope.selectedPickItemActive = []
+                $scope.selectedPickItemInActive = []
+                $scope.selectedPickList = []
+             // ---------------------------end---------------------  
         function GetFormName(executionContext) {
             //debugger;
             try {
@@ -225,17 +225,10 @@
                     } else {
                         selectQryforMultiPickList = selectQryforMultiPickList + "," + $scope.tabs.sections[section].fields[i]["tm_fieldapiname"];
                     }
+                  
+                   
                     GetOptionSetLabelMulti(tab, section, i, EntityName, $scope.tabs.sections[section].fields[i]['tm_fieldapiname']);
                 }
-                if ($scope.tabs.sections[section].fields[i].tm_fieldtype == 'MultiSelectPicklistType') {
-                    $scope.selectedPickItemActive[i] = $scope.tabs.sections[section].fields[i].PickList.length + 1;
-                    $scope.setPickListItems[i] = $scope.tabs.sections[section].fields[i].PickList;
-                    $scope.selectedPickItemInActive[i] = $scope.tabs.sections[section].fields[i].PickList.length + 1;
-                    $scope.selectedPickList[i] = Array()
-                }
-                if ($scope.tabs.sections[section].fields[i].tm_fieldtype == 'Picklist' && $scope.tabs.sections[section].fields[i].tm_fieldapiname == 'fedcap_pwin') {
-                     setRange($scope.tabs.sections[section].fields[i], i)
-               }
                 if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] !== "spacer") {
                     if ($scope.tabs.sections[section].fields[i]["tm_fieldtype"] !== "header") {
                         if (selectQry === "") {
@@ -245,7 +238,26 @@
                         }
                     }
                 }
+                if ($scope.tabs.sections[section].fields[i].tm_fieldtype == 'Picklist' && $scope.tabs.sections[section].fields[i].tm_fieldapiname == 'fedcap_pwin') {
+                        setRange(section, i)
+                    }
+                  
             }
+            // for (var i = 0; i < $scope.tabs.sections.length; i++) {
+            //     for (var k = 0; k < $scope.tabs.sections[i].fields.length; k++) {
+            //        if ($scope.tabs.sections[i].fields[k].tm_fieldtype == 'MultiSelectPicklistType') {
+            //             //   $scope.setPickListItems.push(i)
+            //             //   $scope.selectedPickList.sections[i].fields=[]
+            //             //   $scope.selectedPickList.sections[i].fields.push(k)
+                       
+            //              $scope.selectedPickItemActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
+            //             // $scope.setPickListItems.sections[i].fields[k] = $scope.tabs.sections[i].fields[k].PickList;
+            //              $scope.selectedPickItemInActive[k] = $scope.tabs.sections[i].fields[k].PickList.length + 1;
+            //            //  $scope.selectedPickList.sections[i].fields[k] = Array()
+                         
+            //          }
+            //     }
+            // }
             if (selectQry !== "") {
                 if ($scope.tabs.tabAllFields === "") {
                     $scope.tabs.tabAllFields = selectQry;
@@ -260,24 +272,6 @@
                 //$scope.tabs.tabAllMPLFields = $scope.tabs.tabAllMPLFields + ',' + selectQryforMultiPickList;
             }
             //************************************************************************************************
-           
-        }
-
-
-
-        function setRange(i, k) {
-          
-            angular.element(document).ready(function () {
-                var rangeSelector = document.querySelector("#rangeSelector_" + k);
-                document.querySelector("#rangeSelector_value_" + k).innerHTML = rangeSelector.value + "%"
-                rangeSelector.step = 10;
-                rangeSelector.style.background = 'linear-gradient(90deg, #59a30f ' + rangeSelector.value + '%,#f6f7f7 0%)'
-                rangeSelector.oninput = function () {
-                    rangeSelector.style.background = 'linear-gradient(90deg, #59a30f ' + rangeSelector.value + '%,#f6f7f7 0%)';
-                    document.querySelector("#rangeSelector_value_" + k).innerHTML = rangeSelector.value + "%"
-                }
-
-            });
         }
         // Added by Nitin A :: To get Dependant Child option label from Parent Picklist option label 
         function LoadDependentPicklistOptionSetLabel(parentPicklist, childPicklistName) {
@@ -308,43 +302,11 @@
             }
 
         }
-    // ------------------------------------   added by Nitnin A 2------------------------
-    $scope.addPickListItem = function (fieldId) {
 
-        var exists = false;
-
-        $scope.selectedPickList[fieldId].map(item => {
-            if (item.id == $scope.selectedItemActive[fieldId]) {
-                exists = true;
-            }
-        })
-
-
-        if (!exists) {
-
-            var item = $scope.setPickListItems[fieldId].filter(item =>
-                item.id == $scope.selectedItemActive
-            )
-            $scope.selectedPickList[fieldId].push(...item)
-
-        }
-
-    }
-    $scope.itemActive = function (id) {
-        $scope.selectedItemActive = id;
-
-    }
-    $scope.itemInActive = function (id) {
-        $scope.selectedPickItemInActive = id;
-    }
-    $scope.removePickListItem = function (fieldId) {
-        console.log(fieldId, $scope.selectedPickItemInActive)
-        var items = [];
-        $scope.selectedPickList[fieldId] = $scope.selectedPickList[fieldId].filter(item =>
-            item.id != $scope.selectedPickItemInActive)
-    }
-
-
+    
+    
+    
+    
 
         $scope.GetDependentPicklistOptionSetLabel = function (section, isDependentPicklist, parentPicklist) {
             //debugger
@@ -400,6 +362,88 @@
 
 
         };
+       
+
+
+       
+        $scope.addPickListItem = function (sectionId,fieldId) {
+         
+           if($scope.selectedPickList[sectionId] == undefined){
+                 console.log("In undefined")
+                $scope.selectedPickList.push(sectionId)
+                console.log($scope.selectedPickList[sectionId])
+                $scope.selectedPickList[sectionId]=[]
+                $scope.selectedPickList[sectionId].fields = []
+                // $scope.selectedPickList[sectionId].push()
+                // $
+                $scope.selectedPickList[sectionId].fields.push(fieldId)
+                var item = $scope.tabs.sections[sectionId].fields[fieldId].PickList.filter(item =>
+                    item.id == $scope.selectedItemActive
+                )
+                $scope.selectedPickList[sectionId].fields[fieldId]=[]
+               $scope.selectedPickList[sectionId].fields[fieldId].optionsSelected=[]
+               $scope.selectedPickList[sectionId].fields[fieldId].optionsSelected.push(...item)
+               console.log( $scope.selectedPickList[sectionId].fields[fieldId].optionsSelected)
+
+            }
+            else
+            {
+
+                if($scope.selectedPickList[sectionId].fields[fieldId] == undefined){
+                     $scope.selectedPickList[sectionId].fields.push(fieldId)
+                    $scope.selectedPickList[sectionId].fields[fieldId]=[]
+                     $scope.selectedPickList[sectionId].fields[fieldId].optionsSelected=[]
+                }
+                var exists = false;
+                 $scope.selectedPickList[sectionId].fields[fieldId].optionsSelected.map(item => {
+                if (item.id == $scope.selectedItemActive) {
+                    exists = true;
+                }
+              })
+               
+               
+               if (!exists) {
+
+                  var item =  $scope.tabs.sections[sectionId].fields[fieldId].PickList.filter(item =>
+                    item.id == $scope.selectedItemActive
+                )
+               $scope.selectedPickList[sectionId].fields[fieldId].optionsSelected.push(...item)
+                console.log($scope.selectedPickList[sectionId].fields[fieldId].optionsSelected)
+               }
+                
+            }
+
+            
+           
+
+        }
+          $scope.itemActive = function (outerIndex,index,optionId) {
+              // $scope.tabs.sections[sectionId].fields[fieldId].PickList
+              //  id="_{{outerIndex}}_{{$index}}_option_{{option.id}}"
+            //   console.log(outerIndex,index,optionId, "---------------", $scope.tabs.sections[outerIndex].fields[index].PickList)
+            //  $scope.tabs.sections[outerIndex].fields[index].PickList.filter(item =>removeItemColor(outerIndex,index, item.id))
+             $scope.selectedItemActive = optionId;
+            //  console.log("_"+outerIndex+"_"+index+"_option_"+optionId)
+            // document.getElementById("_"+outerIndex+"_"+index+"_option_"+optionId).style.color = "#b3003b";
+           
+          }
+        $scope.itemInActive = function (outerIndex,index,optionId) {
+              $scope.selectedPickItemInActive = optionId;
+        }
+        function removeItemColor(sec, index, option){
+             document.getElementById("_"+sec+"_"+index+"_option_"+option).style.color = "black";
+            console.log("_"+sec+"_"+index+"_option_"+option)
+        }
+        $scope.removePickListItem = function (sectionId, fieldId) {
+
+            //$scope.selectedPickList[sectionId].fields[fieldId].optionsSelected.push
+            console.log(sectionId, fieldId, $scope.selectedPickItemInActive)
+            var items = [];
+            $scope.selectedPickList[sectionId].fields[fieldId].optionsSelected = $scope.selectedPickList[sectionId].fields[fieldId].optionsSelected.filter(
+                item => item.id != $scope.selectedPickItemInActive
+            )
+        }
+
 
 
         function SetDependentPicklistOptionSetLabel(section, parentPicklist, childPicklistLogicalName, parentOption) {
@@ -475,7 +519,26 @@
 
         }
 
+        function setRange(i, k) {
+           //{{section.fields[$index].tm_isreadonly}}
+            angular.element(document).ready(function () {
+               
+                //rangeSelector_{{$parent.$parent.$index}}_{{$index}}
+                //rangeSelector_{{outerIndex}}_{{$index}}_Value
+                var rangeSelector = document.querySelector("#rangeSelector_"+i+"_"+ k);
+                if($scope.tabs.sections[i].fields[k].tm_isreadonly){
+                    rangeSelector.disabled=true
+                }
+                document.querySelector("#rangeSelector_"+i+"_"+ k+"_Value").innerHTML = rangeSelector.value + "%"
+                rangeSelector.step = 10;
+                rangeSelector.style.background = 'linear-gradient(90deg, #59a30f ' + rangeSelector.value + '%,#f6f7f7 0%)'
+                rangeSelector.oninput = function () {
+                    rangeSelector.style.background = 'linear-gradient(90deg, #59a30f ' + rangeSelector.value + '%,#f6f7f7 0%)';
+                    document.querySelector("#rangeSelector_"+i+"_"+ k+"_Value").innerHTML = rangeSelector.value + "%"
+                }
 
+            });
+        }
         $scope.ClearDependentPicklistArray = function (fieldApiname) {
             //debugger
             var ChildName = fieldApiname;
@@ -531,6 +594,8 @@
 
 
         };
+
+
 
 
         function GetPicklistRelationship(Selectedlabel, ParentName) {
@@ -989,7 +1054,8 @@
                         });
                         //$scope.tabs.sections[section].fields[field].PickList.push({ "id": result.OptionSet.Options[i].Value, "value": result.OptionSet.Options[i].Label.LocalizedLabels[0].Label, "color": result.OptionSet.Options[i].Color, "title": result.OptionSet.Options[i].Description.LocalizedLabels[0].Label })
                     }
-                   
+                    debugger
+               
                     $scope.$apply();
                 },
                 (error) => {
